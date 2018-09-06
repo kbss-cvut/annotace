@@ -19,6 +19,6 @@ public class MorphoDitaController {
 
     @RequestMapping("/morphodita-result")
     public MorphoDitaResult getMorphoditaResult() {
-        return morphoDitaService.morphoDitaGetResult();
+        return morphoDitaService.getMorphoDitaResult();
     }
 }

@@ -11,13 +11,13 @@ public class MorphoDitaService {
 
     private final RestTemplate restTemplate;
 
-        private MorphoDitaResult morphoDitaResult;
+    private MorphoDitaResult morphoDitaResult;
 
     public MorphoDitaService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public MorphoDitaResult morphoDitaGetResult() {
+    public MorphoDitaResult getMorphoDitaResult() {
         morphoDitaResult = this.restTemplate.getForObject("http://lindat.mff.cuni.cz/services/morphodita/api/analyze?data=Děti pojedou k babičce. Už se těší.", MorphoDitaResult.class);
         return morphoDitaResult;
     }

@@ -21,13 +21,13 @@ public class KerService {
     private final RestTemplate restTemplate;
     private KerResult kerResult;
 
-    public File file = new File("C:/Projects/OPPPR/services/textanalysis/src/main/resources/sample.txt");
+    private File file = new File("C:/Projects/OPPPR/services/textanalysis/src/main/resources/sample.txt");
 
     public KerService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public ResponseEntity<KerResult> getKerResult() throws IOException {
+    public ResponseEntity<KerResult> getKerResult() {
 
         String kerUrl = "http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.03&maximum-words=30";
         Resource fileResource = new FileSystemResource(file);

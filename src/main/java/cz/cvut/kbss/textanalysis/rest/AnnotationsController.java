@@ -18,7 +18,7 @@ public class AnnotationsController {
 
     // TODO LS : "file:C:/Projects/OPPPR/services/textanalysis/src/main/resources/glosar.ttl"
 
-    @RequestMapping("/annotate")
+    @RequestMapping("/annotate-raw")
     public List<Word> getAnnotatedTokenizedText(
         @RequestParam("ontologyUrl") String ontologyUrl) throws Exception {
         return annotationService.getAnnotations(new URL(ontologyUrl));

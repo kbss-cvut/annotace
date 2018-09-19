@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,11 +25,14 @@ public class AnnotateController {
                     produces = MediaType.APPLICATION_XML_VALUE,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
     public String annotate(
+        @RequestParam(value = "ontologyUrl", required = false) String ontologyUrl,
         @RequestBody TextAnalysisInput input)
         throws Exception {
-        final String ontologyUrl = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
-        "CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}");
-        // TODO contexts
+        if (ontologyUrl == null) {
+            // TODO contexts
+            ontologyUrl = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
+                "CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}");
+        }
         final String htmlDocument = input.getContent();
         return service.annotate(annotationService, ontologyUrl, htmlDocument);
     }

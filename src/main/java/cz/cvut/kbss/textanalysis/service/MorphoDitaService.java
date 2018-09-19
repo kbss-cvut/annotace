@@ -23,7 +23,6 @@ public class MorphoDitaService {
     String path = "C:/Projects/OPPPR/services/textanalysis/src/main/resources/test.txt";
     String s = "";
 
-
     public MorphoDitaService(RestTemplateBuilder restTemplateBuilder) throws IOException {
         this.restTemplate = restTemplateBuilder.build();
     }

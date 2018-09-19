@@ -1,4 +1,4 @@
-package cz.cvut.kbss.html2rdfa;
+package cz.cvut.kbss.textanalysis.service;
 
 public class HtmlAnnotationException extends Exception{
 

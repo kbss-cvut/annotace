@@ -1,5 +1,8 @@
-package cz.cvut.kbss.html2rdfa;
+package cz.cvut.kbss.textanalysis.service.html2rdfa;
 
+import cz.cvut.kbss.textanalysis.service.ChunkAnnotationService;
+import cz.cvut.kbss.textanalysis.service.HtmlAnnotationException;
+import cz.cvut.kbss.textanalysis.service.HtmlAnnotationService;
 import java.io.File;
 import java.io.IOException;
 import org.jsoup.Jsoup;
@@ -12,8 +15,11 @@ public class HTMLParserTest {
 
     private HtmlAnnotationService service;
 
+    private ChunkAnnotationService chunkAnnotationService;
+
     @BeforeEach public void init() {
-        service = new HtmlAnnotationService(MockFactory.getProcessor());
+        service = new HtmlAnnotationService();
+        chunkAnnotationService = MockFactory.getProcessor();
     }
 
     @Test public void testFindChunks() throws HtmlAnnotationException {
@@ -22,7 +28,7 @@ public class HTMLParserTest {
             "<html><body><p>" + chunks[1] + "</p><p>" + chunks[2] + "</p></body></html>";
         final Document doc = Jsoup.parse(html);
 
-        final Document doc2 = service.annotate(doc);
+        final Document doc2 = service.annotate(chunkAnnotationService,doc);
 
         System.out.println(doc2.toString());
 
@@ -32,19 +38,19 @@ public class HTMLParserTest {
     @Test public void testParseInvalidHtmlSuccessfully() throws HtmlAnnotationException {
         final String html = "<p>Test chunk 1<div></p>Test chunk 2</div>";
         final Document doc = Jsoup.parse(html);
-        final Document doc2 = service.annotate(doc);
+        final Document doc2 = service.annotate(chunkAnnotationService,doc);
         System.out.println(doc2.toString());
     }
 
     @Test public void testParseInvalidInputFail() {
         Assertions.assertThrows(HtmlAnnotationException.class, () -> {
-            service.annotate(null);
+            service.annotate(chunkAnnotationService,null);
         });
     }
 
     @Test public void testAnnotateMetropolitanPlanSuccessfully()
         throws HtmlAnnotationException, IOException {
-        final Document doc2 = service.annotate(Jsoup
+        final Document doc2 = service.annotate(chunkAnnotationService, Jsoup
             .parse(new File(HtmlAnnotationService.class.getResource("/mpp.html").getFile()),
                 "utf-8"));
         System.out.println(doc2.toString());

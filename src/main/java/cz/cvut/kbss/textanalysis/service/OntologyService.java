@@ -50,6 +50,10 @@ public class OntologyService {
         return model;
     }
 
+    public List<QueryResult> analyzeModel(URL url) throws IOException {
+        return analyzeModel(readOntology(url));
+    }
+
     public List<QueryResult> analyzeModel(Model model) {
         List<QueryResult> queryResultList = new ArrayList<>();
         LOG.debug("Analyzing ontologie model to get all labels");

@@ -1,8 +1,8 @@
-package cz.cvut.kbss.html2rdfa;
+package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.model.Word;
 
-public interface ChunkProcessor {
+public interface ChunkAnnotationService {
 
     /**
      * Accepts a plain-text chunk and returns a stream of words
@@ -10,5 +10,5 @@ public interface ChunkProcessor {
      * @param textChunk
      * @return
      */
-    Word[] process(final String textChunk);
+    Word[] process(final String textChunk) ;
 }

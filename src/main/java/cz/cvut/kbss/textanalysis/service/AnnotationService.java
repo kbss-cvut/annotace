@@ -24,37 +24,19 @@ public class AnnotationService {
     @Autowired
     private MorphoDitaService morphoDitaService;
 
-    //Should take two parameters, string and voc
-    public List<Word> getAnnotations(final URL ontologyURL) throws AnnotationException {
+
+    public List<Word> getAnnotations(final String textChunk, final URL ontologyURL) throws AnnotationException {
         try {
-            return this._getAnnotations(ontologyURL);
+            return this._getAnnotations(textChunk, ontologyURL);
         } catch (Exception e) {
             throw new AnnotationException("Annotation failed.", e);
         }
     }
 
-    private List<Word> _getAnnotations(final URL ontologyURL) throws IOException {
-        List<Word> annotationsResults;
-
-        //output of Morphodita text analysis
-        //to be re-moved
-        String s = Files.readAllLines(Paths.get("/home/kremep1/fel/projects/17opppr/czech-text-analysis/src/main/resources/test.txt")).stream().collect(
-            Collectors.joining(""+Character.LINE_SEPARATOR));
-
-        List<List<MorphoDitaResultJson>> morphoDitaResult;
-        morphoDitaResult = morphoDitaService.getMorphoDiteResultProcessed(s);
-
-        //output of processed ontologie lables
-        //to be re-moved
-
-        Model model = ontologyService.readOntology(ontologyURL);
-
-        List<QueryResult> queryResultList;
-        queryResultList = ontologyService.analyzeModel(model);
-
-        annotationsResults = annotateOntologieLables(morphoDitaResult, queryResultList);
-
-        return annotationsResults;
+    private List<Word> _getAnnotations(final String textChunk, final URL ontologyURL) throws IOException {
+        final List<QueryResult> queryResultList = ontologyService.analyzeModel(ontologyURL);
+        final List<List<MorphoDitaResultJson>> morphoDitaResult = morphoDitaService.getMorphoDiteResultProcessed(textChunk);
+        return annotateOntologieLables(morphoDitaResult, queryResultList);
     }
 
     private List<Word> annotateOntologieLables(List<List<MorphoDitaResultJson>> morphoDitaList, List<QueryResult> queryResultList) {
@@ -94,7 +76,7 @@ public class AnnotationService {
                 }
 
                 final MorphoDitaResultJson res = morphoDitaList.get(i).get(ii);
-                annotationsResults.add( new Word(res.getToken(), res.getSpace(), matchedAnnotations.toArray(new Phrase[]{})) );
+                annotationsResults.add( new Word(res.getToken(), res.getSpace() == null ? "":res.getSpace(), matchedAnnotations.toArray(new Phrase[]{})) );
             }
         }
         return annotationsResults;

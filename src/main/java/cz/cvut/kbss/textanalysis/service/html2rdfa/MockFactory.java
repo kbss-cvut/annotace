@@ -1,7 +1,8 @@
-package cz.cvut.kbss.html2rdfa;
+package cz.cvut.kbss.textanalysis.service.html2rdfa;
 
 import cz.cvut.kbss.model.Word;
 import cz.cvut.kbss.model.Phrase;
+import cz.cvut.kbss.textanalysis.service.ChunkAnnotationService;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.mockito.Mock;
@@ -10,7 +11,7 @@ import org.mockito.Mockito;
 public class MockFactory {
 
     @Mock
-    private static ChunkProcessor processor;
+    private static ChunkAnnotationService processor;
 
     public static final Map<String,Word[]> chunks = new LinkedHashMap<>();
 
@@ -71,13 +72,13 @@ public class MockFactory {
             };
         chunks.put(chunk, chunk3Annotations);
 
-        processor = Mockito.mock(ChunkProcessor.class);
+        processor = Mockito.mock(ChunkAnnotationService.class);
         chunks.forEach( (cText,cAnnotation) -> {
             Mockito.when(processor.process(cText)).thenReturn(cAnnotation);
         });
     }
 
-    public static ChunkProcessor getProcessor() {
+    public static ChunkAnnotationService getProcessor() {
         return processor;
     }
 }

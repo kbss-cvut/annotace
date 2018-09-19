@@ -1,4 +1,4 @@
-package cz.cvut.kbss.html2rdfa;
+package cz.cvut.kbss.textanalysis.service.html2rdfa;
 
 import cz.cvut.kbss.model.Word;
 import java.util.stream.Stream;

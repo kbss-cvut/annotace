@@ -17,10 +17,14 @@ public class AnnotationsController {
     private AnnotationService annotationService;
 
     // TODO LS : "file:C:/Projects/OPPPR/services/textanalysis/src/main/resources/glosar.ttl"
+    //output of Morphodita text analysis
+    //to be re-moved
+    //    String textChunk = Files.readAllLines(Paths.get("/home/kremep1/fel/projects/17opppr/czech-text-analysis/src/main/resources/test.txt")).stream().collect(
+    //        Collectors.joining(""+Character.LINE_SEPARATOR));
 
     @RequestMapping("/annotate-raw")
     public List<Word> getAnnotatedTokenizedText(
-        @RequestParam("ontologyUrl") String ontologyUrl) throws Exception {
-        return annotationService.getAnnotations(new URL(ontologyUrl));
+        @RequestParam("ontologyUrl") String ontologyUrl, @RequestParam("textChunk") String textChunk) throws Exception {
+        return annotationService.getAnnotations(textChunk,new URL(ontologyUrl));
     }
 }

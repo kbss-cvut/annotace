@@ -1,7 +1,7 @@
 package cz.cvut.kbss.textanalysis.service.html2rdfa;
 
 import cz.cuni.mff.ufal.morphodita.morphodita_javaJNI;
-import cz.cvut.kbss.textanalysis.service.MorphoDitaServiceJNI;
+import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceJNI;
 import org.junit.jupiter.api.Test;
 
 public class MorphoditaTest {

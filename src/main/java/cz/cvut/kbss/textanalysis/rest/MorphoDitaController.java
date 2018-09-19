@@ -1,8 +1,7 @@
 package cz.cvut.kbss.textanalysis.rest;
 
-import cz.cvut.kbss.textanalysis.model.MorphoDitaResult;
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
-import cz.cvut.kbss.textanalysis.service.MorphoDitaService;
+import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,12 +12,7 @@ import java.util.List;
 public class MorphoDitaController {
 
     @Autowired
-    private MorphoDitaService morphoDitaService;
-
-    @RequestMapping("/morphodita-result")
-    public MorphoDitaResult getMorphoditaResult() {
-        return morphoDitaService.getMorphoDitaResult();
-    }
+    private MorphoDitaServiceAPI morphoDitaService;
 
     @RequestMapping("/morphodita-result-processed")
     public List<List<MorphoDitaResultJson>> getMorphoDitaResultProcessed(String s) {

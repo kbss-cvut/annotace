@@ -1,4 +1,4 @@
-package cz.cvut.kbss.textanalysis.service;
+package cz.cvut.kbss.textanalysis.service.morphodita;
 
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
 import java.util.List;

@@ -2,6 +2,7 @@ package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
+import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceJNI;
 import java.io.IOException;
 import java.net.URL;
 import org.apache.jena.query.QueryExecution;

@@ -1,4 +1,4 @@
-package cz.cvut.kbss.textanalysis.service;
+package cz.cvut.kbss.textanalysis.service.morphodita;
 
 import cz.cuni.mff.ufal.morphodita.Forms;
 import cz.cuni.mff.ufal.morphodita.TaggedLemma;
@@ -13,14 +13,18 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-@Service public class MorphoDitaServiceJNI implements MorphoDitaServiceAPI {
+@Primary
+@Service
+public class MorphoDitaServiceJNI implements MorphoDitaServiceAPI {
+
+    private static Logger logger = LoggerFactory.getLogger(MorphoDitaServiceJNI.class);
 
     private static Tagger tagger = null;
-
-    @Autowired private MorphoDitaService morphoDitaService;
 
     static {
         try {
@@ -32,7 +36,7 @@ import org.springframework.stereotype.Service;
             e.printStackTrace();
         }
         if (tagger == null) {
-            System.out.println(
+            logger.warn(
                 "JNI library was not found on classpath, falling back to the online service.");
         }
     }
@@ -42,14 +46,6 @@ import org.springframework.stereotype.Service;
     }
 
     @Override public List<List<MorphoDitaResultJson>> getMorphoDiteResultProcessed(String s) {
-//        if (!available()) {
-//            return morphoDitaService.getMorphoDiteResultProcessed(s);
-//        } else {
-            return _getMorphoDiteResultProcessed(s);
-//        }
-    }
-
-    private List<List<MorphoDitaResultJson>> _getMorphoDiteResultProcessed(String s) {
         final List<TokenRanges> tTr = new ArrayList<>();
         final List<Forms> tF = new ArrayList<>();
         final List<TaggedLemmas> tTl = new ArrayList<>();
@@ -99,7 +95,7 @@ import org.springframework.stereotype.Service;
                 String spaces = StringUtils.repeat(" ",(int) (startNext-end));
                 token.setSpace( spaces );
                 sentence.add(token);
-                System.out.println(taggedLemma.getTag() + " : " + taggedLemma.getLemma() + " : " + forms.get(j) + "\""+spaces+"\"");
+                logger.debug("TAG: " + taggedLemma.getTag() + ", LEMMA: " + taggedLemma.getLemma() + ", FORM: " + forms.get(j) + ", SPACES:\""+spaces+"\"");
             }
         }
         return result;

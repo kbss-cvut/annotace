@@ -3,6 +3,7 @@ package cz.cvut.kbss.textanalysis.service;
 import cz.cvut.kbss.textanalysis.model.StatisticAnnotationsResult;
 import cz.cvut.kbss.textanalysis.model.KerResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
+import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
 import org.apache.jena.rdf.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

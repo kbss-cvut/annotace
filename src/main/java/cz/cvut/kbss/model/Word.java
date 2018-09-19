@@ -6,22 +6,29 @@ public class Word {
 
     private String token;
 
-    private Phrase[] phrase;
+    private String lemma;
+
+    private Phrase[] phrases;
 
     private String stopChars;
 
-    public Word(String token, String stopChars, Phrase... phrase) {
+    public Word(String lemma, String token, String stopChars, Phrase... phrases) {
+        this.lemma = lemma;
         this.token = token;
-        this.phrase = phrase;
+        this.phrases = phrases;
         this.stopChars = stopChars;
+    }
+
+    public String getLemma() {
+        return lemma;
+    }
+
+    public Phrase[] getPhrases() {
+        return phrases;
     }
 
     public String getToken() {
         return token;
-    }
-
-    public Phrase[] getPhrases() {
-        return phrase;
     }
 
     public String getStopChars() {
@@ -29,8 +36,8 @@ public class Word {
     }
 
     @Override public String toString() {
-        return "Word{" + "token='" + token + '\'' + ", phrase=" + (phrase == null ? null :
-                                                                   Arrays.asList(phrase)
+        return "Word{" + "token='" + token + '\'' + ", phrase=" + (phrases == null ? null :
+                                                                   Arrays.asList(phrases)
         ) + ", stopChars='" + stopChars + '\'' + '}';
     }
 }

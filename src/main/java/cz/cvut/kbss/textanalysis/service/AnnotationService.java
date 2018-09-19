@@ -3,12 +3,10 @@ package cz.cvut.kbss.textanalysis.service;
 import cz.cvut.kbss.model.Phrase;
 import cz.cvut.kbss.model.Word;
 import cz.cvut.kbss.textanalysis.model.*;
+import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
+import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceJNI;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
-import org.apache.jena.rdf.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +20,7 @@ public class AnnotationService {
     private OntologyService ontologyService;
 
     @Autowired
-    private MorphoDitaService morphoDitaService;
-
+    private MorphoDitaServiceAPI morphoDitaService;
 
     public List<Word> getAnnotations(final String textChunk, final URL ontologyURL) throws AnnotationException {
         try {
@@ -73,10 +70,10 @@ public class AnnotationService {
                 }
 
                 final MorphoDitaResultJson res = morphoDitaList.get(i).get(ii);
-                annotationsResults.add( new Word(res.getToken(), res.getSpace() == null ? "":res.getSpace(), matchedAnnotations.toArray(new Phrase[]{})) );
+                annotationsResults.add( new Word(res.getLemma(), res.getToken(), res.getSpace() == null ? "":res.getSpace(), matchedAnnotations.toArray(new Phrase[]{})) );
             }
         }
-        System.out.println("Annotation results:" + annotationsResults);
+        System.out.println(annotationsResults);
         return annotationsResults;
     }
 }

@@ -15,11 +15,15 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HtmlAnnotationService {
+
+    private static final Logger logger = LoggerFactory.getLogger(HtmlAnnotationService.class);
 
     public String annotate(@Autowired AnnotationService annotationService, String ontologyUrl, String htmlDocument) throws HtmlAnnotationException {
         try {
@@ -28,8 +32,8 @@ public class HtmlAnnotationService {
                 try {
                     return annotationService.getAnnotations(textChunk, url).toArray(new Word[]{});
                 } catch (Exception ex) {
-                    ex.printStackTrace();
-                    return new Word[]{new Word(textChunk,"")};
+                    logger.error("Annotation failed.", ex);
+                    return new Word[]{new Word("",textChunk,"")};
                 }
             }, Jsoup.parse(htmlDocument)).toString();
         } catch (MalformedURLException e) {

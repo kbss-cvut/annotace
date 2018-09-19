@@ -1,0 +1,449 @@
+@prefix : <http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/glosar#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ns1: <http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/> .
+
+<http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/glosar> a owl:Ontology .
+# 
+# 
+# #################################################################
+# #
+# #    Annotation properties
+# #
+# #################################################################
+# 
+# 
+# http://purl.org/dc/elements/1.1/source
+
+<http://purl.org/dc/elements/1.1/source> a owl:AnnotationProperty .
+# 
+# http://www.w3.org/2004/02/skos/core#broader
+
+<http://www.w3.org/2004/02/skos/core#broader> a owl:AnnotationProperty .
+# 
+# http://www.w3.org/2004/02/skos/core#definition
+
+<http://www.w3.org/2004/02/skos/core#definition> a owl:AnnotationProperty .
+# 
+# http://www.w3.org/2004/02/skos/core#inScheme
+
+<http://www.w3.org/2004/02/skos/core#inScheme> a owl:AnnotationProperty .
+# 
+# http://www.w3.org/2004/02/skos/core#topConceptOf
+
+<http://www.w3.org/2004/02/skos/core#topConceptOf> a owl:AnnotationProperty .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    Classes
+# #
+# #################################################################
+# 
+# 
+# http://www.w3.org/2004/02/skos/core#Concept
+
+<http://www.w3.org/2004/02/skos/core#Concept> a owl:Class .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    Individuals
+# #
+# #################################################################
+# 
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/Index-stabilizovane-casti
+
+ns1:Index-stabilizovane-casti a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-IV/cl-11/c-3" ;
+	rdfs:label "Index stabilizované části"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/index-vyu%C5%BEit%C3%AD-lokality> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "Index stabilizované části „is“ je podílem HPP stávajících stavebních bloků ve stabilizované části lokality a rozlohy této stabilizované části"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/blokova-struktura
+
+ns1:blokova-struktura a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-64/c-1" ;
+	rdfs:label "bloková struktura"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "urbánní struktura kompaktních bloků."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/ctvrtovy-park
+
+ns1:ctvrtovy-park a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-4/h-I/cl-113/c-4" ;
+	rdfs:label "čtvrťový park"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9ho-parku> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "městský park, který plní úlohu významného místa pro rekreaci zejména pro rezidenty a návštěvníky dané části města a částí města bezprostředně sousedících."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/heterogenni-struktura
+
+ns1:heterogenni-struktura a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-66/c-1" ;
+	rdfs:label "heterogenní struktura"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "urbánní struktura kombinující více typů zástavby"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/hybridni-struktura
+
+ns1:hybridni-struktura a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-65/c-1" ;
+	rdfs:label "hybridní struktura"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "urbánní struktura kompaktních a rozvolněných bloků vyhovující současným i budoucím technickým inovacím a požadavkům na městskou výstavbu."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/index-navrhovy
+
+ns1:index-navrhovy a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-IV/cl-11/c-4" ;
+	rdfs:label "index návrhový"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/index-vyu%C5%BEit%C3%AD-lokality> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "Index návrhový „in“ je podílem součtu HPP stávajících stavebních bloků ve stabilizované části lokality a předpokládaných HPP v rozvojové anebo transformační části lokality a rozlohy celé lokality. Návrhový index je teoretickou hodnotou, které by bylo dosaženo při úplném naplnění jednotlivých ploch potenciálu v dané lokalitě. Do návrhového indexu nejsou započítávány proluky"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/koridor-dopravni-a-technicke-infrastruktury
+
+ns1:koridor-dopravni-a-technicke-infrastruktury a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-2/b-c" ;
+	rdfs:label "koridor dopravní a technické infrastruktury"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/plocha> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "plocha souvislého pásu území vyhrazená pro budoucí umístění liniové stavby infrastruktury, která se váže na konkrétní stavbu označenou v grafické části liniovou značkou a číselným kódem; v koordinaci s navrhovanou stavbou, případně po jejím vybudování, lze vymezenou plochu využívat i jiným způsobem"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/krajina-uzkych-zariznutych-udoli-v-plosine
+
+ns1:krajina-uzkych-zariznutych-udoli-v-plosine a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-80/c-1" ;
+	rdfs:label "krajina úzkých zaříznutých údolí v plošině"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-struktury-otev%C5%99en%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "struktura kontrastní kombinace zarovnaného povrchu plošiny, z převážné části odlesněné, a relativně výrazně zaříznutých, avšak úzkých a v řádu maximálně několika desítek metrů zahloubených údolí, převážně lesnatých či s jinou trvalou vegetací. Zemědělsky využívané plošiny proříznuté převážně extenzivně využívanými potočními údolími jsou hlavními znaky využití krajiny úzkých zaříznutých údolí v plošině."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/krajina-vyraznych-udoli
+
+ns1:krajina-vyraznych-udoli a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-81/c-1" ;
+	rdfs:label "krajina výrazných údolí"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-struktury-otev%C5%99en%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "struktura výrazných údolí Vltavy a jejích přítoků, z významné části lesnatých, často s výskytem skalních výchozů ve svazích a na jejich horních hranách, přičemž bezlesé části svahů jsou udržované bez dřevinné vegetace cíleným managementem; místy je původní reliéf změněn v důsledku minulé i probíhající těžby nerostných surovin. Lesní hospodaření nekolidující s rekreačním významem příměstských lesů a ochrana území vysokých přírodních a krajinných hodnot, zahrnující i cílené zásahy člověka, jsou hlavními znaky využití krajiny výrazných údolí."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/krajina-vyraznych-vrchu
+
+ns1:krajina-vyraznych-vrchu a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-82/c-1" ;
+	rdfs:label "krajina výrazných vrchů"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-struktury-otev%C5%99en%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "struktura krajiny zahrnující jednotlivé, v kontextu okolí výrazné terénní vyvýšeniny, tj. svědecké vrchy, tabulové hory, vypreparované strukturní hřbety a suky apod., včetně vyvýšenin vzniklých lidskou činností. Způsob využití není znakem ovlivňujícím vymezení krajiny výrazných vrchů."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/krajina-za-mestem
+
+ns1:krajina-za-mestem a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-1/b-d" , "mpp/3.3/ca-1/h-II/cl-6/c-1/b-e" ;
+	rdfs:label "krajina za městem"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/krajina> , <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-struktury> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "převážně venkovský ráz krajiny tvořený otevřenou krajinou a sídly, která jsou spojena významnými dostřednými vazbami s Prahou,"@cs , "typ městské struktury"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/krajinne-zazemi-mesta
+
+ns1:krajinne-zazemi-mesta a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-1/b-e" ;
+	rdfs:label "krajinné zázemí města"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/krajina> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "převážně venkovský ráz krajiny tvořený otevřenou krajinou a sídly, která jsou spojena významnými dostřednými vazbami s Prahou,"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/lesni-krajina-v-rovine
+
+ns1:lesni-krajina-v-rovine a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-76/c-1" ;
+	rdfs:label "lesní krajina v rovině"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-struktury-otev%C5%99en%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "struktura zarovnaných povrchů plošin, které jsou z významné části tvořeny lesními komplexy. Lesní hospodaření nekolidující s rekreačním významem příměstských lesů je hlavním znakem využití lesní krajiny v rovině."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/leso-zemedelska-krajina-v-rovine
+
+ns1:leso-zemedelska-krajina-v-rovine a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-77/c-1" ;
+	rdfs:label "leso-zemědělská krajina v rovině"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-struktury-otev%C5%99en%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "struktura mírně zvlněných tvarů povrchu, které jsou z převážné části odlesněné. Zemědělské využití při současné přítomnosti přírodě blízkých ploch v podobě menších hájů, mezí, břehových porostů podél potoků, ploch sekundárních trávníků apod. je hlavním znakem využití leso-zemědělské krajiny"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/linearni-struktura
+
+ns1:linearni-struktura a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-72/c-1" ;
+	rdfs:label "lineární struktura"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "urbánní struktura utvářená stavbami infrastruktury."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/lokalitni-park
+
+ns1:lokalitni-park a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-4/h-I/cl-113/c-5" ;
+	rdfs:label "lokalitní park"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9ho-parku> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "městský park tvořící významnou část lokality, využívaný k účelům rekreace, zejména rezidenty a návštěvníky území dané lokality a lokalit bezprostředně sousedících"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/mesto
+
+ns1:mesto a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-1/b-d" , "mpp/3.3/ca-2/h-II/cl-34/c-2/b-a" ;
+	rdfs:label "město"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-struktury> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "je územím, které zahrnuje plochy historického jádra, jeho asanovaných a přestavěných částí a připojených původně samostatných měst, která se rozkládala za středověkými hradbami; tento typ se vyznačuje především strukturou uzavřených bloků s jednoznačně vymezeným uličním prostranstvím, podrobněji viz čl. 63 až 65 a 71"@cs , "typ městské struktury"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> ;
+	<http://www.w3.org/2004/02/skos/core#topConceptOf> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/mestska-krajina
+
+ns1:mestska-krajina a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-1/b-c" ;
+	rdfs:label "městská krajina"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/krajina> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "krajina zastavitelného území, obecně definice vychází z pojmu „historická městská krajina“ chápaná jako výsledek historického vrstvení kulturních a přírodních hodnot a vlastností, zahrnující širší městský kontext a jeho geografické prostředí, zahrnuje především plochy stavebních bloků a uličních prostranství a nestavební bloky – krajinu ve městě"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/metropolitni-park
+
+ns1:metropolitni-park a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-4/h-I/cl-113/c-3" ;
+	rdfs:label "metropolitní park"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9ho-parku> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "městský park, který z hlediska své plošné výměry, ale rovněž dostupnosti, vybavenosti, intenzity údržby a často i specificky laděného charakteru má význam pro rezidenty a návštěvníky celého města."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/mistni-park
+
+ns1:mistni-park a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-4/h-I/cl-113/c-6" ;
+	rdfs:label "místní park"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9ho-parku> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "městský park zpravidla malého plošného rozsahu, avšak s údržbou vegetačních ploch a obvykle i s dílčí vybaveností mobiliářem."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/modernisticka-struktura
+
+ns1:modernisticka-struktura a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-69/c-1" ;
+	rdfs:label "modernistická struktura"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "urbánní struktura kombinující solitérní stavby a uzavřené areály společně umístěné v parku ve volné zástavbě."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/modernisticka-zastavba
+
+ns1:modernisticka-zastavba a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-1/b-g" ;
+	rdfs:label "modernistická zástavba"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/z%C3%A1stavba> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "zástavba, která vznikla především na principech Athénské charty, převážně v druhé polovině 20. století, jedná se o volné zastavění solitérních budov a zařízení s přísným oddělením jednotlivých funkcí"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/nestavebni-blok
+
+ns1:nestavebni-blok a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-1/b-j" , "mpp/3.3/ca-2/h-II/cl-37/c-2" ;
+	rdfs:label "nestavební blok"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/blok> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "plocha vymezená pro nestavební účely zejména krajiny ve městě, má obdobné vlastnosti, jako dílčí plochy otevřené krajiny a za výjimečných podmínek je možné v nestavebních blocích umisťovat ojedinělé stavby v souladu s cílovým charakterem"@cs , "zpravidla charakterizuje nezpevněný terén pokrytý vegetací s různou mírou kulturních zásahů a úprav. Stavby včetně staveb budov se nevyskytují či vyskytují ojediněle, umísťovat nové stavby včetně budov je přípustné pouze za podmínek stanovených v čl. 118. Urbánní vztahy jsou nahrazeny návazností cestní sítě v městských parcích na uliční prostranství."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> ;
+	<http://www.w3.org/2004/02/skos/core#topConceptOf> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/nezastavitelna-lokalita
+
+ns1:nezastavitelna-lokalita a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-I/cl-60/c-3" ;
+	rdfs:label "nezastavitelná lokalita"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/lokalita> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "Nezastavitelné lokality tvoří nezastavitelné území. V nezastavitelném území se mohou vyskytovat stávající zastavěné plochy, označované jako samoty viz čl. 119. Vymezeny jsou obvykle hranicí zastavěného území, v případech rozvoje krajiny, který je specifikován, jsou vymezeny jako zastavěné stavební pozemky. V nezastavitelných lokalitách lze umísťovat nové stavby, zařízení a jiná opatření pouze na základě využití území v rozsahu stanoveném Metropolitním plánem v čl. 89 až 91."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/otevrena-krajina
+
+ns1:otevrena-krajina a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-1/b-b" ;
+	rdfs:label "otevřená krajina"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/krajina> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "krajina nezastavitelného území, členěná na základě typů krajin; je definována nepřítomností zástavby, přičemž přítomnost budov není vyloučena, ale podmínky pro umísťování budov stanovuje příslušný regulativ či soubor regulativů"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/park-ve-volne-zastavbe
+
+ns1:park-ve-volne-zastavbe a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-1/b-h" , "mpp/3.3/ca-4/h-II/cl-122/c-1" ;
+	rdfs:label "park ve volné zástavbě"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/park> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "je vymezen jako část stavebního bloku v modernistických strukturách, určená převážně k nestavebním účelům, je podmínkou zachování charakteru modernistické struktury viz čl. 106. Park ve volné zástavbě nemusí tvořit plošně souvislý celek, v jedné lokalitě se však zpravidla nachází nejvýše jeden park ve volné zástavbě."@cs , "soubor nezpevněných i zpevněných veřejně přístupných ploch ve stavebním bloku modernistické zástavby"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> ;
+	<http://www.w3.org/2004/02/skos/core#topConceptOf> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/parkove-prostranstvi
+
+ns1:parkove-prostranstvi a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-74/c-1" ;
+	rdfs:label "parkové prostranství"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-struktury-krajiny-ve-m%C4%9Bst%C4%9B> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "struktura nestavebního charakteru, jejíž hlavní část tvoří veřejně přístupná prostranství nestavebních bloků s převažujícím zastoupením nezpevněných, popřípadě vodních ploch, přičemž nezpevněné plochy jsou osety či osázeny vegetačními prvky zpravidla v uceleném kompozičním záměru. Parkové prostranství je vybaveno sítí cest a rekreačním mobiliářem, zpravidla též zařízeními nebo speciálními plochami pro možnost sportu a her pod otevřeným nebem."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/parkovy-areal
+
+ns1:parkovy-areal a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-73/c-1" ;
+	rdfs:label "parkový areál"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-struktury-krajiny-ve-m%C4%9Bst%C4%9B> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "struktura nestavebního charakteru s významným zastoupením nezpevněných ploch, které jsou osety či osázeny vegetačními prvky. Parkový areál je vůči svému okolí jednoznačně ohraničen, zpravidla formou oplocení. Obvyklým typem přístupnosti areálu je přístupnost omezená stanoveným režimem."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/parkovy-les
+
+ns1:parkovy-les a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-75/c-1" ;
+	rdfs:label "parkový les"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-struktury-krajiny-ve-m%C4%9Bst%C4%9B> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "lesní struktura v městské krajině, která je uzpůsobena pro rekreační účely z hlediska své prostorové struktury, druhové a věkové skladby, stupně zakmenění, přítomnosti ploch bez lesních dřevin, uspořádáním a hustotou cestní sítě a doplňkovou vybaveností."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/periferie
+
+ns1:periferie a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-1/b-d" , "mpp/3.3/ca-2/h-II/cl-34/c-2/b-c" ;
+	rdfs:label "periferie"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-struktury> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "je územím města tvořené převážně modernistickými strukturami, jejichž forma se liší na základě funkce a je možné definovat struktury obytného, produkčního i rekreačního charakteru, převážně se jedná o volnou zástavbu solitérními stavbami kombinovanou s areály, kde veřejná prostranství prostupují volnou zástavbou, podrobněji viz čl. 69 až 71; zvláštním případem periferie jsou lokality liniových prvků zejména dopravní infrastruktury, které obvykle vytváří v území bariéru, podrobněji viz čl. 72."@cs , "typ městské struktury"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> ;
+	<http://www.w3.org/2004/02/skos/core#topConceptOf> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/plocha-dopravni-a-technicke-infrastruktury
+
+ns1:plocha-dopravni-a-technicke-infrastruktury a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-2/b-b" ;
+	rdfs:label "plocha dopravní a technické infrastruktury"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/plocha> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "plocha vyhrazená pro budoucí umístění zařízení infrastruktury, která se váže na konkrétní stavbu označenou v grafické části bodovou značkou a číselným kódem; v koordinaci s navrhovanou stavbou, případně po jejím vybudování, lze vymezenou plochu využívat i jiným způsobem"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/predmesti
+
+ns1:predmesti a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-1/b-d" , "mpp/3.3/ca-2/h-II/cl-34/c-2/b-b" ;
+	rdfs:label "předměstí"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-struktury> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "je především územím zahradních měst, ale vyskytují se v něm i vesnice, které se postupem času staly součástí propojené městské struktury, a rozličná území heterogenního charakteru; tento typ se vyznačuje především strukturou otevřených bloků, stále však s jednoznačně vymezeným uličním prostranstvím"@cs , "typ městské struktury"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> ;
+	<http://www.w3.org/2004/02/skos/core#topConceptOf> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/rostla-struktura
+
+ns1:rostla-struktura a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-63/c-1" ;
+	rdfs:label "rostlá struktura"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "urbánní struktura kompaktních bloků historického centra Prahy."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/stabilita
+
+ns1:stabilita a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-5/b-j" , "mpp/3.3/ca-3/h-IV/cl-93/c-3" ;
+	rdfs:label "stabilita"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/p%C5%99edpokl%C3%A1dan%C3%A1-m%C3%ADra-zm%C4%9Bn-(stabilita)> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "stav území, ve kterém se nepředpokládají zásadní změny charakteru, pokud jsou změny předpokládány, je území označeno jako transformační nebo rozvojové"@cs , "taková konstatovaná rovnováha v území, při níž se neuplatňují přímo specifikované požadavky na podstatnou změnu charakteru území."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> ;
+	<http://www.w3.org/2004/02/skos/core#topConceptOf> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/stavebni-blok
+
+ns1:stavebni-blok a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-1/h-II/cl-6/c-1/b-k" ;
+	rdfs:label "stavební blok"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/blok> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "plocha vymezená převážně pro zástavbu budovami"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/struktura-arealu-produkce
+
+ns1:struktura-arealu-produkce a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-70/c-1" ;
+	rdfs:label "struktura areálů produkce"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "urbánní struktura flexibilní zástavby uzavřených areálů."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/struktura-arealu-vybavenosti
+
+ns1:struktura-arealu-vybavenosti a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-71/c-1" ;
+	rdfs:label "struktura areálů vybavenosti"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "urbánní struktura zástavby veřejně přístupných areálů"@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/struktura-zahradniho-mesta
+
+ns1:struktura-zahradniho-mesta a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-68/c-1" ;
+	rdfs:label "struktura zahradního města"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "urbánní struktura samostatných staveb umístěných ve vlastních zahradách."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/vesnicka-struktura
+
+ns1:vesnicka-struktura a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-67/c-1" ;
+	rdfs:label "vesnická struktura"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-m%C4%9Bstsk%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "urbánní struktura kombinující kompaktní zástavbu v jádru historické obce a navazující zástavbu samostatných staveb ve vlastních zahradách. Zástavba může být doplněna o jednotlivé uzavřené areály."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/zastavitelna-lokalita
+
+ns1:zastavitelna-lokalita a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-I/cl-60/c-1" ;
+	rdfs:label "zastavitelná lokalita"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/lokalita> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "Zastavitelné lokality tvoří zastavitelné území. V zastavitelných lokalitách lze v souladu s podmínkami pro ně stanovenými umísťovat nové stavby a zařízení, jakož i obnovovat, rozšiřovat či upravovat stavby a zařízení stávající."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/zemedelska-krajina-v-rovine
+
+ns1:zemedelska-krajina-v-rovine a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-79/c-1" ;
+	rdfs:label "zemědělská krajina v rovině"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-struktury-otev%C5%99en%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "struktura zarovnaných povrchů plošin a širokých říčních niv, které jsou téměř v celém svém rozsahu odlesněné. Intenzivní zemědělské využití je hlavním znakem využití zemědělské krajiny v rovině."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/zemedelsko-rybnicni-krajina
+
+ns1:zemedelsko-rybnicni-krajina a owl:NamedIndividual , <http://www.w3.org/2004/02/skos/core#Concept> ;
+	<http://purl.org/dc/elements/1.1/source> "mpp/3.3/ca-3/h-II/cl-78/c-1" ;
+	rdfs:label "zemědělsko-rybniční krajina"@cs ;
+	<http://www.w3.org/2004/02/skos/core#broader> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3/typ-struktury-otev%C5%99en%C3%A9-krajiny> ;
+	<http://www.w3.org/2004/02/skos/core#definition> "struktura ploché zemědělské krajiny se soustavou rybníků v malé vzdálenosti od sebe navzájem na jednom vodním toku nebo na více propojených vodních tocích. Člověkem vytvořená rybniční soustava v okolním převážně zemědělsky využívaném území je hlavním znakem využití zemědělsko-rybniční krajiny."@cs ;
+	<http://www.w3.org/2004/02/skos/core#inScheme> <http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp-3.3> .
+# 
+# http://www.w3.org/2004/02/skos/core#Concept
+
+<http://www.w3.org/2004/02/skos/core#Concept> a owl:NamedIndividual .
+# 
+# Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi

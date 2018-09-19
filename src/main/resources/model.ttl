@@ -1,0 +1,368 @@
+@prefix : <http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/model#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ufo: <http://onto.fel.cvut.cz/ontologies/ufo/> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix terms: <http://purl.org/dc/terms/> .
+@prefix wgs84_pos: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix ns1: <http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/> .
+
+<http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/model> a owl:Ontology ;
+	owl:imports <http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/glosar> ;
+	rdfs:label "Legislativní slovník MPP 3.3" ;
+	rdfs:comment "URI of ontology and all of its resources changed on 2018-05-25 from http://onto.fel.cvut.cz/ontologies/cz/ipr/mpp3.3-model to http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp3.3-model"@en .
+# 
+# 
+# #################################################################
+# #
+# #    Object Properties
+# #
+# #################################################################
+# 
+# 
+# http://onto.fel.cvut.cz/ontologies/ufo/inheres-in
+
+ufo:inheres-in a owl:ObjectProperty .
+# 
+# http://onto.fel.cvut.cz/ontologies/ufo/is-object-part-of
+
+ufo:is-object-part-of a owl:ObjectProperty .
+# 
+# http://onto.fel.cvut.cz/ontologies/ufo/is-part-of
+
+ufo:is-part-of a owl:ObjectProperty .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    Classes
+# #
+# #################################################################
+# 
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/krajina
+
+<http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/krajina> a owl:Class .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/mesto
+
+<http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/mesto> a owl:Class .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/plocha
+
+<http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/plocha> a owl:Class .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/uzemi
+
+<http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/uzemi> a owl:Class .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/zastavba
+
+<http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/zastavba> a owl:Class .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/Index-stabilizovane-casti
+
+ns1:Index-stabilizovane-casti a owl:Class ;
+	rdfs:subClassOf ufo:trope , _:genid1 .
+
+_:genid1 a owl:Restriction ;
+	owl:onProperty ufo:inheres-in ;
+	owl:someValuesFrom ns1:stabilizovana-cast-lokality .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/ctvrtovy-park
+
+ns1:ctvrtovy-park a owl:Class ;
+	rdfs:subClassOf ns1:mestsky-park .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/index-navrhovy
+
+ns1:index-navrhovy a owl:Class ;
+	rdfs:subClassOf ufo:trope , _:genid2 .
+
+_:genid2 a owl:Restriction ;
+	owl:onProperty ufo:inheres-in ;
+	owl:someValuesFrom ns1:stabilizovana-cast-lokality .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/koridor-dopravni-a-technicke-infrastruktury
+
+ns1:koridor-dopravni-a-technicke-infrastruktury a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/plocha> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/krajina-uzkych-zariznutych-udoli-v-plosine
+
+ns1:krajina-uzkych-zariznutych-udoli-v-plosine a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/krajina> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/krajina-vyraznych-udoli
+
+ns1:krajina-vyraznych-udoli a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/krajina> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/krajina-vyraznych-vrchu
+
+ns1:krajina-vyraznych-vrchu a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/krajina> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/krajina-za-mestem
+
+ns1:krajina-za-mestem a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/krajina> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/lesni-krajina-v-rovine
+
+ns1:lesni-krajina-v-rovine a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/krajina> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/lokalita
+
+ns1:lokalita a owl:Class ;
+	rdfs:subClassOf ufo:physical-object .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/lokalitni-park
+
+ns1:lokalitni-park a owl:Class ;
+	rdfs:subClassOf ns1:mestsky-park .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/mesto
+
+ns1:mesto a owl:Class ;
+	owl:equivalentClass _:genid3 .
+
+_:genid3 a owl:Class ;
+	owl:oneOf _:genid4 .
+
+_:genid4 a rdf:List ;
+	rdf:first ns1:praha ;
+	rdf:rest rdf:nil .
+
+ns1:mesto rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/mesto> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/mestska-krajina
+
+ns1:mestska-krajina a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/krajina> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/mestsky-park
+
+ns1:mestsky-park a owl:Class ;
+	rdfs:subClassOf ufo:physical-object .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/metropolitni-park
+
+ns1:metropolitni-park a owl:Class ;
+	rdfs:subClassOf ns1:mestsky-park .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/mistni-park
+
+ns1:mistni-park a owl:Class ;
+	rdfs:subClassOf ns1:mestsky-park .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/modernisticka-zastavba
+
+ns1:modernisticka-zastavba a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/zastavba> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/nestavebni-blok
+
+ns1:nestavebni-blok a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/plocha> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/nezastavitelna-lokalita
+
+ns1:nezastavitelna-lokalita a owl:Class ;
+	rdfs:subClassOf ns1:lokalita .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/nezastavitelna-rekreacni-lokalita
+
+ns1:nezastavitelna-rekreacni-lokalita a owl:Class ;
+	rdfs:subClassOf ns1:nezastavitelna-lokalita .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/nezastavitelna-rekreacni-rozvojova-plocha
+
+ns1:nezastavitelna-rekreacni-rozvojova-plocha a owl:Class ;
+	rdfs:subClassOf ns1:rozvojova-plocha .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/nezastavitelne-uzemi
+
+ns1:nezastavitelne-uzemi a owl:Class ;
+	rdfs:subClassOf ns1:uzemi .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/otevrena-krajina
+
+ns1:otevrena-krajina a owl:Class ;
+	rdfs:subClassOf ufo:physical-object .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/park
+
+ns1:park a owl:Class ;
+	rdfs:subClassOf ufo:physical-object .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/park-ve-volne-zastavbe
+
+ns1:park-ve-volne-zastavbe a owl:Class ;
+	rdfs:subClassOf ns1:mestsky-park .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/periferie
+
+ns1:periferie a owl:Class ;
+	rdfs:subClassOf ns1:uzemi , _:genid5 .
+
+_:genid5 a owl:Restriction ;
+	owl:onProperty ufo:is-part-of ;
+	owl:someValuesFrom ns1:mesto .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/plocha-dopravni-a-technicke-infrastruktury
+
+ns1:plocha-dopravni-a-technicke-infrastruktury a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/plocha> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/predmesti
+
+ns1:predmesti a owl:Class ;
+	rdfs:subClassOf ns1:uzemi .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/rozvojova-plocha
+
+ns1:rozvojova-plocha a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/plocha> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/rozvojova-plocha-mesta
+
+ns1:rozvojova-plocha-mesta a owl:Class ;
+	rdfs:subClassOf ns1:rozvojova-plocha , _:genid6 .
+
+_:genid6 a owl:Restriction ;
+	owl:onProperty ufo:is-object-part-of ;
+	owl:allValuesFrom ns1:mesto .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/rozvojova-plocha-otevrene-krajiny
+
+ns1:rozvojova-plocha-otevrene-krajiny a owl:Class ;
+	rdfs:subClassOf ns1:rozvojova-plocha , _:genid7 .
+
+_:genid7 a owl:Restriction ;
+	owl:onProperty ufo:is-object-part-of ;
+	owl:allValuesFrom ns1:otevrena-krajina .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/rozvojova-plocha-parku
+
+ns1:rozvojova-plocha-parku a owl:Class ;
+	rdfs:subClassOf ns1:rozvojova-plocha , _:genid8 .
+
+_:genid8 a owl:Restriction ;
+	owl:onProperty ufo:is-object-part-of ;
+	owl:allValuesFrom ns1:park .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/stabilita
+
+ns1:stabilita a owl:Class ;
+	rdfs:subClassOf ufo:trope , _:genid9 .
+
+_:genid9 a owl:Restriction ;
+	owl:onProperty ufo:inheres-in ;
+	owl:someValuesFrom ns1:uzemi .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/stabilizovana-cast-lokality
+
+ns1:stabilizovana-cast-lokality a owl:Class ;
+	rdfs:subClassOf ufo:physical-object , _:genid10 .
+
+_:genid10 a owl:Restriction ;
+	owl:onProperty ufo:is-object-part-of ;
+	owl:someValuesFrom ns1:lokalita .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/stavebni-blok
+
+ns1:stavebni-blok a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/plocha> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/transformacni-plocha
+
+ns1:transformacni-plocha a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/plocha> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/transformacni-plocha-mesta
+
+ns1:transformacni-plocha-mesta a owl:Class ;
+	rdfs:subClassOf ns1:transformacni-plocha , _:genid11 .
+
+_:genid11 a owl:Restriction ;
+	owl:onProperty ufo:is-object-part-of ;
+	owl:allValuesFrom ns1:mesto .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/transformacni-plocha-otevrene-krajiny
+
+ns1:transformacni-plocha-otevrene-krajiny a owl:Class ;
+	rdfs:subClassOf ns1:transformacni-plocha , _:genid12 .
+
+_:genid12 a owl:Restriction ;
+	owl:onProperty ufo:is-object-part-of ;
+	owl:allValuesFrom ns1:otevrena-krajina .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/transformacni-plocha-parku
+
+ns1:transformacni-plocha-parku a owl:Class ;
+	rdfs:subClassOf ns1:transformacni-plocha , _:genid13 .
+
+_:genid13 a owl:Restriction ;
+	owl:onProperty ufo:is-object-part-of ;
+	owl:allValuesFrom ns1:park .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/uzemi
+
+ns1:uzemi a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/uzemi> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/zastavitelna-lokalita
+
+ns1:zastavitelna-lokalita a owl:Class ;
+	rdfs:subClassOf ns1:lokalita .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/zastavitelna-lokalita-nestavebni
+
+ns1:zastavitelna-lokalita-nestavebni a owl:Class ;
+	rdfs:subClassOf ns1:zastavitelna-lokalita .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/zastavitelne-uzemi
+
+ns1:zastavitelne-uzemi a owl:Class ;
+	rdfs:subClassOf ns1:uzemi .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/zemedelska-krajina-v-rovine
+
+ns1:zemedelska-krajina-v-rovine a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/krajina> .
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/zemedelsko-rybnicni-krajina
+
+ns1:zemedelsko-rybnicni-krajina a owl:Class ;
+	rdfs:subClassOf <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/uzemni-plan-common/pojem/krajina> .
+# 
+# http://onto.fel.cvut.cz/ontologies/ufo/physical-object
+
+ufo:physical-object a owl:Class .
+# 
+# http://onto.fel.cvut.cz/ontologies/ufo/trope
+
+ufo:trope a owl:Class .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    Individuals
+# #
+# #################################################################
+# 
+# 
+# http://onto.fel.cvut.cz/ontologies/slovnik/legislativni/mpp-3.3/pojem/praha
+
+ns1:praha a owl:NamedIndividual , ns1:mesto .
+# 
+# Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi

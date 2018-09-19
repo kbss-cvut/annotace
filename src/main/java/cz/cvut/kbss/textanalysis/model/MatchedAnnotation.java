@@ -6,7 +6,7 @@ public class MatchedAnnotation {
 
     private String lable;
 
-    private boolean matched;
+    private boolean fullMatch;
 
     public MatchedAnnotation() {
     }
@@ -27,12 +27,12 @@ public class MatchedAnnotation {
         this.lable = lable;
     }
 
-    public boolean isMatched() {
-        return matched;
+    public boolean isFullMatch() {
+        return fullMatch;
     }
 
-    public void setMatched(boolean matched) {
-        this.matched = matched;
+    public void setFullMatch(boolean fullMatch) {
+        this.fullMatch = fullMatch;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class MatchedAnnotation {
         return "MatchedAnnotation{" +
                 "type='" + type + '\'' +
                 ", lable='" + lable + '\'' +
-                ", matched=" + matched +
+                ", fullMatch=" + fullMatch +
                 '}';
     }
 }

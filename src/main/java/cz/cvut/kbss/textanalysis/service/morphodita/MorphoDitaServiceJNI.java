@@ -32,13 +32,14 @@ public class MorphoDitaServiceJNI implements MorphoDitaServiceAPI {
             final String taggerFile =
                 MorphoDitaServiceJNI.class.getResource("/czech-morfflex-pdt-161115-no_dia.tagger")
                                           .getFile();
+            System.out.println("Loading " + taggerFile);
             tagger = Tagger.load(new File(taggerFile).getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (tagger == null) {
             logger.warn(
-                "JNI library was not found on classpath, falling back to the online service.");
+                "Creating tagger failed.");
         }
     }
 

@@ -38,7 +38,6 @@ public class OntologyService {
         File file = new File(filename);
         FileReader reader = new FileReader(file);
         model.read(reader,null, FileUtils.langTurtle);
-        //model.write(System.out, "RDF/JSON");
 
         return model;
     }
@@ -69,16 +68,12 @@ public class OntologyService {
         QueryExecution queryExecution = QueryExecutionFactory.create(query, model);
         resultSet = queryExecution.execSelect();
 
-        //LOG.debug("resultset is: " + asText(resultSet));
-
         for ( ;resultSet.hasNext(); ) {
             QuerySolution querySolution = resultSet.nextSolution();
             s = querySolution.get("s");
             o = querySolution.get("o");
-            QueryResult queryResultobject = new QueryResult(s.asNode().toString(), o.asLiteral().getString(), morphoDitaService.getMorphoDiteResultProcessed(o.asLiteral().getString()));
+            QueryResult queryResultobject = new QueryResult(s.asNode().toString(), o.asLiteral().getString());
             queryResultList.add(queryResultobject);
-
-            //LOG.debug("the subject is: " + s.asNode().toString() + "and the label is: " + o.asLiteral().getString() + "\n");
 
         }
         printList(queryResultList);
@@ -86,32 +81,21 @@ public class OntologyService {
         //Store all lables in one string and call morphoDita only once then map the queryResult objects to corresponding sub-array
         String ontologieLables = "";
         for(int i=0; i<queryResultList.size(); i++) {
-            ontologieLables = ontologieLables + queryResultList.get(i).getLabel() + "\n";
+            ontologieLables = ontologieLables + queryResultList.get(i).getLabel() + "\n" + "\n";
         }
 
-        System.out.println("string containing all ontologie lables" + "\n" + ontologieLables);
 
+        List<List<MorphoDitaResultJson>> morphoDitaResultList = morphoDitaService.getMorphoDiteResultProcessed(ontologieLables);
+
+         int i = 0;
+            for (QueryResult queryResult : queryResultList) {
+                queryResult.setMorphoDitaResultList(morphoDitaResultList.get(i));
+                i++;
+            }
 
         return queryResultList;
 
-        //return resultSet;
-
     }
-
-//
-//    public void readResultSet(ResultSet resultSet) {
-//        LOG.debug("Reading the resultset for the second time" + asText(resultSet));
-//        RDFNode s;
-//        RDFNode o;
-//        for ( ;resultSet.hasNext(); ) {
-//            QuerySolution querySolution = resultSet.nextSolution();
-//            s = querySolution.get("s");
-//            o = querySolution.get("o");
-//            LOG.debug("the subject is: " + s.asNode().getLocalName() + "and the label is: " + o.asNode().getLocalName() + "\n");
-//        }
-//    }
-
-
 
 
     public void printList(List<QueryResult> queryResultList) {

@@ -51,8 +51,7 @@ public class OntologyService {
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
                 "SELECT ?s ?o WHERE {" +
                 "?s rdfs:label ?o" +
-                "}" +
-                "LIMIT 5";
+                "}";
 
         QueryExecution queryExecution = QueryExecutionFactory.create(query, model);
         resultSet = queryExecution.execSelect();

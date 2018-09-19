@@ -8,17 +8,16 @@ public class QueryResult {
 
     private String label;
 
-    private List<List<MorphoDitaResultJson>> morphoDitaResultList;
+    private List<MorphoDitaResultJson> morphoDitaResultList;
 
     public QueryResult() {
     }
 
-
-    public QueryResult(String type, String label, List<List<MorphoDitaResultJson>> morphoDitaResultList) {
+    public QueryResult(String type, String label) {
         this.type = type;
         this.label = label;
-        this.morphoDitaResultList = morphoDitaResultList;
     }
+
 
     public String getType() {
         return type;
@@ -36,11 +35,12 @@ public class QueryResult {
         this.label = label;
     }
 
-    public List<List<MorphoDitaResultJson>> getMorphoDitaResultList() {
+
+    public List<MorphoDitaResultJson> getMorphoDitaResultList() {
         return morphoDitaResultList;
     }
 
-    public void setMorphoDitaResultList(List<List<MorphoDitaResultJson>> morphoDitaResultList) {
+    public void setMorphoDitaResultList(List<MorphoDitaResultJson> morphoDitaResultList) {
         this.morphoDitaResultList = morphoDitaResultList;
     }
 

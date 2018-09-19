@@ -50,10 +50,8 @@ public class AnnotationService {
 
                 for (int j = 0; j < queryResultList.size(); j++) {
                     for (int k = 0; k < queryResultList.get(j).getMorphoDitaResultList().size(); k++) {
-                        for (int kk = 0; kk < queryResultList.get(j).getMorphoDitaResultList().get(k).size(); kk++) {
-
-
-                            if (morphoDitaList.get(i).get(ii).getLemma().contentEquals(queryResultList.get(j).getMorphoDitaResultList().get(k).get(kk).getLemma())) {
+//
+                            if (morphoDitaList.get(i).get(ii).getLemma().contentEquals(queryResultList.get(j).getMorphoDitaResultList().get(k).getLemma())) {
 
                                 Phrase matchedAnnotation = new Phrase(
                                     queryResultList.get(j).getType(),
@@ -70,7 +68,6 @@ public class AnnotationService {
 //                                }
 
                                 matchedAnnotations.add(matchedAnnotation);
-                            }
                         }
                     }
                 }

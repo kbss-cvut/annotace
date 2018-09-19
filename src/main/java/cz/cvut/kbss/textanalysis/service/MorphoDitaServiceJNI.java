@@ -8,6 +8,8 @@ import cz.cuni.mff.ufal.morphodita.TokenRange;
 import cz.cuni.mff.ufal.morphodita.TokenRanges;
 import cz.cuni.mff.ufal.morphodita.Tokenizer;
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +27,7 @@ import org.springframework.stereotype.Service;
             final String taggerFile =
                 MorphoDitaServiceJNI.class.getResource("/czech-morfflex-pdt-161115-no_dia.tagger")
                                           .getFile();
-            tagger = Tagger.load(taggerFile);
+            tagger = Tagger.load(new File(taggerFile).getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
         }

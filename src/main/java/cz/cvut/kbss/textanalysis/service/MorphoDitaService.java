@@ -2,9 +2,7 @@ package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResult;
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Service
-public class MorphoDitaService {
+public class MorphoDitaService implements MorphoDitaServiceAPI {
 
     private final RestTemplate restTemplate;
 
@@ -28,18 +26,10 @@ public class MorphoDitaService {
     }
 
     public MorphoDitaResult getMorphoDitaResult() {
-//        try
-//        {
-//            s = new String(Files.readAllBytes(Paths.get(path)));
-//        }
-//        catch (IOException e){
-//            e.printStackTrace();
-//        }
-        //System.out.println(s);
-        morphoDitaResult = this.restTemplate.getForObject("http://lindat.mff.cuni.cz/services/morphodita/api/tag?data=Děti pojedou k babičce. Už se těší.&output=json", MorphoDitaResult.class);
-//        morphoDitaResult = this.restTemplate.getForObject("http://lindat.mff.cuni.cz/services/morphodita/api/analyze?data=" + s, MorphoDitaResult.class);
-
-        return morphoDitaResult;
+        return this.restTemplate.getForObject(
+            "http://lindat.mff.cuni.cz/services/morphodita/api/tag?data=Děti pojedou k babičce. Už se těší.&output=json",
+            MorphoDitaResult.class
+        );
     }
 
     public List<List<MorphoDitaResultJson>> getMorphoDiteResultProcessed(String s) {

@@ -17,11 +17,6 @@ public class Annotator {
 
         Node currentNode = null;
 
-        try {
-            Thread.sleep(1000l);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         if (words != null) {
             for (Word word : words) {

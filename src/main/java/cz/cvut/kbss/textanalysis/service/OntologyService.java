@@ -27,7 +27,7 @@ import java.util.List;
 public class OntologyService {
 
     @Autowired
-    private MorphoDitaService morphoDitaService;
+    private MorphoDitaServiceJNI morphoDitaService;
 
     private static final Logger LOG = LoggerFactory.getLogger(OntologyService.class);
     public OntologyService() {

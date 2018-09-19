@@ -90,6 +90,11 @@
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>cz.cvut.kbss</groupId>
+            <artifactId>morphodita</artifactId>
+            <version>0.0.1</version>
+        </dependency>
 
     </dependencies>
 

@@ -22,7 +22,7 @@ public class StatisticalAnnotationService {
     @Autowired
     private OntologyService ontologyService;
 
-    private MorphoDitaService morphoDitaService;
+    private MorphoDitaServiceAPI morphoDitaService;
 
     //private StatisticAnnotationsResult annotationsResult;
 

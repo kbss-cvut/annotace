@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -30,7 +29,7 @@ public class HtmlAnnotationService {
                     return annotationService.getAnnotations(textChunk, url).toArray(new Word[]{});
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    return null;
+                    return new Word[]{new Word(textChunk,"")};
                 }
             }, Jsoup.parse(htmlDocument)).toString();
         } catch (MalformedURLException e) {

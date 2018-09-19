@@ -21,15 +21,15 @@ public class KerService {
     private final RestTemplate restTemplate;
     private KerResult kerResult;
 
-    private File file = new File("C:/Projects/OPPPR/services/textanalysis/src/main/resources/sample.txt");
+    private File file = new File("C:/Projects/OPPPR/services/textanalysis/src/main/resources/test.txt");
 
     public KerService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public ResponseEntity<KerResult> getKerResult() {
+    public KerResult getKerResult() {
 
-        String kerUrl = "http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.03&maximum-words=30";
+        String kerUrl = "http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.5&maximum-words=30";
         Resource fileResource = new FileSystemResource(file);
 
         HttpHeaders headers = new HttpHeaders();
@@ -40,7 +40,7 @@ public class KerService {
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        ResponseEntity<KerResult> response = this.restTemplate.postForEntity(kerUrl, requestEntity, KerResult.class);
+        KerResult response = this.restTemplate.postForObject(kerUrl, requestEntity, KerResult.class);
 
         return response;
 

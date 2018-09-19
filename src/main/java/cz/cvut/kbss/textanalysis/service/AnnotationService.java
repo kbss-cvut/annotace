@@ -57,7 +57,7 @@ public class AnnotationService {
 
                 for (int j = 0; j < queryResultList.size(); j++) {
                     for (int k = 0; k < queryResultList.get(j).getMorphoDitaResultList().size(); k++) {
-                        for (int kk = 0; kk < queryResultList.get(k).getMorphoDitaResultList().get(k).size(); kk++) {
+                        for (int kk = 0; kk < queryResultList.get(j).getMorphoDitaResultList().get(k).size(); kk++) {
 
 
                             if (morphoDitaList.get(i).get(ii).getLemma().contentEquals(queryResultList.get(j).getMorphoDitaResultList().get(k).get(kk).getLemma())) {
@@ -65,7 +65,13 @@ public class AnnotationService {
                                 MatchedAnnotation matchedAnnotation = new MatchedAnnotation();
                                 matchedAnnotation.setLable(queryResultList.get(j).getLabel());
                                 matchedAnnotation.setType(queryResultList.get(j).getType());
-                                matchedAnnotation.setMatched(true);
+
+                                if (morphoDitaList.get(i).get(ii).getToken().equals(queryResultList.get(j).getLabel())) {
+                                    matchedAnnotation.setFullMatch(true);
+                                } else {
+                                    matchedAnnotation.setFullMatch(false);
+                                }
+
 
                                 matchedAnnotations.add(matchedAnnotation);
 

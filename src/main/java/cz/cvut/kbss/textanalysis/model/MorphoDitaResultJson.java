@@ -15,13 +15,10 @@ public class MorphoDitaResultJson {
     @JsonProperty("tag")
     private String tag;
 
-    public MorphoDitaResultJson() {
-    }
+    @JsonProperty("space")
+    private String space;
 
-    public MorphoDitaResultJson(String token, String lemma, String tag) {
-        this.token = token;
-        this.lemma = lemma;
-        this.tag = tag;
+    public MorphoDitaResultJson() {
     }
 
     public String getToken() {
@@ -46,6 +43,14 @@ public class MorphoDitaResultJson {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public String getSpace() {
+        return space;
+    }
+
+    public void setSpace(String space) {
+        this.space = space;
     }
 
     @Override

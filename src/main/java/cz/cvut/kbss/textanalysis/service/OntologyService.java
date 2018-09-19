@@ -2,6 +2,8 @@ package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
+import java.io.IOException;
+import java.net.URL;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
@@ -38,6 +40,13 @@ public class OntologyService {
         model.read(reader,null, FileUtils.langTurtle);
         //model.write(System.out, "RDF/JSON");
 
+        return model;
+    }
+
+    public Model readOntology(URL url) throws IOException {
+        Model model = ModelFactory.createDefaultModel();
+        model.read(url.openStream(),null, FileUtils.langTurtle);
+        //model.write(System.out, "RDF/JSON");
         return model;
     }
 

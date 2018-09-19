@@ -17,6 +17,12 @@ public class Annotator {
 
         Node currentNode = null;
 
+        try {
+            Thread.sleep(1000l);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         if (words != null) {
             for (Word word : words) {
                 // TODO overlap
@@ -35,14 +41,12 @@ public class Annotator {
                 } else {
                     if (currentNode == null) {
                         currentNode = new Element(Tag.valueOf("span"), "");
-                    } else {
-                        if (currentNode instanceof TextNode) {
-                            list.add(currentNode);
-                            currentNode = new Element(Tag.valueOf("span"), "");
-                        }
+                    } else if (currentNode instanceof TextNode) {
+                        list.add(currentNode);
+                        currentNode = new Element(Tag.valueOf("span"), "");
                     }
                     // TODO multiple
-                    annotateNode( currentNode, word.getPhrases()[0] );
+                    annotateNode((Element) currentNode, word.getPhrases()[0]);
 
                     final List<TextNode> textNodes = ((Element) currentNode).textNodes();
                     if (textNodes.isEmpty()) {
@@ -54,7 +58,7 @@ public class Annotator {
                         throw new IllegalArgumentException();
                     }
                 }
-                tn.text(tn + word.getToken() + word.getStopChars());
+                tn.text(tn.text() + word.getToken() + word.getStopChars());
             }
 
             if (currentNode != null) {
@@ -65,7 +69,7 @@ public class Annotator {
         return list.stream();
     }
 
-    private void annotateNode(final Node node, final Phrase phrase) {
+    private void annotateNode(final Element node, final Phrase phrase) {
         node.attr("about", "_:" + phrase.hashCode());
 
         String iri = phrase.getTermIri();

@@ -29,6 +29,7 @@ public class HtmlAnnotationService {
                 try {
                     return annotationService.getAnnotations(textChunk, url).toArray(new Word[]{});
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     return null;
                 }
             }, Jsoup.parse(htmlDocument)).toString();

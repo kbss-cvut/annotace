@@ -79,6 +79,7 @@ public class AnnotationService {
                 annotationsResults.add( new Word(res.getToken(), res.getSpace() == null ? "":res.getSpace(), matchedAnnotations.toArray(new Phrase[]{})) );
             }
         }
+        System.out.println("Annotation results:" + annotationsResults);
         return annotationsResults;
     }
 }

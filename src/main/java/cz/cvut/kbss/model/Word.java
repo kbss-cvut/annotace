@@ -1,5 +1,7 @@
 package cz.cvut.kbss.model;
 
+import java.util.Arrays;
+
 public class Word {
 
     private String token;
@@ -24,5 +26,11 @@ public class Word {
 
     public String getStopChars() {
         return stopChars;
+    }
+
+    @Override public String toString() {
+        return "Word{" + "token='" + token + '\'' + ", phrase=" + (phrase == null ? null :
+                                                                   Arrays.asList(phrase)
+        ) + ", stopChars='" + stopChars + '\'' + '}';
     }
 }

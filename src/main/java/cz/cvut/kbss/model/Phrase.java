@@ -27,4 +27,9 @@ public class Phrase {
     public boolean isFullMatch() {
         return fullMatch;
     }
+
+    @Override public String toString() {
+        return "Phrase{" + "termIri='" + termIri + '\'' + ", fullMatch=" + fullMatch
+               + ", important=" + important + '}';
+    }
 }

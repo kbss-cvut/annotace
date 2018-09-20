@@ -2,6 +2,7 @@ package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.model.Phrase;
 import cz.cvut.kbss.model.Word;
+import cz.cvut.kbss.textanalysis.Stopwords;
 import cz.cvut.kbss.textanalysis.model.*;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceJNI;
@@ -21,6 +22,10 @@ public class AnnotationService {
 
     @Autowired
     private MorphoDitaServiceAPI morphoDitaService;
+
+    public Stopwords stopwords = new Stopwords();
+
+    List<String> stopwordsList = stopwords.getStopwords();
 
     public List<Word> getAnnotations(final String textChunk, final URL ontologyURL) throws AnnotationException {
         try {
@@ -48,7 +53,7 @@ public class AnnotationService {
                 for (int j = 0; j < queryResultList.size(); j++) {
                     for (int k = 0; k < queryResultList.get(j).getMorphoDitaResultList().size(); k++) {
 //
-                            if (morphoDitaList.get(i).get(ii).getLemma().contentEquals(queryResultList.get(j).getMorphoDitaResultList().get(k).getLemma())) {
+                            if ((!stopwordsList.contains(morphoDitaList.get(i).get(ii).getToken())) && morphoDitaList.get(i).get(ii).getLemma().contentEquals(queryResultList.get(j).getMorphoDitaResultList().get(k).getLemma())) {
 
                                 Phrase matchedAnnotation = new Phrase(
                                     queryResultList.get(j).getType(),

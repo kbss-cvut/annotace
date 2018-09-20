@@ -4,7 +4,7 @@ import cz.cuni.mff.ufal.morphodita.morphodita_javaJNI;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceJNI;
 import org.junit.jupiter.api.Test;
 
-public class MorphoditaTest {
+public class MorphoditaServiceJNITest {
 
     @Test void testIfNativeMorphoditaAvailable() {
         morphodita_javaJNI.Tagger_load("");

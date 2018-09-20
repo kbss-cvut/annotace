@@ -23,6 +23,9 @@ public class AnnotationService {
     @Autowired
     private MorphoDitaServiceAPI morphoDitaService;
 
+    @Autowired
+    private KerService kerService;
+
     public Stopwords stopwords = new Stopwords();
 
     List<String> stopwordsList = stopwords.getStopwords();
@@ -44,6 +47,8 @@ public class AnnotationService {
     private List<Word> annotateOntologieLables(List<List<MorphoDitaResultJson>> morphoDitaList, List<QueryResult> queryResultList) {
 
         List<Word> annotationsResults = new ArrayList<>();
+        KerResult kerResult = kerService.getKerResult();
+
 
         for (int i=0; i<morphoDitaList.size(); i++) {
             for (int ii = 0; ii < morphoDitaList.get(i).size(); ii++) {
@@ -52,22 +57,14 @@ public class AnnotationService {
 
                 for (int j = 0; j < queryResultList.size(); j++) {
                     for (int k = 0; k < queryResultList.get(j).getMorphoDitaResultList().size(); k++) {
-//
+
                             if ((!stopwordsList.contains(morphoDitaList.get(i).get(ii).getToken())) && morphoDitaList.get(i).get(ii).getLemma().contentEquals(queryResultList.get(j).getMorphoDitaResultList().get(k).getLemma())) {
 
                                 Phrase matchedAnnotation = new Phrase(
                                     queryResultList.get(j).getType(),
-                                    false, // TODO keyword => important=true
+                                        kerResult.getKeywords().contains(morphoDitaList.get(i).get(ii).getLemma()),
                                     morphoDitaList.get(i).get(ii).getToken().equals(queryResultList.get(j).getLabel())
                                 );
-//                                matchedAnnotation.setLable(queryResultList.get(j).getLabel());
-//                                matchedAnnotation.setType(queryResultList.get(j).getType());
-//
-//                                if (morphoDitaList.get(i).get(ii).getToken().equals(queryResultList.get(j).getLabel())) {
-//                                    matchedAnnotation.setFullMatch(true);
-//                                } else {
-//                                    matchedAnnotation.setFullMatch(false);
-//                                }
 
                                 matchedAnnotations.add(matchedAnnotation);
                         }
@@ -79,6 +76,7 @@ public class AnnotationService {
             }
         }
         System.out.println(annotationsResults);
+        System.out.println("keywords: " + kerResult.getKeywords());
         return annotationsResults;
     }
 }

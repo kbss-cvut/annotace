@@ -41,7 +41,7 @@ public class Annotator {
                         currentNode = new Element(Tag.valueOf("span"), "");
                     }
                     // TODO multiple
-                    annotateNode((Element) currentNode, word.getPhrases()[0]);
+                    annotateNode((Element) currentNode, word, word.getPhrases()[0]);
 
                     final List<TextNode> textNodes = ((Element) currentNode).textNodes();
                     if (textNodes.isEmpty()) {
@@ -64,13 +64,15 @@ public class Annotator {
         return list.stream();
     }
 
-    private void annotateNode(final Element node, final Phrase phrase) {
+    private void annotateNode(final Element node, final Word word, final Phrase phrase) {
         node.attr("about", "_:" + phrase.hashCode());
 
         String iri = phrase.getTermIri();
+        node.attr("property", "ddo:je-vyskytem-termu");
         if (iri != null) {
-            node.attr("property", "ddo:je-vyskytem-termu");
             node.attr("resource", phrase.getTermIri());
+        } else {
+            node.attr("content", word.getLemma());
         }
         node.attr("typeof", "ddo:vyskyt-termu");
     }

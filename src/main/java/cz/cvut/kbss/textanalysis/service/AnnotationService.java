@@ -18,37 +18,29 @@ import java.util.List;
 public class AnnotationService {
 
     @Autowired
-    private OntologyService ontologyService;
-
-    @Autowired
     private MorphoDitaServiceAPI morphoDitaService;
-
-    @Autowired
-    private KerService kerService;
 
     public Stopwords stopwords = new Stopwords();
 
     List<String> stopwordsList = stopwords.getStopwords();
 
-    public List<Word> getAnnotations(final String textChunk, final List<QueryResult> queryResultList) throws AnnotationException {
+    public List<Word> getAnnotations(final String textChunk, final List<QueryResult> queryResultList,final KerResult result) throws AnnotationException {
         try {
-            return this._getAnnotations(textChunk, queryResultList);
+            return this._getAnnotations(textChunk, queryResultList, result);
         } catch (Exception e) {
             throw new AnnotationException("Annotation failed.", e);
         }
     }
 
-    private List<Word> _getAnnotations(final String textChunk, final List<QueryResult> queryResultList) throws IOException {
+    private List<Word> _getAnnotations(final String textChunk, final List<QueryResult> queryResultList,final KerResult result) throws IOException {
         //final List<QueryResult> queryResultList = ontologyService.analyzeModel(ontologyURL);
         final List<List<MorphoDitaResultJson>> morphoDitaResult = morphoDitaService.getMorphoDiteResultProcessed(textChunk);
-        return annotateOntologieLables(morphoDitaResult, queryResultList);
+        return annotateOntologieLables(morphoDitaResult, queryResultList,result);
     }
 
-    private List<Word> annotateOntologieLables(List<List<MorphoDitaResultJson>> morphoDitaList, List<QueryResult> queryResultList) {
+    private List<Word> annotateOntologieLables(List<List<MorphoDitaResultJson>> morphoDitaList, List<QueryResult> queryResultList,final KerResult result) {
 
         List<Word> annotationsResults = new ArrayList<>();
-        KerResult kerResult = kerService.getKerResult();
-
 
         for (int i=0; i<morphoDitaList.size(); i++) {
             for (int ii = 0; ii < morphoDitaList.get(i).size(); ii++) {
@@ -62,7 +54,7 @@ public class AnnotationService {
 
                                 Phrase matchedAnnotation = new Phrase(
                                     queryResultList.get(j).getType(),
-                                        kerResult.getKeywords().contains(morphoDitaList.get(i).get(ii).getLemma()),
+                                    result.getKeywords().contains(morphoDitaList.get(i).get(ii).getLemma()),
                                     morphoDitaList.get(i).get(ii).getToken().equals(queryResultList.get(j).getLabel())
                                 );
 
@@ -76,7 +68,7 @@ public class AnnotationService {
             }
         }
         System.out.println(annotationsResults);
-        System.out.println("keywords: " + kerResult.getKeywords());
+        System.out.println("keywords: " + result.getKeywords());
         return annotationsResults;
     }
 }

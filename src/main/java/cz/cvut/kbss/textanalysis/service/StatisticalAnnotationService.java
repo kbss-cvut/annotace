@@ -34,7 +34,7 @@ public class StatisticalAnnotationService {
 
         //Retrieve keywords from Ker Tool
         List<String> kerKeywordsList;
-        KerResult kerResult = kerService.getKerResult();
+        KerResult kerResult = kerService.getKerResult("TODO REMOVE");
         kerKeywordsList = kerResult.getKeywords();
 
         //Retrieve ontologie types and labels

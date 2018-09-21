@@ -1,6 +1,7 @@
 package cz.cvut.kbss.textanalysis.rest;
 
 import cz.cvut.kbss.model.Word;
+import cz.cvut.kbss.textanalysis.model.KerResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.service.AnnotationService;
 import java.net.URL;
@@ -32,6 +33,6 @@ public class AnnotationsController {
     public List<Word> getAnnotatedTokenizedText(
         @RequestParam("ontologyUrl") String ontologyUrl, @RequestParam("textChunk") String textChunk) throws Exception {
         List<QueryResult> queryResultList = ontologyService.analyzeModel(new URL(ontologyUrl));
-        return annotationService.getAnnotations(textChunk, queryResultList);
+        return annotationService.getAnnotations(textChunk, queryResultList, KerResult.createEmpty());
     }
 }

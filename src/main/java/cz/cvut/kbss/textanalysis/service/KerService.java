@@ -1,6 +1,8 @@
 package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.textanalysis.model.KerResult;
+import java.nio.file.Paths;
+import java.util.Collections;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -19,31 +21,37 @@ import java.nio.file.Path;
 public class KerService {
 
     private final RestTemplate restTemplate;
-    private KerResult kerResult;
-
-    private File file = new File("C:/Projects/OPPPR/services/textanalysis/src/main/resources/test.txt");
 
     public KerService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public KerResult getKerResult() {
+    public KerResult getKerResult(final String chunks) {
 
-        String kerUrl = "http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.1&maximum-words=30";
-        Resource fileResource = new FileSystemResource(file);
+        String kerUrl = "http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.04&maximum-words=30";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", fileResource);
+        final File file;
+        try {
+            file = File.createTempFile("ker-input","");
+            Files.write(Paths.get(file.toURI()), chunks.getBytes());
 
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+            Resource fileResource = new FileSystemResource(file);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        KerResult response = this.restTemplate.postForObject(kerUrl, requestEntity, KerResult.class);
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            body.add("file", fileResource);
 
-        return response;
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
+            KerResult response = this.restTemplate.postForObject(kerUrl, requestEntity, KerResult.class);
+
+            return response;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return KerResult.createEmpty();
+        }
     }
 
     public static Resource getTestFile() throws IOException {

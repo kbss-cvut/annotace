@@ -24,16 +24,22 @@ public class AnnotateController {
     @RequestMapping(value = "/annotate", method = RequestMethod.POST,
                     produces = MediaType.APPLICATION_XML_VALUE,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String annotate(
-        @RequestParam(value = "ontologyUrl", required = false) String ontologyUrl,
-        @RequestBody TextAnalysisInput input)
+    public String annotate(@RequestBody TextAnalysisInput input)
         throws Exception {
-        if (ontologyUrl == null) {
             // TODO contexts
-            ontologyUrl = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
+        String ontologyUrl = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
                 "CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}");
-        }
         final String htmlDocument = input.getContent();
+        return service.annotate(annotationService, ontologyUrl, htmlDocument);
+    }
+
+    @RequestMapping(value = "/annotate-html", method = RequestMethod.POST,
+                    produces = MediaType.APPLICATION_XML_VALUE,
+                    consumes = MediaType.TEXT_HTML_VALUE)
+    public String annotateHtml(
+        @RequestParam(value = "ontologyUrl", required = false) String ontologyUrl,
+        @RequestBody String htmlDocument)
+        throws Exception {
         return service.annotate(annotationService, ontologyUrl, htmlDocument);
     }
 }

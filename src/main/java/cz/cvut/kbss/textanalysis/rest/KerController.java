@@ -17,7 +17,7 @@ public class KerController {
 
     @RequestMapping("/ker-result")
     public KerResult getKerResult() throws IOException {
-        return kerService.getKerResult();
+        return kerService.getKerResult("ha ha this is so funny");
     }
 
 }

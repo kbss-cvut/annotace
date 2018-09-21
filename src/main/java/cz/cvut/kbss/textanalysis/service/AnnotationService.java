@@ -30,16 +30,16 @@ public class AnnotationService {
 
     List<String> stopwordsList = stopwords.getStopwords();
 
-    public List<Word> getAnnotations(final String textChunk, final URL ontologyURL) throws AnnotationException {
+    public List<Word> getAnnotations(final String textChunk, final List<QueryResult> queryResultList) throws AnnotationException {
         try {
-            return this._getAnnotations(textChunk, ontologyURL);
+            return this._getAnnotations(textChunk, queryResultList);
         } catch (Exception e) {
             throw new AnnotationException("Annotation failed.", e);
         }
     }
 
-    private List<Word> _getAnnotations(final String textChunk, final URL ontologyURL) throws IOException {
-        final List<QueryResult> queryResultList = ontologyService.analyzeModel(ontologyURL);
+    private List<Word> _getAnnotations(final String textChunk, final List<QueryResult> queryResultList) throws IOException {
+        //final List<QueryResult> queryResultList = ontologyService.analyzeModel(ontologyURL);
         final List<List<MorphoDitaResultJson>> morphoDitaResult = morphoDitaService.getMorphoDiteResultProcessed(textChunk);
         return annotateOntologieLables(morphoDitaResult, queryResultList);
     }

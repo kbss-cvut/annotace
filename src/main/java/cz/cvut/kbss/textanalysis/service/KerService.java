@@ -29,7 +29,7 @@ public class KerService {
 
     public KerResult getKerResult() {
 
-        String kerUrl = "http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.5&maximum-words=30";
+        String kerUrl = "http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.1&maximum-words=30";
         Resource fileResource = new FileSystemResource(file);
 
         HttpHeaders headers = new HttpHeaders();

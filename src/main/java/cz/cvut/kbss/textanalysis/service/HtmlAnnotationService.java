@@ -1,7 +1,10 @@
 package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.model.Word;
+import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.service.html2rdfa.Annotator;
+
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -23,14 +26,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class HtmlAnnotationService {
 
+    @Autowired
+    private OntologyService ontologyService;
+
     private static final Logger logger = LoggerFactory.getLogger(HtmlAnnotationService.class);
 
-    public String annotate(@Autowired AnnotationService annotationService, String ontologyUrl, String htmlDocument) throws HtmlAnnotationException {
+    public String annotate(@Autowired AnnotationService annotationService, String ontologyUrl, String htmlDocument) throws HtmlAnnotationException, IOException {
         try {
             final URL url = new URL(ontologyUrl);
+            final List<QueryResult> queryResultList = ontologyService.analyzeModel(url);
             return this.annotate(textChunk -> {
                 try {
-                    return annotationService.getAnnotations(textChunk, url).toArray(new Word[]{});
+                    return annotationService.getAnnotations(textChunk, queryResultList).toArray(new Word[]{});
                 } catch (Exception ex) {
                     logger.error("Annotation failed.", ex);
                     return new Word[]{new Word("",textChunk,"")};

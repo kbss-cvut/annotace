@@ -1,8 +1,11 @@
 package cz.cvut.kbss.textanalysis.rest;
 
 import cz.cvut.kbss.model.Word;
+import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.service.AnnotationService;
 import java.net.URL;
+
+import cz.cvut.kbss.textanalysis.service.OntologyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +19,9 @@ public class AnnotationsController {
     @Autowired
     private AnnotationService annotationService;
 
+    @Autowired
+    private OntologyService ontologyService;
+
     // TODO LS : "file:C:/Projects/OPPPR/services/textanalysis/src/main/resources/glosar.ttl"
     //output of Morphodita text analysis
     //to be re-moved
@@ -25,6 +31,7 @@ public class AnnotationsController {
     @RequestMapping("/annotate-raw")
     public List<Word> getAnnotatedTokenizedText(
         @RequestParam("ontologyUrl") String ontologyUrl, @RequestParam("textChunk") String textChunk) throws Exception {
-        return annotationService.getAnnotations(textChunk,new URL(ontologyUrl));
+        List<QueryResult> queryResultList = ontologyService.analyzeModel(new URL(ontologyUrl));
+        return annotationService.getAnnotations(textChunk, queryResultList);
     }
 }

@@ -33,6 +33,6 @@ public class AnnotationsController {
     public List<Word> getAnnotatedTokenizedText(
         @RequestParam("ontologyUrl") String ontologyUrl, @RequestParam("textChunk") String textChunk) throws Exception {
         List<QueryResult> queryResultList = ontologyService.analyzeModel(new URL(ontologyUrl));
-        return annotationService.getAnnotations(textChunk, queryResultList, KerResult.createEmpty());
+        return annotationService.getAnnotations(textChunk, queryResultList, KerResult.createSomeList());
     }
 }

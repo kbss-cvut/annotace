@@ -33,7 +33,6 @@ public class AnnotationService {
     }
 
     private List<Word> _getAnnotations(final String textChunk, final List<QueryResult> queryResultList,final KerResult result) throws IOException {
-        //final List<QueryResult> queryResultList = ontologyService.analyzeModel(ontologyURL);
         final List<List<MorphoDitaResultJson>> morphoDitaResult = morphoDitaService.getMorphoDiteResultProcessed(textChunk);
         return annotateOntologieLables(morphoDitaResult, queryResultList,result);
     }
@@ -46,21 +45,39 @@ public class AnnotationService {
             for (int ii = 0; ii < morphoDitaList.get(i).size(); ii++) {
 
                 List<Phrase> matchedAnnotations = new ArrayList<>();
+                boolean isKeyword = false;
+                boolean isMatched = false;
 
                 for (int j = 0; j < queryResultList.size(); j++) {
                     for (int k = 0; k < queryResultList.get(j).getMorphoDitaResultList().size(); k++) {
 
-                            if ((!stopwordsList.contains(morphoDitaList.get(i).get(ii).getToken())) && morphoDitaList.get(i).get(ii).getLemma().contentEquals(queryResultList.get(j).getMorphoDitaResultList().get(k).getLemma())) {
-
-                                Phrase matchedAnnotation = new Phrase(
-                                    queryResultList.get(j).getType(),
-                                    result.getKeywords().contains(morphoDitaList.get(i).get(ii).getLemma()),
-                                    morphoDitaList.get(i).get(ii).getToken().equals(queryResultList.get(j).getLabel())
-                                );
-
-                                matchedAnnotations.add(matchedAnnotation);
-                        }
+                boolean singleMatch = (queryResultList.get(j).getMorphoDitaResultList().size() == 1);
+                            if (!stopwordsList.contains(morphoDitaList.get(i).get(ii).getToken())) {
+                                if(morphoDitaList.get(i).get(ii).getLemma().contentEquals(queryResultList.get(j).getMorphoDitaResultList().get(k).getLemma())) {
+                                    Phrase matchedAnnotation = new Phrase(
+                                            queryResultList.get(j).getType(),
+                                            (result.getKeywords().contains(morphoDitaList.get(i).get(ii).getLemma()))
+                                                    &&(morphoDitaList.get(i).get(ii).getToken().equals(queryResultList.get(j).getLabel())),
+                                            singleMatch
+                                    );
+                                    if(singleMatch) {
+                                    isMatched = true;
+                                    }
+                                    matchedAnnotations.add(matchedAnnotation);
+                                }
+                                if (result.getKeywords().contains(morphoDitaList.get(i).get(ii).getLemma())) {
+                                    isKeyword = true;
+                                }
+                            }
                     }
+                }
+                if((isKeyword) && !(isMatched)) {
+                    Phrase matchedAnnotation = new Phrase(
+                                            "",
+                                            true,
+                                            true
+                                    );
+                                    matchedAnnotations.add(matchedAnnotation);
                 }
 
                 final MorphoDitaResultJson res = morphoDitaList.get(i).get(ii);

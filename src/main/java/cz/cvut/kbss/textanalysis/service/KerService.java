@@ -48,7 +48,7 @@ public class KerService {
             KerResult response = this.restTemplate.postForObject(kerUrl, requestEntity, KerResult.class);
 
             return response;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return KerResult.createEmpty();
         }

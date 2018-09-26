@@ -49,7 +49,7 @@ public class KerService {
             System.out.println("Keywords: " + response.getKeywords());
 
             return response;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return KerResult.createEmpty();
         }

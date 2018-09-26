@@ -57,11 +57,16 @@ coz
 což
 cz
 článek
+,
+[
 daleko
+]
 dalsi
 další
+(
 den
 deset
+)
 design
 devatenáct
 devatenã¡ct

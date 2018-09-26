@@ -1,0 +1,12 @@
+Článek 1 Metropolitní plán
+(1) Metropolitní plán jako Územní plán hlavního města Prahy (dále též hl. m. Prahy, nebo Prahy1) tvoří základ uceleného, logického a vzájemně provázaného systému územně plánovací dokumentace města.
+(2) Metropolitní plán je pořízen pro stanovení koncepce celého správního území Prahy, a to v měřítku 1:10.000 odpovídajícím rozsahu řešeného území.
+(3) Metropolitní plán vytváří podmínky pro účelnou správu a rozvoj území a stanovuje základní rámce pro všechny navazující podrobnější úrovně plánování.
+(4) Metropolitní plán je koncepčním dokumentem. Prostřednictvím stanovených regulací umožňuje rozhodovat ve správních řízeních.
+Článek 2 Strukturální plán
+(1) Metropolitní plán je koncipován především jako plán struktury území a jeho rozpoznatelného a zapamatovatelného obrazu, se stanovením z toho plynoucích podmínek využití území.
+(2) Strukturální pojetí plánu rozvíjí a doplňuje koncepci Pražských stavebních předpisů a standardního urbanistického pojmosloví. Důraz klade na vztahy zástavby a veřejných prostranství, zástavby a krajiny ve městě i otevřené krajiny. Struktura je zároveň hlavním určujícím prvkem pro uspořádání jednotlivých systémů a subsystémů infrastruktury.
+(3) Metropolitní plán stabilizuje charakter města. Chrání jeho kulturní a civilizační hodnoty, stejně jako hodnoty přírodní. Zároveň definuje potenciál města k rozvoji zástavby a celkového kompozičního uspořádání.
+Článek 3 Digitální plán
+(1) Metropolitní plán je zpracován elektronicky a veškeré informace i regulace v něm obsažené jsou (souběžně s tištěnou autorizovanou verzí) obsaženy v datovém modelu tak, aby byly kdykoli v souhrnu a synergicky využitelné pro rozhodování o využití a uspořádání území a o změnách v území.
+1 Sousloví „hlavní město“ je vyjádřením funkce, název je „pouze“ Praha. Nejvyšší právní norma Ústava používá pojem Praha. V některých souvislostech používá tento text také „území Prahy“.

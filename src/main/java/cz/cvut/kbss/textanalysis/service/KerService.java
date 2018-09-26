@@ -46,6 +46,7 @@ public class KerService {
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
             KerResult response = this.restTemplate.postForObject(kerUrl, requestEntity, KerResult.class);
+            System.out.println("Keywords: " + response.getKeywords());
 
             return response;
         } catch (IOException e) {

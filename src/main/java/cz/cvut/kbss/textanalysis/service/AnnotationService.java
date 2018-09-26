@@ -84,8 +84,7 @@ public class AnnotationService {
                 annotationsResults.add( new Word(res.getLemma(), res.getToken(), res.getSpace() == null ? "":res.getSpace(), matchedAnnotations.toArray(new Phrase[]{})) );
             }
         }
-        System.out.println(annotationsResults);
-        System.out.println("keywords: " + result.getKeywords());
+        //System.out.println(annotationsResults);
         return annotationsResults;
     }
 }

@@ -57,6 +57,7 @@ coz
 což
 cz
 článek
+Článek
 ,
 [
 daleko
@@ -85,6 +86,7 @@ děkovat
 děkujeme
 děkuji
 email
+Pro
 ho
 hodnä›
 hodně

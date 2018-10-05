@@ -7,12 +7,13 @@ import cz.cvut.kbss.textanalysis.model.*;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceJNI;
 import java.io.IOException;
-import java.net.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AnnotationService {
@@ -84,7 +85,25 @@ public class AnnotationService {
                 annotationsResults.add( new Word(res.getLemma(), res.getToken(), res.getSpace() == null ? "":res.getSpace(), matchedAnnotations.toArray(new Phrase[]{})) );
             }
         }
-        //System.out.println(annotationsResults);
+        annotationsResults = filterAnnotationResults(annotationsResults);
         return annotationsResults;
+    }
+    private List<Word> filterAnnotationResults(List<Word> words) {
+
+        for (int i = 0; i < words.size() - 1; i++) {
+            List<Phrase> currentPhrase = Arrays.asList(words.get(i).getPhrases());
+            List<Phrase> nextPhrase = Arrays.asList(words.get(i + 1).getPhrases());
+
+            List<String> commonPhraseIRI = new ArrayList<>();
+            currentPhrase.stream().forEach(phrase -> commonPhraseIRI.add(phrase.getTermIri()));
+            Phrase[] phraseList = nextPhrase.stream().filter(phrase -> commonPhraseIRI.contains(phrase.getTermIri())).collect(Collectors.toList()).toArray(new Phrase[]{});
+
+            if (phraseList.length > 0) {
+                words.get(i).setPhrases(phraseList);
+                words.get(i + 1).setPhrases(phraseList);
+            }
+
+        }
+        return words;
     }
 }

@@ -23,6 +23,10 @@ public class Word {
         return lemma;
     }
 
+    public void setPhrases(Phrase[] phrases) {
+        this.phrases = phrases;
+    }
+
     public Phrase[] getPhrases() {
         return phrases;
     }

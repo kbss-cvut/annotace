@@ -91,18 +91,20 @@ public class AnnotationService {
     private List<Word> filterAnnotationResults(List<Word> words) {
 
         for (int i = 0; i < words.size() - 1; i++) {
-            List<Phrase> currentPhrase = Arrays.asList(words.get(i).getPhrases());
-            List<Phrase> nextPhrase = Arrays.asList(words.get(i + 1).getPhrases());
+            if (!((words.get(i).getPhrases()).length == 0)) {
 
-            List<String> commonPhraseIRI = new ArrayList<>();
-            currentPhrase.stream().forEach(phrase -> commonPhraseIRI.add(phrase.getTermIri()));
-            Phrase[] phraseList = nextPhrase.stream().filter(phrase -> commonPhraseIRI.contains(phrase.getTermIri())).collect(Collectors.toList()).toArray(new Phrase[]{});
+                List<Phrase> currentPhrase = Arrays.asList(words.get(i).getPhrases());
+                List<Phrase> nextPhrase = Arrays.asList(words.get(i + 1).getPhrases());
 
-            if (phraseList.length > 0) {
-                words.get(i).setPhrases(phraseList);
-                words.get(i + 1).setPhrases(phraseList);
+                List<String> commonPhraseIRI = new ArrayList<>();
+                currentPhrase.stream().forEach(phrase -> commonPhraseIRI.add(phrase.getTermIri()));
+                Phrase[] phraseList = nextPhrase.stream().filter(phrase -> commonPhraseIRI.contains(phrase.getTermIri())).collect(Collectors.toList()).toArray(new Phrase[]{});
+
+                if (phraseList.length > 0) {
+                    words.get(i).setPhrases(phraseList);
+                    words.get(i + 1).setPhrases(phraseList);
+                }
             }
-
         }
         return words;
     }

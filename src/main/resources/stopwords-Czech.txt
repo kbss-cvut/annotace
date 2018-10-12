@@ -92,6 +92,7 @@ hodnä›
 hodně
 i
 jak
+-
 jakmile
 jako
 jakož
@@ -108,11 +109,13 @@ jehož
 jej
 jeji
 jejich
-jejã­
+jejã
 její
 jelikož
 jemu
 jen
+V
+S
 jenom
 jenž
 jeste

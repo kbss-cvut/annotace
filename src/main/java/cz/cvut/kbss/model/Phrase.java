@@ -1,5 +1,7 @@
 package cz.cvut.kbss.model;
 
+import java.util.Objects;
+
 public class Phrase {
 
     private final String termIri;
@@ -26,6 +28,21 @@ public class Phrase {
 
     public boolean isFullMatch() {
         return fullMatch;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Phrase phrase = (Phrase) o;
+        return fullMatch == phrase.fullMatch &&
+                important == phrase.important &&
+                Objects.equals(termIri, phrase.termIri);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(termIri, fullMatch, important);
     }
 
     @Override public String toString() {

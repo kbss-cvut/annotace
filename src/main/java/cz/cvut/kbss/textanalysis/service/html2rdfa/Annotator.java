@@ -3,6 +3,7 @@ package cz.cvut.kbss.textanalysis.service.html2rdfa;
 import cz.cvut.kbss.model.Phrase;
 import cz.cvut.kbss.model.Word;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 import org.jsoup.nodes.Element;
@@ -17,12 +18,14 @@ public class Annotator {
 
         Node currentNode = null;
 
+        Phrase previousPhrase = null;
 
         if (words != null) {
             for (Word word : words) {
                 // TODO overlap
 
                 final TextNode tn;
+
                 if ((word.getPhrases() == null || word.getPhrases().length == 0)) {
                     if (currentNode == null) {
                         currentNode = new TextNode("");
@@ -39,8 +42,12 @@ public class Annotator {
                     } else if (currentNode instanceof TextNode) {
                         list.add(currentNode);
                         currentNode = new Element(Tag.valueOf("span"), "");
+                     } else if  (!(Arrays.asList(word.getPhrases()).contains(previousPhrase))) {
+                        list.add(currentNode);
+                        currentNode = new Element(Tag.valueOf("span"), "");
                     }
                     // TODO multiple
+                    previousPhrase = word.getPhrases()[0];
                     annotateNode((Element) currentNode, word, word.getPhrases()[0]);
 
                     final List<TextNode> textNodes = ((Element) currentNode).textNodes();

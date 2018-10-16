@@ -4,6 +4,7 @@ import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -15,9 +16,9 @@ public class MorphoDitaController {
     private MorphoDitaServiceAPI morphoDitaService;
 
     @RequestMapping("/morphodita-result-processed")
-    public List<List<MorphoDitaResultJson>> getMorphoDitaResultProcessed(String s) {
+    public List<List<MorphoDitaResultJson>> getMorphoDitaResultProcessed(@RequestParam("textChunk") String textChunk) {
         List<List<MorphoDitaResultJson>> morphoDitaResultList;
-        morphoDitaResultList = morphoDitaService.getMorphoDiteResultProcessed(s);
+        morphoDitaResultList = morphoDitaService.getMorphoDiteResultProcessed(textChunk);
         //System.out.println(morphoDitaResultList.get(0).get(0).getToken());
         return morphoDitaResultList;
     }

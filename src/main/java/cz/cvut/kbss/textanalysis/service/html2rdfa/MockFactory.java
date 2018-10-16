@@ -17,13 +17,13 @@ public class MockFactory {
 
     static {
         // DUMMY CHUNK 0
-        final Phrase pT = new Phrase("http://test.org/pojem/Test", false, true);
+        final Phrase pT = new Phrase("http://test.org/pojem/Test", false, true, "test");
         final Word[] chunk0Annotations = new Word[] {new Word("Test","Test", "", pT)};
         chunks.put("Test", chunk0Annotations);
 
         // DUMMY CHUNK 1
-        final Phrase pMP = new Phrase("http://test.org/pojem/metropolitni-plan", false, true);
-        final Phrase pD = new Phrase(null, true, true);
+        final Phrase pMP = new Phrase("http://test.org/pojem/metropolitni-plan", false, true, "metropolitan plan");
+        final Phrase pD = new Phrase(null, true, true, null);
         final Word[] chunk1Annotations = new Word[] {new Word("Metropolitní","Metropolitni", " ",pMP),
                                         new Word("Plán","plan", "  ", pMP),
                                         new Word("být","je", " "),
@@ -32,7 +32,7 @@ public class MockFactory {
         chunks.put("Metropolitni plan je\tdulezitym\ndokumentem.", chunk1Annotations);
 
         // DUMMY CHUNK 2
-        final Phrase pZU = new Phrase("http://test.org/pojem/zastavene-uzemi", true, true);
+        final Phrase pZU = new Phrase("http://test.org/pojem/zastavene-uzemi", true, true, "zastavene uzemi");
         final Word[] chunk2Annotations = new Word[] {new Word( "Zastavěné","Zastavene", " ", pZU),
                                    new Word("území","uzemi", " ", pZU)};
         chunks.put("Zastavene uzemi", chunk2Annotations);
@@ -43,10 +43,10 @@ public class MockFactory {
                              + "celého správního území Prahy, a to v měřítku 1:10.000 "
                              + "odpovídajícím rozsahu řešeného území.\n"
                              + "    ";
-        final Phrase pMPX = new Phrase("http://test.org/pojem/metropolitni-plan", true, true);
-        final Phrase pU = new Phrase("http://test.org/pojem/uzemi", true, true);
-        final Phrase pSUP = new Phrase("http://test.org/pojem/spravni-uzemi-prahy", true, true);
-        final Phrase pM = new Phrase(null, true, true);
+        final Phrase pMPX = new Phrase("http://test.org/pojem/metropolitni-plan", true, true, "metropolitni plan");
+        final Phrase pU = new Phrase("http://test.org/pojem/uzemi", true, true, "uzemi");
+        final Phrase pSUP = new Phrase("http://test.org/pojem/spravni-uzemi-prahy", true, true, "spravni uzemi prahy");
+        final Phrase pM = new Phrase(null, true, true, null);
         final Word[] chunk3Annotations = new Word[] {
             new Word( "(2)","(2)", " "),
             new Word( "Metropolitní","Metropolitní", " ", pMPX),

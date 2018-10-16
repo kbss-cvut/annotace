@@ -5,7 +5,7 @@ import cz.cvut.kbss.model.Word;
 import cz.cvut.kbss.textanalysis.Stopwords;
 import cz.cvut.kbss.textanalysis.model.*;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
-import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceJNI;
+
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,8 +59,8 @@ public class AnnotationService {
                                             queryResultList.get(j).getType(),
                                             (result.getKeywords().contains(morphoDitaList.get(i).get(ii).getLemma()))
                                                     &&(morphoDitaList.get(i).get(ii).getToken().equals(queryResultList.get(j).getLabel())),
-                                            singleMatch
-                                    );
+                                            singleMatch,
+                                            queryResultList.get(j).getLabel());
                                     if(singleMatch) {
                                     isMatched = true;
                                     }
@@ -76,8 +76,8 @@ public class AnnotationService {
                     Phrase matchedAnnotation = new Phrase(
                                             "",
                                             true,
-                                            true
-                                    );
+                                            true,
+                            "");
                                     matchedAnnotations.add(matchedAnnotation);
                 }
 
@@ -85,27 +85,7 @@ public class AnnotationService {
                 annotationsResults.add( new Word(res.getLemma(), res.getToken(), res.getSpace() == null ? "":res.getSpace(), matchedAnnotations.toArray(new Phrase[]{})) );
             }
         }
-        annotationsResults = filterAnnotationResults(annotationsResults);
         return annotationsResults;
     }
-    private List<Word> filterAnnotationResults(List<Word> words) {
 
-        for (int i = 0; i < words.size() - 1; i++) {
-            if (!((words.get(i).getPhrases()).length == 0)) {
-
-                List<Phrase> currentPhrase = Arrays.asList(words.get(i).getPhrases());
-                List<Phrase> nextPhrase = Arrays.asList(words.get(i + 1).getPhrases());
-
-                List<String> commonPhraseIRI = new ArrayList<>();
-                currentPhrase.stream().forEach(phrase -> commonPhraseIRI.add(phrase.getTermIri()));
-                Phrase[] phraseList = nextPhrase.stream().filter(phrase -> commonPhraseIRI.contains(phrase.getTermIri())).collect(Collectors.toList()).toArray(new Phrase[]{});
-
-                if (phraseList.length > 0) {
-                    words.get(i).setPhrases(phraseList);
-                    words.get(i + 1).setPhrases(phraseList);
-                }
-            }
-        }
-        return words;
-    }
 }

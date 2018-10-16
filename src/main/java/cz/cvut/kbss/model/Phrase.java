@@ -10,12 +10,15 @@ public class Phrase {
 
     private final boolean important;
 
+    private final String termLabel;
+
     public Phrase(String termIri,
                   boolean important,
-                  boolean fullMatch) {
+                  boolean fullMatch, String termLabel) {
         this.termIri = termIri;
         this.important = important;
         this.fullMatch = fullMatch;
+        this.termLabel = termLabel;
     }
 
     public String getTermIri() {
@@ -29,6 +32,8 @@ public class Phrase {
     public boolean isFullMatch() {
         return fullMatch;
     }
+
+    public String getTermLabel() {return termLabel; }
 
     @Override
     public boolean equals(Object o) {

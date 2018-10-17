@@ -74,10 +74,10 @@ public class Annotator {
                     double labelCount;
 
                     //scoring
-                    if (newPhrases.length > 0 && !newPhrases[0].getTermIri().equals("")) {
-                         labelCount = getNumberOfTokens(newPhrases [0].getTermLabel());
-                    } else
+                    if (newPhrases.length == 0 || newPhrases[0].getTermIri() == null || newPhrases[0].getTermIri().equals("")) {
                          labelCount = numberOfTokens;
+                    } else
+                         labelCount = getNumberOfTokens(newPhrases [0].getTermLabel());
 
                     score = numberOfTokens / labelCount ;
                     annotateNode((Element) currentNode, word, newPhrases [0], score);

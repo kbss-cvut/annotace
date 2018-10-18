@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.math3.util.Precision;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
@@ -80,7 +82,7 @@ public class Annotator {
                          labelCount = getNumberOfTokens(newPhrases [0].getTermLabel());
 
                     score = numberOfTokens / labelCount ;
-                    annotateNode((Element) currentNode, word, newPhrases [0], score);
+                    annotateNode((Element) currentNode, word, newPhrases [0], Precision.round(score, 2));
 
                     final List<TextNode> textNodes = ((Element) currentNode).textNodes();
                     if (textNodes.isEmpty()) {

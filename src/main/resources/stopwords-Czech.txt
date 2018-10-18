@@ -25,7 +25,6 @@ budem
 budeme
 budes
 budete
-budeå¡
 budeš
 budou
 budu
@@ -38,7 +37,6 @@ byly
 bys
 byt
 být
-během
 chce
 chceme
 chcete
@@ -70,7 +68,6 @@ deset
 )
 design
 devatenáct
-devatenã¡ct
 devět
 dnes
 do
@@ -88,7 +85,6 @@ děkuji
 email
 Pro
 ho
-hodnä›
 hodně
 i
 jak
@@ -282,7 +278,6 @@ podle
 pokud
 potom
 pouze
-pozdä›
 pozdě
 pořád
 prave
@@ -319,7 +314,6 @@ sedmnáct
 si
 sice
 skoro
-smã­
 smí
 smějí
 snad
@@ -364,7 +358,6 @@ ti
 tim
 timto
 tipy
-tisã­c
 tisíc
 tisíce
 to
@@ -411,7 +404,6 @@ ve
 vedle
 večer
 vice
-vlastnä›
 vlastně
 vsak
 vy
@@ -428,7 +420,6 @@ vůbec
 vždy
 z
 za
-zatã­mco
 zatímco
 zač
 zda

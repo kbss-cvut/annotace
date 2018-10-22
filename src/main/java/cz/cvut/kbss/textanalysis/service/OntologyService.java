@@ -3,8 +3,12 @@ package cz.cvut.kbss.textanalysis.service;
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceJNI;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
@@ -18,19 +22,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
 
+@Service public class OntologyService {
 
-@Service
-public class OntologyService {
-
-    @Autowired
-    private MorphoDitaServiceJNI morphoDitaService;
+    @Autowired private MorphoDitaServiceJNI morphoDitaService;
 
     private static final Logger LOG = LoggerFactory.getLogger(OntologyService.class);
+
     public OntologyService() {
     }
 
@@ -38,14 +36,14 @@ public class OntologyService {
         Model model = ModelFactory.createDefaultModel();
         File file = new File(filename);
         FileReader reader = new FileReader(file);
-        model.read(reader,null, FileUtils.langTurtle);
+        model.read(reader, null, FileUtils.langTurtle);
 
         return model;
     }
 
     public Model readOntology(URL url) throws IOException {
         Model model = ModelFactory.createDefaultModel();
-        model.read(url.openStream(),null, FileUtils.langTurtle);
+        model.read(url.openStream(), null, FileUtils.langTurtle);
         //model.write(System.out, "RDF/JSON");
         return model;
     }
@@ -60,51 +58,47 @@ public class OntologyService {
         RDFNode s;
         RDFNode o;
         ResultSet resultSet;
-        String query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
-                "SELECT ?s ?o WHERE {" +
-                "?s rdfs:label ?o" +
-                "}";
+        String query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+                       + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+                       + "SELECT ?s ?o WHERE {" + "?s rdfs:label ?o" + "}";
 
         QueryExecution queryExecution = QueryExecutionFactory.create(query, model);
         resultSet = queryExecution.execSelect();
 
-        for ( ;resultSet.hasNext(); ) {
+        for (; resultSet.hasNext(); ) {
             QuerySolution querySolution = resultSet.nextSolution();
             s = querySolution.get("s");
             o = querySolution.get("o");
-            QueryResult queryResultobject = new QueryResult(s.asNode().toString(), o.asLiteral().getString());
+            QueryResult queryResultobject =
+                new QueryResult(s.asNode().toString(), o.asLiteral().getString());
             queryResultList.add(queryResultobject);
 
         }
         printList(queryResultList);
 
-        //Store all lables in one string and call morphoDita only once then map the queryResult objects to corresponding sub-array
-        String ontologieLables = "";
-        for(int i=0; i<queryResultList.size(); i++) {
-            ontologieLables = ontologieLables + queryResultList.get(i).getLabel() + "\n" + "\n";
+        //Store all lables in one string and call morphoDita only once then map the queryResult
+        // objects to corresponding sub-array
+        String ontologieLabels = "";
+        for (int i = 0; i < queryResultList.size(); i++) {
+            ontologieLabels = ontologieLabels + queryResultList.get(i).getLabel() + "\n" + "\n";
         }
 
 
-        List<List<MorphoDitaResultJson>> morphoDitaResultList = morphoDitaService.getMorphoDiteResultProcessed(ontologieLables);
+        List<List<MorphoDitaResultJson>> morphoDitaResultList =
+            morphoDitaService.getMorphoDiteResultProcessed(ontologieLabels);
 
-         int i = 0;
-            for (QueryResult queryResult : queryResultList) {
-                queryResult.setMorphoDitaResultList(morphoDitaResultList.get(i));
-                i++;
-            }
+        int i = 0;
+        for (QueryResult queryResult : queryResultList) {
+            queryResult.setMorphoDitaResultList(morphoDitaResultList.get(i));
+            i++;
+        }
 
         return queryResultList;
 
     }
 
-
     public void printList(List<QueryResult> queryResultList) {
-        for (int i=0; i<queryResultList.size(); i++) {
-            System.out.println("type from the arraylist is: " + queryResultList.get(i).getType() + "   and label is: " + queryResultList.get(i).getLabel());
-            System.out.println("\n");
-        }
+        queryResultList.forEach(qr -> LOG.debug(
+            "type from the arraylist is: " + qr.getType() + "   and label is: " + qr.getLabel()));
     }
-
-
 }

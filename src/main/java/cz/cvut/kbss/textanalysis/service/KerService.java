@@ -3,6 +3,8 @@ package cz.cvut.kbss.textanalysis.service;
 import cz.cvut.kbss.textanalysis.model.KerResult;
 import java.nio.file.Paths;
 import java.util.Collections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -20,6 +22,8 @@ import java.nio.file.Path;
 @Service
 public class KerService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(KerService.class);
+
     private final RestTemplate restTemplate;
 
     public KerService(RestTemplateBuilder restTemplateBuilder) {
@@ -28,8 +32,7 @@ public class KerService {
 
     public KerResult getKerResult(final String chunks) {
 
-        String kerUrl = "http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.03&maximum-words=30";
-
+        final String kerUrl = "http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.03&maximum-words=30";
 
         final File file;
         try {
@@ -46,18 +49,11 @@ public class KerService {
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
             KerResult response = this.restTemplate.postForObject(kerUrl, requestEntity, KerResult.class);
-            System.out.println("Keywords: " + response.getKeywords());
-
+            LOG.debug("Keywords: " + response.getKeywords());
             return response;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Error computing key phrases.", e);
             return KerResult.createEmpty();
         }
-    }
-
-    public static Resource getTestFile() throws IOException {
-        Path testFile = Files.createTempFile("test-file", ".txt");
-        Files.write(testFile, "This is a test file.".getBytes());
-        return new FileSystemResource(testFile.toFile());
     }
 }

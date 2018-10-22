@@ -27,19 +27,14 @@ public class HTMLParserTest {
         final String html =
             "<html><body><p>" + chunks[1] + "</p><p>" + chunks[2] + "</p></body></html>";
         final Document doc = Jsoup.parse(html);
-
         final Document doc2 = service.annotate(chunkAnnotationService,doc);
-
-        System.out.println(doc2.toString());
-
         Assertions.assertEquals(3, doc2.select("span[typeof='ddo:vyskyt-termu']").size());
     }
 
     @Test public void testParseInvalidHtmlSuccessfully() throws HtmlAnnotationException {
         final String html = "<p>Test chunk 1<div></p>Test chunk 2</div>";
         final Document doc = Jsoup.parse(html);
-        final Document doc2 = service.annotate(chunkAnnotationService,doc);
-        System.out.println(doc2.toString());
+        service.annotate(chunkAnnotationService,doc);
     }
 
     @Test public void testParseInvalidInputFail() {
@@ -50,9 +45,8 @@ public class HTMLParserTest {
 
     @Test public void testAnnotateMetropolitanPlanSuccessfully()
         throws HtmlAnnotationException, IOException {
-        final Document doc2 = service.annotate(chunkAnnotationService, Jsoup
+        service.annotate(chunkAnnotationService, Jsoup
             .parse(new File(HtmlAnnotationService.class.getResource("/mpp.html").getFile()),
                 "utf-8"));
-        System.out.println(doc2.toString());
     }
 }

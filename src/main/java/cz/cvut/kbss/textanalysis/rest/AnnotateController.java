@@ -26,8 +26,12 @@ public class AnnotateController {
                     consumes = MediaType.APPLICATION_JSON_VALUE)
     public String annotate(@RequestBody TextAnalysisInput input)
         throws Exception {
-            // TODO contexts
-        String ontologyUrl = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
+        String ontologyUrl;
+        if (input.getVocabularyContext() != null) {
+          ontologyUrl = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
+                "CONSTRUCT {?s ?p ?o} WHERE { GRAPH <" + input.getVocabularyContext().toString()+ "> {?s ?p ?o}}");
+        } else
+          ontologyUrl = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
                 "CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}");
         final String htmlDocument = input.getContent();
         return service.annotate(annotationService, ontologyUrl, htmlDocument);

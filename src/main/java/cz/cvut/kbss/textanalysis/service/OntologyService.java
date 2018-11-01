@@ -80,7 +80,7 @@ import org.springframework.stereotype.Service;
         // objects to corresponding sub-array
         String ontologieLabels = "";
         for (int i = 0; i < queryResultList.size(); i++) {
-            ontologieLabels = ontologieLabels + queryResultList.get(i).getLabel() + "\n" + "\n";
+            ontologieLabels = ontologieLabels + queryResultList.get(i).getLabel().trim() + "\n" + "\n";
         }
 
 

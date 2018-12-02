@@ -113,8 +113,10 @@ public class HtmlAnnotationService {
         NodeTraversor.traverse(visitor, output);
 
         for (final Map.Entry<TextNode, List<Node>> e : replaceMap.entrySet()) {
-            Node node = e.getKey().text("");
-            e.getValue().forEach(node::before);
+            if (!(e.getKey().parentNode().nodeName().equals("span")) || ((e.getKey().parentNode().nodeName().equals("span")) && !(e.getKey().parentNode().attr("typeof").equals("ddo:vyskyt-termu")))) {
+                Node node = e.getKey().text("");
+                e.getValue().forEach(node::before);
+            }
         }
 
         return output;

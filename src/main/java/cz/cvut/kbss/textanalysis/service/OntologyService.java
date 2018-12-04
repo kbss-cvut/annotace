@@ -69,10 +69,15 @@ import org.springframework.stereotype.Service;
             QuerySolution querySolution = resultSet.nextSolution();
             s = querySolution.get("s");
             o = querySolution.get("o");
-            QueryResult queryResultobject =
-                new QueryResult(s.asNode().toString(), o.asLiteral().getString());
-            queryResultList.add(queryResultobject);
-
+            if (!o.asLiteral().getString().equals("")) {
+                QueryResult queryResultobject =
+                        new QueryResult(s.asNode().toString(), o.asLiteral().getString());
+                queryResultList.add(queryResultobject);
+            } else {
+                QueryResult queryResultobject =
+                        new QueryResult(s.asNode().toString(), "null");
+                queryResultList.add(queryResultobject);
+            }
         }
         printList(queryResultList);
 

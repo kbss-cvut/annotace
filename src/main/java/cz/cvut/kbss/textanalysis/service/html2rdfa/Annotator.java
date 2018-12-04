@@ -16,8 +16,11 @@ import org.jsoup.parser.Tag;
 
 public class Annotator {
 
+    private int i = 0;
+
     public Stream<Node> annotate(final Word[] words) {
         final List<Node> list = new ArrayList<>();
+
 
         Node currentNode = null;
 
@@ -82,7 +85,7 @@ public class Annotator {
                          labelCount = getNumberOfTokens(newPhrases [0].getTermLabel());
 
                     score = numberOfTokens / labelCount ;
-                    annotateNode((Element) currentNode, word, newPhrases [0], Precision.round(score, 2));
+                    annotateNode((Element) currentNode, word, newPhrases [0], Precision.round(score, 2),i++);
 
                     final List<TextNode> textNodes = ((Element) currentNode).textNodes();
                     if (textNodes.isEmpty()) {
@@ -106,9 +109,8 @@ public class Annotator {
         return list.stream();
     }
 
-    private void annotateNode(final Element node, final Word word, final Phrase phrase, final double score) {
-        node.attr("about", "_:" + phrase.hashCode());
-
+    private void annotateNode(final Element node, final Word word, final Phrase phrase, final double score, int i) {
+        node.attr("about", "_:" + i);
         String iri = phrase.getTermIri();
         node.attr("property", "ddo:je-vyskytem-termu");
         if (iri != null) {

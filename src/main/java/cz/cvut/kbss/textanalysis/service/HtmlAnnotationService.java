@@ -104,8 +104,9 @@ public class HtmlAnnotationService {
 
         final Map<TextNode, List<Node>> replaceMap = new HashMap<>();
 
+        final Annotator a = new Annotator();
         final NodeVisitor visitor = new ChunkIterator(chunk -> {
-            final List<Node> newNode = new Annotator().annotate(
+            final List<Node> newNode = a.annotate(
                 p.process(chunk.getWholeText())).collect(Collectors.toList());
             replaceMap.put(chunk, newNode);
         });

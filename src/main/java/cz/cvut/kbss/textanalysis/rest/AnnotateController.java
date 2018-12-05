@@ -27,12 +27,13 @@ public class AnnotateController {
     public String annotate(@RequestBody TextAnalysisInput input)
         throws Exception {
         String ontologyUrl;
+        String iTerm = "http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/popis-dat/pojem/term";
         if (input.getVocabularyContext() != null) {
           ontologyUrl = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
-                "CONSTRUCT {?s ?p ?o} WHERE { GRAPH <" + input.getVocabularyContext().toString()+ "> {?s ?p ?o}}");
+                "CONSTRUCT {?s ?p ?o} WHERE { GRAPH <" + input.getVocabularyContext().toString()+ "> {?s a <"+iTerm+"> .?s ?p ?o}}");
         } else
           ontologyUrl = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
-                "CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}");
+                "CONSTRUCT {?s ?p ?o} WHERE {?s a <"+iTerm+"> . ?s ?p ?o}");
         final String htmlDocument = input.getContent();
         return service.annotate(annotationService, ontologyUrl, htmlDocument);
     }

@@ -74,6 +74,7 @@ design
 .
 devatenáct
 devět
+§
 dnes
 do
 dobrý

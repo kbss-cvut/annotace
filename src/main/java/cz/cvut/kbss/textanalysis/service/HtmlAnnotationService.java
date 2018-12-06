@@ -97,6 +97,7 @@ public class HtmlAnnotationService {
 
 
     private Document _annotate(final ChunkAnnotationService p, final Document doc) {
+        logger.debug("Annotating document has started");
         final Document output = doc.clone();
         final Element eHtml = output.selectFirst("html");
         eHtml.attr("prefix",
@@ -119,6 +120,8 @@ public class HtmlAnnotationService {
                 e.getValue().forEach(node::before);
             }
         }
+
+        logger.debug("Annotating document has finished");
 
         return output;
     }

@@ -54,7 +54,7 @@ import org.springframework.stereotype.Service;
 
     public List<QueryResult> analyzeModel(Model model) {
         List<QueryResult> queryResultList = new ArrayList<>();
-        LOG.debug("Analyzing ontologie model to get all labels");
+        LOG.debug("Analyzing ontology model to get all labels");
         RDFNode s;
         RDFNode o;
         ResultSet resultSet;
@@ -82,8 +82,8 @@ import org.springframework.stereotype.Service;
                 queryResultList.add(queryResultobject);
             }
         }
-        printList(queryResultList);
-
+        //printList(queryResultList);
+        LOG.debug("number of retrieved lables is: " + queryResultList.size());
         //Store all lables in one string and call morphoDita only once then map the queryResult
         // objects to corresponding sub-array
         String ontologieLabels = "";
@@ -91,7 +91,7 @@ import org.springframework.stereotype.Service;
             ontologieLabels = ontologieLabels + queryResultList.get(i).getLabel().trim() + "\n" + "\n";
         }
 
-
+        LOG.debug("Morphological anlysis for ontology labels has started:");
         List<List<MorphoDitaResultJson>> morphoDitaResultList =
             morphoDitaService.getMorphoDiteResultProcessed(ontologieLabels);
 
@@ -101,6 +101,7 @@ import org.springframework.stereotype.Service;
             i++;
         }
 
+        LOG.debug("Morphological analysis for ontology labels has finished");
         return queryResultList;
 
     }

@@ -43,7 +43,7 @@ import org.springframework.stereotype.Service;
 
     public Model readOntology(URL url) throws IOException {
         Model model = ModelFactory.createDefaultModel();
-        model.read(url.openStream(), null, FileUtils.langTurtle);
+        model.read(url.toString(), "text/turtle");
         //model.write(System.out, "RDF/JSON");
         return model;
     }
@@ -59,8 +59,11 @@ import org.springframework.stereotype.Service;
         RDFNode o;
         ResultSet resultSet;
         String query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-                       + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-                       + "SELECT ?s ?o WHERE {" + "?s rdfs:label ?o" + "}";
+                        + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+                        + "SELECT ?s ?o WHERE {"
+                        + "?s rdfs:label ?o ."
+                        + "?s a <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/popis-dat/pojem/term> . "
+                        + "}";
 
         QueryExecution queryExecution = QueryExecutionFactory.create(query, model);
         resultSet = queryExecution.execSelect();

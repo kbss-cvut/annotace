@@ -101,7 +101,7 @@ public class MorphoDitaServiceJNI implements MorphoDitaServiceAPI {
                 String spaces = StringUtils.repeat(" ",(int) (startNext-end));
                 token.setSpace( spaces );
                 sentence.add(token);
-                logger.debug("TAG: " + taggedLemma.getTag() + ", LEMMA: " + taggedLemma.getLemma() + ", FORM: " + forms.get(j) + ", SPACES:\""+spaces+"\"");
+                //logger.debug("TAG: " + taggedLemma.getTag() + ", LEMMA: " + taggedLemma.getLemma() + ", FORM: " + forms.get(j) + ", SPACES:\""+spaces+"\"");
             }
         }
         return result;

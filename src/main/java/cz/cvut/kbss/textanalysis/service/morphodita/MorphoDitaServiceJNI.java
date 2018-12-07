@@ -26,13 +26,13 @@ public class MorphoDitaServiceJNI implements MorphoDitaServiceAPI {
 
     private static Tagger tagger = null;
 
-    private static final String taggerFileResource="czech-morfflex-pdt-161115-no_dia.tagger";
+    private static final String taggerFileResource="czech-morfflex-pdt-161115.tagger";
 
     static {
         try {
             logger.info("Finding {} ...", taggerFileResource);
             final String taggerFile =
-                MorphoDitaServiceJNI.class.getResource("/czech-morfflex-pdt-161115-no_dia.tagger")
+                MorphoDitaServiceJNI.class.getResource("/czech-morfflex-pdt-161115.tagger")
                                           .getFile();
             logger.info("Found at {}", taggerFile);
             logger.info("Loading tagger ... (looks up MorphoDita native library at {})",System.getProperty("java.library.path"));

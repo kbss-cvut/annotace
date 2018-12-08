@@ -4,6 +4,7 @@ import cz.cvut.kbss.model.Phrase;
 import cz.cvut.kbss.model.Word;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -79,13 +80,14 @@ public class Annotator {
                     double labelCount;
 
                     //scoring
+                    newPhrases = sortArrayOfPhrasesLabelLength(newPhrases);
                     if (newPhrases.length == 0 || newPhrases[0].getTermIri() == null || newPhrases[0].getTermIri().equals("")) {
                          labelCount = numberOfTokens;
                     } else
-                         labelCount = getNumberOfTokens(newPhrases [0].getTermLabel());
+                         labelCount = getNumberOfTokens(newPhrases[0].getTermLabel());
 
                     score = numberOfTokens / labelCount ;
-                    annotateNode((Element) currentNode, word, newPhrases [0], Precision.round(score, 2),i++);
+                    annotateNode((Element) currentNode, word, newPhrases[0], Precision.round(score, 2),i++);
 
                     final List<TextNode> textNodes = ((Element) currentNode).textNodes();
                     if (textNodes.isEmpty()) {
@@ -125,5 +127,10 @@ public class Annotator {
     private int getNumberOfTokens(String string) {
         String trimmed = string.trim();
         return trimmed.isEmpty() ? 0 : trimmed.split("\\s+").length;
+    }
+
+    private Phrase [] sortArrayOfPhrasesLabelLength (Phrase [] phraseList) {
+        Phrase [] sortedArray = Arrays.stream(phraseList).sorted(Comparator.comparingInt(x -> x.getTermLabel().length())).collect(Collectors.toList()).toArray(new Phrase[]{});
+        return sortedArray;
     }
 }

@@ -87,11 +87,7 @@ public class Annotator {
                     //scoring
                     if (newPhrases.length > 1)
                     newPhrases = sortArrayOfPhrasesLabelLength(newPhrases);
-                    Phrase matchedPhrase;
-                    if (newPhrases.length > 1 && newPhrases[0].isImportant()) {
-                        matchedPhrase = newPhrases[1];
-                    } else
-                        matchedPhrase = newPhrases[0];
+                    Phrase matchedPhrase = newPhrases[0];
                     if (newPhrases.length == 0 || matchedPhrase.getTermIri() == null || matchedPhrase.getTermIri().equals("")) {
                          labelCount = numberOfTokens;
                     } else
@@ -144,4 +140,5 @@ public class Annotator {
         Phrase [] sortedArray = Arrays.stream(phraseList).sorted(Comparator.comparingInt(x -> x.getTermLabel().length())).collect(Collectors.toList()).toArray(new Phrase[]{});
         return sortedArray;
     }
+
 }

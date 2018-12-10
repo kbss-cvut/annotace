@@ -43,7 +43,12 @@ public class Annotator {
 
                     } else {
                         if (!(currentNode instanceof TextNode)) {
-                            list.add(currentNode);
+                            if (Double.parseDouble(currentNode.attr("score")) > 0.65) {
+                                list.add(currentNode);
+                            } else {
+                                TextNode localTextNode = new TextNode(((Element) currentNode).text() + " ");
+                                list.add(localTextNode);
+                            }
                             currentNode = new TextNode("");
                             previousPhrases = null;
                         }
@@ -80,14 +85,20 @@ public class Annotator {
                     double labelCount;
 
                     //scoring
+                    if (newPhrases.length > 1)
                     newPhrases = sortArrayOfPhrasesLabelLength(newPhrases);
-                    if (newPhrases.length == 0 || newPhrases[0].getTermIri() == null || newPhrases[0].getTermIri().equals("")) {
+                    Phrase matchedPhrase;
+                    if (newPhrases.length > 1 && newPhrases[0].isImportant()) {
+                        matchedPhrase = newPhrases[1];
+                    } else
+                        matchedPhrase = newPhrases[0];
+                    if (newPhrases.length == 0 || matchedPhrase.getTermIri() == null || matchedPhrase.getTermIri().equals("")) {
                          labelCount = numberOfTokens;
                     } else
-                         labelCount = getNumberOfTokens(newPhrases[0].getTermLabel());
+                         labelCount = getNumberOfTokens(matchedPhrase.getTermLabel());
 
                     score = numberOfTokens / labelCount ;
-                    annotateNode((Element) currentNode, word, newPhrases[0], Precision.round(score, 2),i++);
+                    annotateNode((Element) currentNode, word, matchedPhrase, Precision.round(score, 2),i++);
 
                     final List<TextNode> textNodes = ((Element) currentNode).textNodes();
                     if (textNodes.isEmpty()) {

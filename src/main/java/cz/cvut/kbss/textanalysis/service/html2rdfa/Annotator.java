@@ -43,12 +43,7 @@ public class Annotator {
 
                     } else {
                         if (!(currentNode instanceof TextNode)) {
-                            if (Double.parseDouble(currentNode.attr("score")) > 0.65) {
-                                list.add(currentNode);
-                            } else {
-                                TextNode localTextNode = new TextNode(((Element) currentNode).text() + " ");
-                                list.add(localTextNode);
-                            }
+                            list.add(currentNode);
                             currentNode = new TextNode("");
                             previousPhrases = null;
                         }

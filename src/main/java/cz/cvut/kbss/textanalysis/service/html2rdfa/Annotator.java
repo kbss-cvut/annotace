@@ -122,7 +122,7 @@ public class Annotator {
         node.attr("about", "_:" + i);
         String iri = phrase.getTermIri();
         node.attr("property", "ddo:je-vyskytem-termu");
-        if (iri != null) {
+        if ((iri != null) && (!iri.equals(""))) {
             node.attr("resource", phrase.getTermIri());
         } else {
             node.attr("content", word.getLemma());

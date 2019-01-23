@@ -68,7 +68,7 @@ public class AnnotationService {
                                 }
                     }
                 }
-                if((isKeyword) && !(isMatched)) {
+                if((isKeyword) && !(isMatched) && (matchedAnnotations.isEmpty())) {
                     Phrase matchedAnnotation = new Phrase(
                                             "",
                                             true,

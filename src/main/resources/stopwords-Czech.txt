@@ -1,3 +1,14 @@
+pro
+Pro
+v
+ve
+V
+a
+s
+se
+S
+,
+na
 aby
 ahoj
 aj
@@ -113,7 +124,6 @@ ji
 jich
 jimi
 jinak
-jiné
 jiz
 jsem
 jses
@@ -212,10 +222,6 @@ než
 nic
 nich
 nimi
-nove
-novy
-nové
-nový
 nula
 ná
 nám

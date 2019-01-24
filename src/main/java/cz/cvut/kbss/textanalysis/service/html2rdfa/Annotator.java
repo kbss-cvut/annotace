@@ -47,7 +47,7 @@ public class Annotator {
 
                 final TextNode tn;
 
-                if ((word.getPhrases() == null || word.getPhrases().length == 0)) {
+                if ((word.getPhrases() == null || word.getPhrases().length == 0) || ((currentNode instanceof TextNode || currentNode == null) && (isStopword(word.getToken())))) {
                     if (currentNode == null) {
                         currentNode = new TextNode("");
 

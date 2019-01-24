@@ -154,7 +154,7 @@ public class Annotator {
     }
 
     private int getNumberOfTokens(String string) {
-        String trimmed = string.trim();
+        String trimmed = string.trim().replace("-", " - ");
         return trimmed.isEmpty() ? 0 : trimmed.split("\\s+").length;
     }
 

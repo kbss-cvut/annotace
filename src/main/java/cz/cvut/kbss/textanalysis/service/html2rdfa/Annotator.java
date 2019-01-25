@@ -111,7 +111,7 @@ public class Annotator {
                          labelCount = getNumberOfTokens(matchedPhrase.getTermLabel());
 
                     score = numberOfTokens / labelCount ;
-                    content = content + word.getLemma() + " ";
+                    content = content + parseLemma(word.getLemma()) + " ";
                     annotateNode((Element) currentNode, content.trim(), matchedPhrase, Precision.round(score, 2),i++);
 
                     final List<TextNode> textNodes = ((Element) currentNode).textNodes();
@@ -165,6 +165,15 @@ public class Annotator {
 
     private boolean isStopword(String s){
         return stopwordsList.contains(s);
+    }
+
+    private String parseLemma(String s) {
+        String original = s;
+        String [] parts = s.split("[-_]");
+        if (!(parts.length < 1))
+            return parts[0];
+        else return original;
+
     }
 
 }

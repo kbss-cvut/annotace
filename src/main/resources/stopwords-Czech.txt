@@ -32,6 +32,7 @@ ahoj
 aj
 ale
 anebo
+nebo
 ani
 aniž
 ano
@@ -44,7 +45,6 @@ ačkoli
 až
 bez
 beze
-blã­zko
 blízko
 bohužel
 brzo
@@ -127,7 +127,6 @@ jehož
 jej
 jeji
 jejich
-jejã
 její
 jelikož
 jemu
@@ -150,7 +149,6 @@ jsi
 jsme
 jste
 já
-jã¡
 jí
 jím
 jíž
@@ -225,6 +223,7 @@ neděláš
 neg
 nejsi
 nejsou
+jsou
 nemajã­
 nemají
 nemáme

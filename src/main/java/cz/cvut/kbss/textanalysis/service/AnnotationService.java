@@ -51,7 +51,9 @@ public class AnnotationService {
                     for (int k = 0; k < queryResultList.get(j).getMorphoDitaResultList().size(); k++) {
 
                 boolean singleMatch = (queryResultList.get(j).getMorphoDitaResultList().size() == 1);
-                                if(morphoDitaList.get(i).get(ii).getLemma().contentEquals(queryResultList.get(j).getMorphoDitaResultList().get(k).getLemma())) {
+                                if ((morphoDitaList.get(i).get(ii).getLemma().contentEquals(queryResultList.get(j).getMorphoDitaResultList().get(k).getLemma()))
+                                     &&   (morphoDitaList.get(i).get(ii).getTag().charAt(10)) == queryResultList.get(j).getMorphoDitaResultList().get(k).getTag().charAt(10)
+                                ) {
                                     Phrase matchedAnnotation = new Phrase(
                                             queryResultList.get(j).getType(),
                                             (result.getKeywords().contains(morphoDitaList.get(i).get(ii).getLemma()))

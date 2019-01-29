@@ -47,8 +47,8 @@ public class HtmlAnnotationService {
             final NodeVisitor chunkCollector = new ChunkIterator(chunk -> chunks.add(chunk.getWholeText()));
             NodeTraversor.traverse(chunkCollector, doc);
 
-            String documentChunksString = chunks.stream().collect(Collectors.joining(" "));
-            final KerResult kerResult = kerService.getKerResult(documentChunksString.replace("\n"," "));
+            String documentChunksString = chunks.stream().collect(Collectors.joining("\r\n"));
+            final KerResult kerResult = kerService.getKerResult(documentChunksString);
 
             return this.annotate(textChunk -> {
                 try {

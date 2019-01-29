@@ -111,6 +111,7 @@ public class Annotator {
                          labelCount = getNumberOfTokens(matchedPhrase.getTermLabel());
 
                     score = numberOfTokens / labelCount ;
+                    if (score > 1) score = 1.0;
                     content = content + parseLemma(word.getLemma()) + " ";
                     annotateNode((Element) currentNode, content.trim(), matchedPhrase, Precision.round(score, 2),i++);
 

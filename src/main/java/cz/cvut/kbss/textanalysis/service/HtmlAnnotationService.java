@@ -101,7 +101,7 @@ public class HtmlAnnotationService {
         final Document output = doc.clone();
         final Element eHtml = output.selectFirst("html");
         eHtml.attr("prefix",
-            "ddo: http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/popis-dat/pojem/");
+            "ddo: http://onto.fel.cvut.cz/ontologies/application/termit/pojem/");
 
         final Map<TextNode, List<Node>> replaceMap = new HashMap<>();
 

@@ -37,7 +37,7 @@ public class KerService {
         final File file;
         try {
             file = File.createTempFile("ker-input","");
-            Files.write(Paths.get(file.toURI()), chunks.getBytes());
+            Files.write(Paths.get(file.toURI()), chunks.getBytes("utf-8"));
 
             Resource fileResource = new FileSystemResource(file);
             HttpHeaders headers = new HttpHeaders();

@@ -2,7 +2,6 @@ package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.textanalysis.model.KerResult;
 import java.nio.file.Paths;
-import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -15,9 +14,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 @Service
 public class KerService {

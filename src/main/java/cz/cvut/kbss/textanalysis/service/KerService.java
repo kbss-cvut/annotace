@@ -29,7 +29,7 @@ public class KerService {
 
     public KerResult getKerResult(final String chunks) {
 
-        final String kerUrl = "http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.03&maximum-words=30";
+        final String kerUrl = "http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.04&maximum-words=30";
 
         final File file;
         try {

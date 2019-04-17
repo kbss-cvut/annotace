@@ -5,13 +5,8 @@ import cz.cvut.kbss.textanalysis.model.KerResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.service.html2rdfa.Annotator;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.URI;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
@@ -37,10 +32,8 @@ public class HtmlAnnotationService {
 
     private static final Logger logger = LoggerFactory.getLogger(HtmlAnnotationService.class);
 
-    public String annotate(@Autowired AnnotationService annotationService, String ontologyUrl, String htmlDocument) throws HtmlAnnotationException, IOException {
-        try {
-            final URL url = new URL(ontologyUrl);
-            final List<QueryResult> queryResultList = ontologyService.analyzeModel(url);
+    public String annotate(@Autowired AnnotationService annotationService, Set<URI> vocabularies, String htmlDocument) throws HtmlAnnotationException {
+            final List<QueryResult> queryResultList = ontologyService.analyzeModel(vocabularies);
 
             final Document doc =Jsoup.parse(htmlDocument);
             final List<String> chunks = new ArrayList<>();
@@ -58,9 +51,6 @@ public class HtmlAnnotationService {
                     return new Word[]{new Word("",textChunk,"")};
                 }
             }, doc).toString();
-        } catch (MalformedURLException e) {
-            throw new HtmlAnnotationException("Annotation failed.", e);
-        }
     }
 
     public Document annotate(final ChunkAnnotationService p, final Document doc)

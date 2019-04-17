@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class OntologyController {
@@ -18,11 +19,10 @@ public class OntologyController {
     private OntologyService ontologyService;
 
     @RequestMapping("/ontology")
-    public List<QueryResult> getAnnotationResult(@RequestParam("ontologyUrl") String ontologyUrl) throws Exception {
+    public List<QueryResult> getAnnotationResult(@RequestParam("ontologyUrl") Set<URI> ontologyUrl) {
         List<QueryResult> queryResultList;
         //Model model = ontologyService.readOntologyFromFile("C:/Projects/OPPPR/services/textanalysis/src/main/resources/glosar.ttl");
-        final URL url = new URL(ontologyUrl);
-        queryResultList = ontologyService.analyzeModel(url);
+        queryResultList = ontologyService.analyzeModel(ontologyUrl);
 
         return queryResultList;
     }

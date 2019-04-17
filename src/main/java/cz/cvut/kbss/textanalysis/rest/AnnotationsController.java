@@ -4,7 +4,8 @@ import cz.cvut.kbss.model.Word;
 import cz.cvut.kbss.textanalysis.model.KerResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.service.AnnotationService;
-import java.net.URL;
+
+import java.net.URI;
 
 import cz.cvut.kbss.textanalysis.service.OntologyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class AnnotationsController {
@@ -31,8 +33,8 @@ public class AnnotationsController {
 
     @RequestMapping("/annotate-raw")
     public List<Word> getAnnotatedTokenizedText(
-        @RequestParam("ontologyUrl") String ontologyUrl, @RequestParam("textChunk") String textChunk) throws Exception {
-        List<QueryResult> queryResultList = ontologyService.analyzeModel(new URL(ontologyUrl));
+            @RequestParam("ontologyUrl") Set<URI> ontologyUrl, @RequestParam("textChunk") String textChunk) throws Exception {
+        List<QueryResult> queryResultList = ontologyService.analyzeModel(ontologyUrl);
         return annotationService.getAnnotations(textChunk, queryResultList, KerResult.createSomeList());
     }
 }

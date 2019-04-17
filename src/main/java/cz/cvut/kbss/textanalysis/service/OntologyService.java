@@ -5,10 +5,11 @@ import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceJNI;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
@@ -41,15 +42,22 @@ import org.springframework.stereotype.Service;
         return model;
     }
 
-    public Model readOntology(URL url) throws IOException {
+    public Model readOntology(URI uri) {
         Model model = ModelFactory.createDefaultModel();
-        model.read(url.toString(), "text/turtle");
+        model.read(uri.toString(), "text/turtle");
         //model.write(System.out, "RDF/JSON");
         return model;
     }
 
-    public List<QueryResult> analyzeModel(URL url) throws IOException {
-        return analyzeModel(readOntology(url));
+    public List<QueryResult> analyzeModel(Set<URI> uriSet) {
+        List<QueryResult> allGraphs = new ArrayList<>();
+        List<QueryResult> singleGraph;
+
+        for(URI uri : uriSet) {
+            singleGraph = analyzeModel(readOntology(uri));
+            allGraphs.addAll(singleGraph);
+        }
+        return allGraphs;
     }
 
     public List<QueryResult> analyzeModel(Model model) {

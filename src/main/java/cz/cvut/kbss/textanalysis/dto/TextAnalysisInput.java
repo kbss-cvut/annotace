@@ -1,6 +1,7 @@
 package cz.cvut.kbss.textanalysis.dto;
 
 import java.net.URI;
+import java.util.Set;
 
 /**
  * Represents input passed to the text analysis service.
@@ -25,7 +26,7 @@ public class TextAnalysisInput {
      * <p>
      * If not specified, the whole {@link #vocabularyRepository} is searched for terms.
      */
-    private URI vocabularyContext;
+    private Set<URI> vocabularyContexts;
 
     public String getContent() {
         return content;
@@ -43,11 +44,12 @@ public class TextAnalysisInput {
         this.vocabularyRepository = vocabularyRepository;
     }
 
-    public URI getVocabularyContext() {
-        return vocabularyContext;
+    public Set<URI> getVocabularyContexts() {
+        return vocabularyContexts;
     }
 
-    public void setVocabularyContext(URI vocabularyContext) {
-        this.vocabularyContext = vocabularyContext;
+    public void setVocabularyContexts(Set<URI> vocabularyContexts) {
+        this.vocabularyContexts = vocabularyContexts;
     }
+
 }

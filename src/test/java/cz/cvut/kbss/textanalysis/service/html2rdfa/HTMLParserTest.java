@@ -28,7 +28,7 @@ public class HTMLParserTest {
             "<html><body><p>" + chunks[1] + "</p><p>" + chunks[2] + "</p></body></html>";
         final Document doc = Jsoup.parse(html);
         final Document doc2 = service.annotate(chunkAnnotationService,doc);
-        Assertions.assertEquals(3, doc2.select("span[typeof='ddo:vyskyt-termu']").size());
+        Assertions.assertEquals(3, doc2.select("span[typeof='ddo:výskyt-termu']").size());
     }
 
     @Test public void testParseInvalidHtmlSuccessfully() throws HtmlAnnotationException {

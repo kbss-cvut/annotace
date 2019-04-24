@@ -30,9 +30,9 @@ public class AnnotatorTest {
 
         final Element element = (Element) aNodes[0];
         Assertions.assertNotNull(element.attr("about"));
-        Assertions.assertEquals("ddo:je-vyskytem-termu",element.attr("property"));
+        Assertions.assertEquals("ddo:je-výskytem-termu",element.attr("property"));
         Assertions.assertEquals("http://test.org/pojem/Test",element.attr("resource"));
-        Assertions.assertEquals("ddo:vyskyt-termu",element.attr("typeof"));
+        Assertions.assertEquals("ddo:výskyt-termu",element.attr("typeof"));
     }
 
     @Test

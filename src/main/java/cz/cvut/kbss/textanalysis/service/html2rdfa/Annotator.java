@@ -144,13 +144,13 @@ public class Annotator {
     private void annotateNode(final Element node, final String content, final Phrase phrase, final double score, int i) {
         node.attr("about", "_:" + i);
         String iri = phrase.getTermIri();
-        node.attr("property", "ddo:je-vyskytem-termu");
+        node.attr("property", "ddo:je-výskytem-termu");
         if ((iri != null) && (!iri.equals(""))) {
             node.attr("resource", phrase.getTermIri());
         } else {
             node.attr("content", content);
         }
-        node.attr("typeof", "ddo:vyskyt-termu");
+        node.attr("typeof", "ddo:výskyt-termu");
         node.attr("score", Double.toString(score));
     }
 

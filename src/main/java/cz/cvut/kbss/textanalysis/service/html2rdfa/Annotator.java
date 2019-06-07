@@ -52,7 +52,7 @@ public class Annotator {
         Node currentNode = null;
 
         Phrase [] previousPhrases = null;
-        Phrase [] currentPhrases = null;
+        Phrase [] currentPhrases;
         String content = "";
 
         double score;
@@ -96,10 +96,10 @@ public class Annotator {
                     }
 
                     if (currentNode == null) {
-                        currentNode = new Element(Tag.valueOf("span"), "");
+                        currentNode = createEmptySpanNode();
                     } else if (currentNode instanceof TextNode) {
                         list.add(currentNode);
-                        currentNode = new Element(Tag.valueOf("span"), "");
+                        currentNode = createEmptySpanNode();
                      } else if  (newPhrases.length == 0) {
                         if (!previousWordisStopword) {
                         list.add(currentNode);
@@ -109,7 +109,7 @@ public class Annotator {
                             list.add(currentNode.childNode(0));
                             content = "";
                         }
-                        currentNode = new Element(Tag.valueOf("span"), "");
+                        currentNode = createEmptySpanNode();
                         numberOfTokens = 1;
                     }
                     // TODO multiple
@@ -119,7 +119,6 @@ public class Annotator {
                     previousPhrases = newPhrases;
                     double labelCount;
 
-                    //scoring
                     if (newPhrases.length > 1)
                     newPhrases = sortArrayOfPhrasesLabelLength(newPhrases);
                     Phrase matchedPhrase = newPhrases[0];
@@ -193,6 +192,10 @@ public class Annotator {
             return parts[0];
         else return original;
 
+    }
+
+    private Element createEmptySpanNode() {
+        return new Element(Tag.valueOf("span"), "");
     }
 
 }

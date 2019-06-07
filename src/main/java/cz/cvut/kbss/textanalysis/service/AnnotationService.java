@@ -2,11 +2,9 @@ package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.model.Phrase;
 import cz.cvut.kbss.model.Word;
-import cz.cvut.kbss.textanalysis.Stopwords;
 import cz.cvut.kbss.textanalysis.model.*;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
 
-import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +17,6 @@ public class AnnotationService {
     @Autowired
     private MorphoDitaServiceAPI morphoDitaService;
 
-    public Stopwords stopwords = new Stopwords();
-
-    List<String> stopwordsList = stopwords.getStopwords();
-
     public List<Word> getAnnotations(final String textChunk, final List<QueryResult> queryResultList,final KerResult result) throws AnnotationException {
         try {
             return this._getAnnotations(textChunk, queryResultList, result);
@@ -31,45 +25,48 @@ public class AnnotationService {
         }
     }
 
-    private List<Word> _getAnnotations(final String textChunk, final List<QueryResult> queryResultList,final KerResult result) throws IOException {
+    private List<Word> _getAnnotations(final String textChunk, final List<QueryResult> queryResultList,final KerResult result) {
         final List<List<MorphoDitaResultJson>> morphoDitaResult = morphoDitaService.getMorphoDiteResultProcessed(textChunk);
         return annotateOntologieLables(morphoDitaResult, queryResultList,result);
     }
 
-    private List<Word> annotateOntologieLables(List<List<MorphoDitaResultJson>> morphoDitaList, List<QueryResult> queryResultList,final KerResult result) {
+    private List<Word> annotateOntologieLables(List<List<MorphoDitaResultJson>> morphoDitaList, List<QueryResult> queryResultList,final KerResult kerResult) {
 
         List<Word> annotationsResults = new ArrayList<>();
 
-        for (int i=0; i<morphoDitaList.size(); i++) {
-            for (int ii = 0; ii < morphoDitaList.get(i).size(); ii++) {
+        for (List<MorphoDitaResultJson> results : morphoDitaList) {
+            for (MorphoDitaResultJson result : results) {
 
                 List<Phrase> matchedAnnotations = new ArrayList<>();
                 boolean isKeyword = false;
                 boolean isMatched = false;
 
-                for (int j = 0; j < queryResultList.size(); j++) {
-                    for (int k = 0; k < queryResultList.get(j).getMorphoDitaResultList().size(); k++) {
+                for (QueryResult queryResults : queryResultList) {
+                    for (MorphoDitaResultJson ontologyResults : queryResults.getMorphoDitaResultList()) {
 
-                boolean singleMatch = (queryResultList.get(j).getMorphoDitaResultList().size() == 1);
-                                if ((morphoDitaList.get(i).get(ii).getLemma().contentEquals(queryResultList.get(j).getMorphoDitaResultList().get(k).getLemma()))
-                                     &&   (morphoDitaList.get(i).get(ii).getTag().charAt(10)) == queryResultList.get(j).getMorphoDitaResultList().get(k).getTag().charAt(10)
-                                ) {
-                                    Phrase matchedAnnotation = new Phrase(
-                                            queryResultList.get(j).getType(),
-                                            (result.getKeywords().contains(morphoDitaList.get(i).get(ii).getLemma()))
-                                                    &&(morphoDitaList.get(i).get(ii).getToken().equals(queryResultList.get(j).getLabel())),
-                                            singleMatch,
-                                            queryResultList.get(j).getLabel());
-                                    if(singleMatch) {
+                        boolean singleMatch = queryResults.getMorphoDitaResultList().size() == 1;
+
+                        if ((result.getLemma().contentEquals(ontologyResults.getLemma())) &&
+                             result.getTag().charAt(10) == ontologyResults.getTag().charAt(10)) {
+
+                            Phrase matchedAnnotation = new Phrase(
+                                    queryResults.getType(),
+                                    (kerResult.getKeywords().contains(result.getLemma())
+                                                    &&(result.getToken().equals(queryResults.getLabel()))),
+                                    singleMatch,
+                                    queryResults.getLabel());
+
+                            if(singleMatch) {
                                     isMatched = true;
                                     }
                                     matchedAnnotations.add(matchedAnnotation);
                                 }
-                                if (result.getKeywords().contains(morphoDitaList.get(i).get(ii).getLemma())) {
+                                if (kerResult.getKeywords().contains(result.getLemma())) {
                                     isKeyword = true;
-                                }
+                        }
                     }
                 }
+
                 if((isKeyword) && !(isMatched) && (matchedAnnotations.isEmpty())) {
                     Phrase matchedAnnotation = new Phrase(
                                             "",
@@ -79,10 +76,12 @@ public class AnnotationService {
                                     matchedAnnotations.add(matchedAnnotation);
                 }
 
-                final MorphoDitaResultJson res = morphoDitaList.get(i).get(ii);
+                final MorphoDitaResultJson res = result;
                 annotationsResults.add( new Word(res.getLemma(), res.getToken(), res.getSpace() == null ? "":res.getSpace(), matchedAnnotations.toArray(new Phrase[]{})) );
+
             }
         }
+
         return annotationsResults;
     }
 

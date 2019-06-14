@@ -61,15 +61,16 @@ public class AnnotationService {
                 List<Phrase> matchedAnnotations = new ArrayList<>();
                 boolean isKeyword = false;
                 boolean isMatched = false;
+                boolean isNotNegation;
 
                 for (QueryResult queryResults : queryResultList) {
                     for (SingleLemmaResult ontologyResults : queryResults.getMorphoDitaResultList()) {
 
                         boolean singleMatch = queryResults.getMorphoDitaResultList().size() == 1;
+                        isNotNegation = result.isNegated() ^ ontologyResults.isNegated();
 
                         if ((result.getLemma().contentEquals(ontologyResults.getLemma())) &&
-                            (result.isNegated() ^ ontologyResults.isNegated())) {
-//                            result.getTag().charAt(10) == ontologyResults.getTag().charAt(10)) {
+                             isNotNegation) {
 
                             Phrase matchedAnnotation = new Phrase(
                                     queryResults.getType(),
@@ -105,6 +106,14 @@ public class AnnotationService {
         }
 
         return annotationsResults;
+    }
+
+    private boolean checkForNegation(String s, String r) {
+//        checkForNegation(result.getTag(), ontologyResults.getTag());
+        if (s.length() > 10)
+            return (s.charAt(10) == r.charAt(10));
+        else
+            return true;
     }
 
 }

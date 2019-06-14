@@ -19,12 +19,8 @@
 package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
-import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
-import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
-import java.io.File;
-import java.io.FileReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +41,6 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class OntologyService {
-
-    public String lang = "cs";
 
     private LemmatizerApi lemmatizerServiceApi;
 

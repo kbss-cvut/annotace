@@ -43,6 +43,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class OntologyService {
 
+    public String lang = "cs";
+
     private LemmatizerApi lemmatizerServiceApi;
 
     @Autowired
@@ -78,7 +80,8 @@ public class OntologyService {
                         + "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>"
                         + "SELECT ?s ?o WHERE {"
                         + "?s rdfs:label ?o ."
-                        + "?s a skos:Concept . "
+                        + "?s a <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/popis-dat/pojem/term> . "
+                        + "FILTER (lang(?o) = '" + lang + "') ."
                         + "}";
 
         QueryExecution queryExecution = QueryExecutionFactory.create(query, model);

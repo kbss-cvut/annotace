@@ -71,7 +71,7 @@ public class AnnotateController {
 
 
         final String htmlDocument = input.getContent();
-        return service.annotate(uriSet, htmlDocument);
+        return service.annotate(uriSet, htmlDocument, input.getLanguage());
     }
 
     private String encode(String s) throws UnsupportedEncodingException {

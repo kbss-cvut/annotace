@@ -22,6 +22,9 @@ import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
+import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
+import java.io.File;
+import java.io.FileReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,18 +61,18 @@ public class OntologyService {
         return model;
     }
 
-    public List<QueryResult> analyzeModel(Set<URI> uriSet) {
+    public List<QueryResult> analyzeModel(Set<URI> uriSet, String lang) {
         List<QueryResult> allGraphs = new ArrayList<>();
         List<QueryResult> singleGraph;
 
         for(URI uri : uriSet) {
-            singleGraph = analyzeModel(readOntology(uri));
+            singleGraph = analyzeModel(readOntology(uri), lang);
             allGraphs.addAll(singleGraph);
         }
         return allGraphs;
     }
 
-    public List<QueryResult> analyzeModel(Model model) {
+    public List<QueryResult> analyzeModel(Model model, String lang) {
         List<QueryResult> queryResultList = new ArrayList<>();
         log.debug("Analyzing ontology model to get all labels");
         RDFNode s;
@@ -112,7 +115,7 @@ public class OntologyService {
 
         log.debug("Morphological anlysis for ontology labels has started:");
         LemmatizerResult lemmatizerResult =
-            lemmatizerServiceApi.process(ontologieLabels);
+            lemmatizerServiceApi.process(ontologieLabels, lang);
 
         int i = 0;
         for (QueryResult queryResult : queryResultList) {

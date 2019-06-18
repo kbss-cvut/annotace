@@ -38,16 +38,16 @@ public class AnnotationService {
     @Autowired
     private LemmatizerApi morphoDitaService;
 
-    public List<Word> getAnnotations(final String textChunk, final List<QueryResult> queryResultList, final KeywordExtractorResult result) throws AnnotationException {
+    public List<Word> getAnnotations(final String textChunk, final List<QueryResult> queryResultList, final KeywordExtractorResult result, String lang) throws AnnotationException {
         try {
-            return this._getAnnotations(textChunk, queryResultList, result);
+            return this._getAnnotations(textChunk, queryResultList, result, lang);
         } catch (Exception e) {
             throw new AnnotationException("Annotation failed.", e);
         }
     }
 
-    private List<Word> _getAnnotations(final String textChunk, final List<QueryResult> queryResultList,final KeywordExtractorResult result) {
-        final LemmatizerResult lemmatizerResult = morphoDitaService.process(textChunk);
+    private List<Word> _getAnnotations(final String textChunk, final List<QueryResult> queryResultList,final KeywordExtractorResult result, String lang) {
+        final LemmatizerResult lemmatizerResult = morphoDitaService.process(textChunk, lang);
         return annotateOntologieLables(lemmatizerResult, queryResultList,result);
     }
 

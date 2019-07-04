@@ -16,7 +16,7 @@ public class AnnotatorTest {
 
     @BeforeEach
     public void init() {
-        a = new Annotator();
+        a = new Annotator("cs");
     }
 
     private Word[] getChunk(int i) {

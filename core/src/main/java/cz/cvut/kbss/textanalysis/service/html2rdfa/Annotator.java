@@ -39,10 +39,12 @@ public class Annotator {
 
     public Stopwords stopwords = new Stopwords();
 
-    List<String> stopwordsList = stopwords.getStopwords();
+    List<String> stopwordsList;
 
 
-    public Annotator() {
+
+    public Annotator(String lang) {
+        stopwordsList = stopwords.getStopwords(lang);
     }
 
     public Stream<Node> annotate(final Word[] words) {

@@ -22,6 +22,7 @@ import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.model.Phrase;
 import cz.cvut.kbss.textanalysis.model.Word;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
+import cz.cvut.kbss.textanalysis.Stopwords;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,10 @@ public class AnnotationService {
     @Autowired
     private LemmatizerApi morphoDitaService;
 
+    public Stopwords stopwords = new Stopwords();
+
+    List<String> stopwordsList;
+
     public List<Word> getAnnotations(final String textChunk, final List<QueryResult> queryResultList, final KeywordExtractorResult result, String lang) throws AnnotationException {
         try {
             return this._getAnnotations(textChunk, queryResultList, result, lang);
@@ -48,25 +53,28 @@ public class AnnotationService {
 
     private List<Word> _getAnnotations(final String textChunk, final List<QueryResult> queryResultList,final KeywordExtractorResult result, String lang) {
         final LemmatizerResult lemmatizerResult = morphoDitaService.process(textChunk, lang);
-        return annotateOntologieLables(lemmatizerResult, queryResultList,result);
+        return annotateOntologieLables(lemmatizerResult, queryResultList,result, lang);
     }
 
-    private List<Word> annotateOntologieLables(LemmatizerResult lemmatizerResult, List<QueryResult> queryResultList, final KeywordExtractorResult kerResult) {
+    private List<Word> annotateOntologieLables(LemmatizerResult lemmatizerResult, List<QueryResult> queryResultList, final KeywordExtractorResult kerResult, String lang) {
 
         List<Word> annotationsResults = new ArrayList<>();
+
+        stopwordsList = stopwords.getStopwords(lang);
 
         for (List<SingleLemmaResult> results : lemmatizerResult.getResult()) {
             for (SingleLemmaResult result : results) {
 
                 List<Phrase> matchedAnnotations = new ArrayList<>();
-                boolean isKeyword = false;
+                boolean isKeyword = kerResult.getKeywords().contains(result.getLemma());
+                boolean isStopword = stopwordsList.contains(result.getLemma());
                 boolean isMatched = false;
                 boolean isNotNegation;
 
                 for (QueryResult queryResults : queryResultList) {
                     for (SingleLemmaResult ontologyResults : queryResults.getMorphoDitaResultList()) {
 
-                        boolean singleMatch = queryResults.getMorphoDitaResultList().size() == 1;
+                        isMatched = queryResults.getMorphoDitaResultList().size() == 1;
                         isNotNegation = result.isNegated() ^ ontologyResults.isNegated();
 
                         if ((result.getLemma().contentEquals(ontologyResults.getLemma())) &&
@@ -76,21 +84,15 @@ public class AnnotationService {
                                     queryResults.getType(),
                                     (kerResult.getKeywords().contains(result.getLemma())
                                                     &&(result.getToken().equals(queryResults.getLabel()))),
-                                    singleMatch,
+                                    isMatched,
                                     queryResults.getLabel());
 
-                            if(singleMatch) {
-                                    isMatched = true;
-                                    }
                                     matchedAnnotations.add(matchedAnnotation);
                                 }
-                                if (kerResult.getKeywords().contains(result.getLemma())) {
-                                    isKeyword = true;
-                        }
                     }
                 }
 
-                if((isKeyword) && !(isMatched) && (matchedAnnotations.isEmpty())) {
+                if((matchedAnnotations.isEmpty()) && (isKeyword) && !(isStopword) && !(isMatched)) {
                     Phrase matchedAnnotation = new Phrase(
                                             "",
                                             true,

@@ -91,7 +91,7 @@ public class OntologyService {
             QuerySolution querySolution = resultSet.nextSolution();
             s = querySolution.get("s");
             o = querySolution.get("o");
-            if (!o.asLiteral().getString().equals("")) {
+            if (!o.asLiteral().getString().isEmpty()) {
                 QueryResult queryResultobject =
                         new QueryResult(s.asNode().toString(), o.asLiteral().getString());
                 queryResultList.add(queryResultobject);
@@ -105,10 +105,11 @@ public class OntologyService {
         log.debug("number of retrieved lables is: " + queryResultList.size());
         //Store all lables in one string and call morphoDita only once then map the queryResult
         // objects to corresponding sub-array
-        String ontologieLabels = "";
-        for (int i = 0; i < queryResultList.size(); i++) {
-            ontologieLabels = ontologieLabels + queryResultList.get(i).getLabel().trim() + "\n" + "\n";
+        final StringBuilder sb = new StringBuilder();
+        for (QueryResult qr : queryResultList) {
+            sb.append(qr.getLabel().trim()).append("\n\n");
         }
+        final String ontologieLabels = sb.toString();
 
         log.debug("Morphological anlysis for ontology labels has started:");
         LemmatizerResult lemmatizerResult =

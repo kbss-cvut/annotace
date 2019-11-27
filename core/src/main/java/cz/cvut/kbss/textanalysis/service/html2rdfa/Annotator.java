@@ -54,7 +54,7 @@ public class Annotator {
 
         Phrase [] previousPhrases = null;
         Phrase [] currentPhrases;
-        String content = "";
+        StringBuilder content = new StringBuilder();
 
         double score;
         double numberOfTokens = 1;
@@ -79,7 +79,7 @@ public class Annotator {
                             }
                             currentNode = new TextNode("");
                             previousPhrases = null;
-                            content = "";
+                            content = new StringBuilder();
                         }
                     }
                     numberOfTokens = 0;
@@ -104,11 +104,11 @@ public class Annotator {
                      } else if  (newPhrases.length == 0) {
                         if (!previousWordisStopword) {
                         list.add(currentNode);
-                        content = "";
+                        content = new StringBuilder();
                         }
                         else {
                             list.add(currentNode.childNode(0));
-                            content = "";
+                            content = new StringBuilder();
                         }
                         currentNode = createEmptySpanNode();
                         numberOfTokens = 1;
@@ -123,14 +123,14 @@ public class Annotator {
                     if (newPhrases.length > 1)
                     newPhrases = sortArrayOfPhrasesLabelLength(newPhrases);
                     Phrase matchedPhrase = newPhrases[0];
-                    if (newPhrases.length == 0 || matchedPhrase.getTermIri() == null || matchedPhrase.getTermIri().equals("")) {
+                    if (matchedPhrase.getTermIri() == null || matchedPhrase.getTermIri().equals("")) {
                          labelCount = numberOfTokens;
                     } else
                          labelCount = getNumberOfTokens(matchedPhrase.getTermLabel());
 
                     score = numberOfTokens / labelCount ;
                     if (score > 1) score = 1.0;
-                    content = content + parseLemma(word.getLemma()) + " ";
+                    content.append(parseLemma(word.getLemma())).append(" ");
                     annotateNode((Element) currentNode, content.trim(), matchedPhrase, Math.round(100 * score ) / (double) 100,i++);
 
                     final List<TextNode> textNodes = ((Element) currentNode).textNodes();
@@ -187,11 +187,10 @@ public class Annotator {
     }
 
     private String parseLemma(String s) {
-        String original = s;
         String [] parts = s.split("[-_]");
         if (!(parts.length < 1))
             return parts[0];
-        else return original;
+        else return s;
 
     }
 

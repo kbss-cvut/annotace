@@ -107,7 +107,7 @@ public class OntologyService {
         // objects to corresponding sub-array
         final StringBuilder sb = new StringBuilder();
         for (QueryResult qr : queryResultList) {
-            sb.append(qr.getLabel().trim()).append("\n\n");
+            sb.append(qr.getLabel().trim()).append("\n\n\n\n");
         }
         final String ontologieLabels = sb.toString();
 

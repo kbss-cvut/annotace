@@ -25,6 +25,7 @@ import cz.cvut.kbss.textanalysis.service.HtmlAnnotationService;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 

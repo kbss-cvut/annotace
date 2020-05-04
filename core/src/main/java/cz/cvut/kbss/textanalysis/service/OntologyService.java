@@ -75,11 +75,10 @@ public class OntologyService {
         RDFNode s;
         RDFNode o;
         ResultSet resultSet;
-        String query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-                        + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+        String query =  "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
                         + "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>"
                         + "SELECT ?s ?o WHERE {"
-                        + "?s rdfs:label ?o ."
+                        + "?s skos:prefLabel ?o ."
                         + "?s a <http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/popis-dat/pojem/term> . "
                         + "FILTER (lang(?o) = '" + lang + "') ."
                         + "}";

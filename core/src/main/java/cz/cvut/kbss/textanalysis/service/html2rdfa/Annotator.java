@@ -24,6 +24,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import cz.cvut.kbss.model.Phrase;
+import cz.cvut.kbss.model.Word;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,6 +42,8 @@ public class Annotator {
     private int i = 0;
 
     public Stopwords stopwords = new Stopwords();
+
+    private String uniqueId = generateID();
 
     List<String> stopwordsList;
 
@@ -160,7 +166,7 @@ public class Annotator {
     }
 
     private void annotateNode(final Element node, final String content, final Phrase phrase, final double score, int i) {
-        node.attr("about", "_:" + i);
+        node.attr("about", "_:" + uniqueId + i);
         String iri = phrase.getTermIri();
         node.attr("property", "ddo:je-výskytem-termu");
         if ((iri != null) && (!iri.equals(""))) {
@@ -196,6 +202,11 @@ public class Annotator {
 
     private Element createEmptySpanNode() {
         return new Element(Tag.valueOf("span"), "");
+    }
+
+    public String generateID() {
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString().substring(0, 4).concat("-");
     }
 
 }

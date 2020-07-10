@@ -63,14 +63,14 @@ public class Annotator {
         StringBuilder content = new StringBuilder();
 
         double score;
+        String stopChars = "";
         double numberOfTokens = 1;
         boolean previousWordisStopword = false;
+        TextNode tn = new TextNode("");
 
         if (words != null) {
             for (Word word : words) {
                 // TODO overlap
-
-                final TextNode tn;
 
                 if ((word.getPhrases() == null || word.getPhrases().length == 0) || ((currentNode instanceof TextNode || currentNode == null) && (isStopword(word.getToken())))) {
                     if (currentNode == null) {
@@ -78,12 +78,19 @@ public class Annotator {
 
                     } else {
                         if (!(currentNode instanceof TextNode)) {
-                            if (!previousWordisStopword)
-                                list.add(currentNode);
-                            else {
+                            if (!previousWordisStopword) {
+                                if (tn.text().substring(tn.text().length() - 1).equals(stopChars)) {
+                                    ((Element) currentNode).textNodes().get(0).text(tn.text().trim());
+                                    list.add(currentNode);
+                                    currentNode = new TextNode(stopChars);
+                                } else {
+                                    list.add(currentNode);
+                                    currentNode = new TextNode("");
+                                }
+                            } else {
                                 list.add(currentNode.childNode(0));
+                                currentNode = new TextNode("");
                             }
-                            currentNode = new TextNode("");
                             previousPhrases = null;
                             content = new StringBuilder();
                         }
@@ -109,8 +116,11 @@ public class Annotator {
                         currentNode = createEmptySpanNode();
                      } else if  (newPhrases.length == 0) {
                         if (!previousWordisStopword) {
-                        list.add(currentNode);
-                        content = new StringBuilder();
+                            ((Element) currentNode).textNodes().get(0).text(tn.text().trim());
+                            list.add(currentNode);
+                            TextNode spaceTn = new TextNode(" ");
+                            list.add(spaceTn);
+                            content = new StringBuilder();
                         }
                         else {
                             list.add(currentNode.childNode(0));
@@ -149,7 +159,8 @@ public class Annotator {
                         throw new IllegalArgumentException();
                     }
                 }
-                tn.text(tn.text() + word.getToken() + word.getStopChars());
+                stopChars = word.getStopChars();
+                tn.text(tn.getWholeText() + word.getToken() + stopChars);
                 previousWordisStopword = isStopword(word.getToken());
                 numberOfTokens += 1;
             }
@@ -157,7 +168,12 @@ public class Annotator {
             if (currentNode != null) {
                 if (previousWordisStopword && !(currentNode instanceof TextNode))
                     list.add(currentNode.childNode(0));
-                else
+                else if (!(currentNode instanceof TextNode) && (tn.text().substring(tn.text().length() - 1).equals(" "))) {
+                    ((Element) currentNode).textNodes().get(0).text(tn.text().trim());
+                    list.add(currentNode);
+                    TextNode spaceTn = new TextNode(" ");
+                    list.add(spaceTn);
+                } else
                     list.add(currentNode);
             }
         }
@@ -184,8 +200,7 @@ public class Annotator {
     }
 
     private Phrase [] sortArrayOfPhrasesLabelLength (Phrase [] phraseList) {
-        Phrase [] sortedArray = Arrays.stream(phraseList).sorted(Comparator.comparingInt(x -> x.getTermLabel().length())).collect(Collectors.toList()).toArray(new Phrase[]{});
-        return sortedArray;
+        return Arrays.stream(phraseList).sorted(Comparator.comparingInt(x -> x.getTermLabel().length())).collect(Collectors.toList()).toArray(new Phrase[]{});
     }
 
     private boolean isStopword(String s){

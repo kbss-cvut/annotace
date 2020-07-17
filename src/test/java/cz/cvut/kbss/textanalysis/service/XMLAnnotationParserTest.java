@@ -12,7 +12,7 @@ public class XMLAnnotationParserTest {
 
     @Test
     public void parser() throws TransformerException, ParserConfigurationException {
-        xmlAnnotationParser.paresContent();
+        xmlAnnotationParser.paresContent("en");
     }
 
 }

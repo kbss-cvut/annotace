@@ -63,8 +63,8 @@ public class XMLAnnotationService {
         return Jsoup.clean(doc.toString(), whitelist);
     }
 
-    public List<List<MorphoDitaResultJson>> morphoAnalyze(String s) {
-        final List<List<MorphoDitaResultJson>> morphoDitaResult = morphoDitaService.getMorphoDiteResultProcessed(s);
+    public List<List<MorphoDitaResultJson>> morphoAnalyze(String s, String lang) {
+        final List<List<MorphoDitaResultJson>> morphoDitaResult = morphoDitaService.getMorphoDiteResultProcessed(s, lang);
         return morphoDitaResult;
     }
 

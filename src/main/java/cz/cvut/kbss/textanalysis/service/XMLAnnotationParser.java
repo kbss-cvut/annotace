@@ -27,7 +27,7 @@ public class XMLAnnotationParser {
 
     XMLAnnotationService xmlAnnotationService = new XMLAnnotationService();
 
-    public void paresContent() throws ParserConfigurationException {
+    public void paresContent(String lang) throws ParserConfigurationException {
         //Initialize xml document
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -60,7 +60,7 @@ public class XMLAnnotationParser {
 
         String cleanDoc = processedContent.replaceAll("<span.*?\">", " ").replaceAll("</span>", " ");
 
-        List<List<MorphoDitaResultJson>> analyzedDocList = xmlAnnotationService.morphoAnalyze(cleanDoc);
+        List<List<MorphoDitaResultJson>> analyzedDocList = xmlAnnotationService.morphoAnalyze(cleanDoc, lang);
 
         Element tokenCollection = doc.createElement("TokenCollection");
         doc.appendChild(tokenCollection);

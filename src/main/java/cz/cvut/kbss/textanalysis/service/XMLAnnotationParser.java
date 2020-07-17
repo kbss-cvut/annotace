@@ -189,7 +189,7 @@ public class XMLAnnotationParser {
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         DOMSource domSource = new DOMSource(doc);
-        StreamResult streamResult = new StreamResult(new File(XMLAnnotationParser.class.getResource("xmlAnnotations.xml").getFile()));
+        StreamResult streamResult = new StreamResult(new File("xmlAnnotations.xml"));
 
         try {
             transformer.transform(domSource, streamResult);

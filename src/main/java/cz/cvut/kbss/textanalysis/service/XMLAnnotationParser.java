@@ -27,30 +27,28 @@ public class XMLAnnotationParser {
 
     XMLAnnotationService xmlAnnotationService = new XMLAnnotationService();
 
-    public void paresContent(String lang) throws ParserConfigurationException {
+    public void paresContent(String lang) throws ParserConfigurationException, TransformerConfigurationException {
         //Initialize xml document
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.newDocument();
 
-        final List<String> COMP = new ArrayList<String>(Arrays.asList("zahrnuje","zahrnovat", "tvořený", "skládající", "členěno", "členit", "rozděluje", "rozdělovat"));
-        final List<String> COMPR = new ArrayList<String>(Arrays.asList("vyskytující", "tvoří", "tvořit", "součástí", "součást"));
-        final List<String> CATV = new ArrayList<String>(Arrays.asList("rozlišuje", "rozlišovat", "člení", "vymezují", "vymezovat", "rozlišením", "rozlišení", "zejména"));
-        final List<String> CN = new ArrayList<String>(Arrays.asList("typy", "základní typy", "typ"));
-        final List<String> SYN = new ArrayList<String>(Arrays.asList("synonym", "syn", "ekvivalent", "ekvivalentem"));
-        final List<String> PROP = new ArrayList<String>(Arrays.asList("přiřazen", "přiřazena", "přiřadit"));
-        final List<String> BE = new ArrayList<String>(Arrays.asList("být", "bude", "budou", "byl", "byt", "je", "jsou"));
-        final List<String> CNR = new ArrayList<String>(Arrays.asList("takový", "takové", "taková"));
-        final List<String> PUNC = new ArrayList<String>(Arrays.asList("."));
+        final List<String> COMP = new ArrayList<>(Arrays.asList("zahrnuje","zahrnovat", "tvořený", "skládající", "členěno", "členit", "rozděluje", "rozdělovat"));
+        final List<String> COMPR = new ArrayList<>(Arrays.asList("vyskytující", "tvoří", "tvořit", "součástí", "součást"));
+        final List<String> CATV = new ArrayList<>(Arrays.asList("rozlišuje", "rozlišovat", "člení", "vymezují", "vymezovat", "rozlišením", "rozlišení", "zejména"));
+        final List<String> CN = new ArrayList<>(Arrays.asList("typy", "základní typy", "typ"));
+        final List<String> SYN = new ArrayList<>(Arrays.asList("synonym", "syn", "ekvivalent", "ekvivalentem"));
+        final List<String> PROP = new ArrayList<>(Arrays.asList("přiřazen", "přiřazena", "přiřadit"));
+        final List<String> BE = new ArrayList<>(Arrays.asList("být", "bude", "budou", "byl", "byt", "je", "jsou"));
+        final List<String> CNR = new ArrayList<>(Arrays.asList("takový", "takové", "taková"));
+        final List<String> PUNC = new ArrayList<>(Arrays.asList("."));
 
         int labelCount=0;
 
         String content = null;
         try {
             content = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource("MPP-allgraphs-dev-annotated-noStopwords.html").toURI())));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
 
@@ -78,7 +76,8 @@ public class XMLAnnotationParser {
                 }
 
                 String token = list1.get(i).getToken();
-                String tag = transformTag(list1.get(i).getTag().substring(0, 2));
+                String t = (list1.get(i).getTag().length() > 1)? list1.get(i).getTag().substring(0, 2) : list1.get(i).getTag();
+                String tag = transformTag(t);
                 String lemma = stripLemma(list1.get(i).getLemma());
                 if (processedContent.startsWith(token)) {
 
@@ -178,14 +177,9 @@ public class XMLAnnotationParser {
         return feature;
     }
 
-    public void transformXml(Document doc) {
+    public void transformXml(Document doc) throws TransformerConfigurationException {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = null;
-        try {
-            transformer = transformerFactory.newTransformer();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        }
+        Transformer transformer = transformerFactory.newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         DOMSource domSource = new DOMSource(doc);

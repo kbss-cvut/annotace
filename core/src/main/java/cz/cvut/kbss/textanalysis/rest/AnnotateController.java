@@ -54,7 +54,7 @@ public class AnnotateController {
         throws Exception {
         Set<URI> uriSet = new HashSet<>();
         String uri;
-        String iTerm = "http://onto.fel.cvut.cz/ontologies/slovník/agendový/popis-dat/pojem/term";
+        String iTerm = "http://www.w3.org/2004/02/skos/core#Concept";
         if (input.getVocabularyContexts() != null) {
             Set<URI> allGraphs = input.getVocabularyContexts();
 

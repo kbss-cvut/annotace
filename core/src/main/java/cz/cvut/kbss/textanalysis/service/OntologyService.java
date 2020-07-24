@@ -79,7 +79,7 @@ public class OntologyService {
                         + "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>"
                         + "SELECT ?s ?o WHERE {"
                         + "?s skos:prefLabel ?o ."
-                        + "?s a <http://onto.fel.cvut.cz/ontologies/slovník/agendový/popis-dat/pojem/term> . "
+                        + "?s a <http://www.w3.org/2004/02/skos/core#Concept> . "
                         + "FILTER (lang(?o) = '" + lang + "') ."
                         + "}";
 

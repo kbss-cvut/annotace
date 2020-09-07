@@ -37,6 +37,9 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.parser.Tag;
 
+import static java.util.Map.Entry.comparingByValue;
+import static java.util.stream.Collectors.*;
+
 public class Annotator {
 
     private int i = 0;
@@ -136,9 +139,7 @@ public class Annotator {
                     previousPhrases = newPhrases;
                     double labelCount;
 
-                    if (newPhrases.length > 1)
-                    newPhrases = sortArrayOfPhrasesLabelLength(newPhrases);
-                    Phrase matchedPhrase = newPhrases[0];
+                    Phrase matchedPhrase = choosePhrase(newPhrases);
                     if (matchedPhrase.getTermIri() == null || matchedPhrase.getTermIri().equals("")) {
                          labelCount = numberOfTokens;
                     } else
@@ -199,12 +200,48 @@ public class Annotator {
         return trimmed.isEmpty() ? 0 : trimmed.split("\\s+").length;
     }
 
-    private Phrase [] sortArrayOfPhrasesLabelLength (Phrase [] phraseList) {
-        return Arrays.stream(phraseList).sorted(Comparator.comparingInt(x -> x.getTermLabel().length())).collect(Collectors.toList()).toArray(new Phrase[]{});
+    public Phrase [] sortArrayOfPhrasesLabelLength(Phrase [] phraseList) {
+        return Arrays.stream(phraseList).sorted(Comparator.comparingInt(x -> getNumberOfTokens(x.getTermLabel()))).collect(Collectors.toList()).toArray(new Phrase[]{});
+    }
+
+    public Phrase choosePhrase(Phrase[] phraseList) {
+        if (phraseList.length > 1) {
+            phraseList = sortArrayOfPhrasesLabelLength(phraseList);
+            // to insure shorter match gets priority regardless of property type
+            if (getNumberOfTokens(phraseList[0].getTermLabel()) != getNumberOfTokens(phraseList[1].getTermLabel()))
+                return phraseList[0];
+            else {
+                return countScore(phraseList);
+                }
+        } else
+        return phraseList[0];
+    }
+
+    private Phrase countScore(Phrase[] phraseList) {
+        final Map<Phrase, Integer> scoredPhrases = new LinkedHashMap<>();
+        Arrays.stream(phraseList).forEach(p -> scoredPhrases.put(p, countIndividualScore(p, phraseList)));
+        return scoredPhrases.entrySet().stream().sorted(comparingByValue()).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new)).entrySet().iterator().next().getKey();
+    }
+
+    private Integer countIndividualScore(Phrase p, Phrase[] phraseList) {
+        int matches;
+        // label length
+        int score = getNumberOfTokens(p.getTermLabel()) * 2;
+        // property type
+        score = p.getPropertyName().equals("http://www.w3.org/2004/02/skos/core#altLabel")? score * 2 : p.getPropertyName().equals("http://www.w3.org/2004/02/skos/core#hiddenLabel")? score * 3 : score;
+        // number of times matched
+            matches = (int) Arrays.stream(phraseList).filter(phrase -> phrase.getTermIri().equals(p.getTermIri())).count();
+        switch (matches) {
+            case 2 : score *=2;
+            break;
+            case 1 : score *=3;
+            break;
+        }
+        return score;
     }
 
     private boolean isStopword(String s){
-        return stopwordsList.contains(s);
+        return stopwordsList.contains(s.trim());
     }
 
     private String parseLemma(String s) {

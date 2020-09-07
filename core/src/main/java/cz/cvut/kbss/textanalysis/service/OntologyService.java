@@ -73,15 +73,17 @@ public class OntologyService {
         List<QueryResult> queryResultList = new ArrayList<>();
         log.debug("Analyzing ontology model to get all labels");
         RDFNode s;
+        RDFNode p;
         RDFNode o;
         ResultSet resultSet;
         String query =  "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-                        + "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>"
-                        + "SELECT ?s ?o WHERE {"
-                        + "?s skos:prefLabel ?o ."
-                        + "?s a <http://www.w3.org/2004/02/skos/core#Concept> . "
-                        + "FILTER (lang(?o) = '" + lang + "') ."
-                        + "}";
+                + "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>"
+                + "SELECT ?s ?p ?o WHERE {"
+                + "?s ?p ?o ."
+                + "?s a <http://www.w3.org/2004/02/skos/core#Concept> . "
+                + "FILTER (lang(?o) = '" + lang + "') ."
+                + "FILTER (?p = skos:prefLabel || ?p = skos:hiddenLabel || ?p = skos:altLabel)"
+                + "}";
 
         QueryExecution queryExecution = QueryExecutionFactory.create(query, model);
         resultSet = queryExecution.execSelect();
@@ -89,14 +91,15 @@ public class OntologyService {
         for (; resultSet.hasNext(); ) {
             QuerySolution querySolution = resultSet.nextSolution();
             s = querySolution.get("s");
+            p = querySolution.get("p");
             o = querySolution.get("o");
             if (!o.asLiteral().getString().isEmpty()) {
                 QueryResult queryResultobject =
-                        new QueryResult(s.asNode().toString(), o.asLiteral().getString());
+                        new QueryResult(s.asNode().toString(), o.asLiteral().getString(), p.asNode().toString());
                 queryResultList.add(queryResultobject);
             } else {
                 QueryResult queryResultobject =
-                        new QueryResult(s.asNode().toString(), "null");
+                        new QueryResult(s.asNode().toString(), "null", "null");
                 queryResultList.add(queryResultobject);
             }
         }

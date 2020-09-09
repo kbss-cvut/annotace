@@ -218,23 +218,23 @@ public class Annotator {
     }
 
     private Phrase countScore(Phrase[] phraseList) {
-        final Map<Phrase, Integer> scoredPhrases = new LinkedHashMap<>();
+        final Map<Phrase, Double> scoredPhrases = new LinkedHashMap<>();
         Arrays.stream(phraseList).forEach(p -> scoredPhrases.put(p, countIndividualScore(p, phraseList)));
         return scoredPhrases.entrySet().stream().sorted(comparingByValue()).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new)).entrySet().iterator().next().getKey();
     }
 
-    private Integer countIndividualScore(Phrase p, Phrase[] phraseList) {
+    private Double countIndividualScore(Phrase p, Phrase[] phraseList) {
         int matches;
         // label length
-        int score = getNumberOfTokens(p.getTermLabel()) * 2;
+        double score = getNumberOfTokens(p.getTermLabel()) * 3;
         // property type
-        score = p.getPropertyName().equals("http://www.w3.org/2004/02/skos/core#altLabel")? score * 2 : p.getPropertyName().equals("http://www.w3.org/2004/02/skos/core#hiddenLabel")? score * 3 : score;
+        score = p.getPropertyName().equals("http://www.w3.org/2004/02/skos/core#altLabel")? score * 3 : p.getPropertyName().equals("http://www.w3.org/2004/02/skos/core#hiddenLabel")? score * 4 : score;
         // number of times matched
             matches = (int) Arrays.stream(phraseList).filter(phrase -> phrase.getTermIri().equals(p.getTermIri())).count();
         switch (matches) {
-            case 2 : score *=2;
+            case 2 : score *=1.3;
             break;
-            case 1 : score *=3;
+            case 1 : score *=1.7;
             break;
         }
         return score;

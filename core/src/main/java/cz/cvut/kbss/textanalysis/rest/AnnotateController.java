@@ -35,6 +35,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -50,7 +51,7 @@ public class AnnotateController {
     @RequestMapping(value = "/annotate", method = RequestMethod.POST,
                     produces = MediaType.APPLICATION_XML_VALUE,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String annotate(@RequestBody TextAnalysisInput input)
+    public String annotate(@RequestParam(value = "enableKeywordExtraction", defaultValue = "false") Boolean enableKeywordExtraction, @RequestBody TextAnalysisInput input)
         throws Exception {
         Set<URI> uriSet = new HashSet<>();
         String uri;
@@ -72,7 +73,7 @@ public class AnnotateController {
 
 
         final String htmlDocument = input.getContent();
-        return service.annotate(uriSet, htmlDocument, input.getLanguage());
+        return service.annotate(uriSet, htmlDocument, input.getLanguage(), enableKeywordExtraction);
     }
 
     private String encode(String s) throws UnsupportedEncodingException {

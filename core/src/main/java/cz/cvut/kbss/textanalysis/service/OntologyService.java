@@ -22,14 +22,25 @@ import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
+
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
@@ -45,6 +56,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class OntologyService {
 
+    private static final String REPO_AUTH = "Basic dGVybWl0OnZsOGRjZXRlcm1pdGkzdDI=";
+
     private LemmatizerApi lemmatizerServiceApi;
 
     @Autowired
@@ -53,8 +66,31 @@ public class OntologyService {
     }
 
     public Model readOntology(URI uri) {
+        HttpClient client = HttpClients.custom().build();
+        HttpUriRequest request = RequestBuilder.get()
+                .setUri(uri)
+                .setHeader("Authorization", REPO_AUTH)
+                .build();
+        HttpEntity entity = null;
+        try {
+            entity = client.execute(request).getEntity();
+        } catch (IOException e) {
+            LOG.error("Error executing Get request to the repository");
+        }
+
+        final File file;
         Model model = ModelFactory.createDefaultModel();
         model.read(uri.toString(), "text/turtle");
+        try {
+            file = File.createTempFile("model","");
+            if (entity != null) {
+                Files.write(Paths.get(file.toURI()), Collections.singleton(EntityUtils.toString(entity)));
+                model.read(file.getAbsolutePath(), FileUtils.langTurtle);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return model;
     }
 

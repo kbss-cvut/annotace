@@ -65,14 +65,10 @@ cant
 -
 ;
 ,
-computer
 con
 could
 couldnt
-cry
 de
-describe
-detail
 do
 done
 down
@@ -94,9 +90,6 @@ everything
 everywhere
 except
 few
-fill
-find
-fire
 first
 five
 for
@@ -193,7 +186,6 @@ otherwise
 our
 ours
 ourselves
-out
 over
 own
 part

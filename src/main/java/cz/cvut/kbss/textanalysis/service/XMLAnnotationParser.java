@@ -20,6 +20,7 @@ package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
 import org.jsoup.Jsoup;
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -41,9 +42,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class XMLAnnotationParser {
 
-    XMLAnnotationService xmlAnnotationService = new XMLAnnotationService();
+    public XMLAnnotationService xmlAnnotationService;
+
+    public XMLAnnotationParser(final XMLAnnotationService xmlAnnotationService) {
+        this.xmlAnnotationService = xmlAnnotationService;
+    }
 
     public void paresContent() throws ParserConfigurationException {
         //Initialize xml document

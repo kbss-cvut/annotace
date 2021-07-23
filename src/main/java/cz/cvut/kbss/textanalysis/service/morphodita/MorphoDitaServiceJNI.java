@@ -1,21 +1,18 @@
 /**
- * Annotac
- * Copyright (C) 2019 Czech Technical University in Prague
+ * Annotac Copyright (C) 2019 Czech Technical University in Prague
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- * © 2019 GitHub, Inc.
+ * You should have received a copy of the GNU General Public License along with this program.  If
+ * not, see <https://www.gnu.org/licenses/>. © 2019 GitHub, Inc.
  */
+
 package cz.cvut.kbss.textanalysis.service.morphodita;
 
 import cz.cuni.mff.ufal.morphodita.Forms;
@@ -26,47 +23,44 @@ import cz.cuni.mff.ufal.morphodita.TokenRange;
 import cz.cuni.mff.ufal.morphodita.TokenRanges;
 import cz.cuni.mff.ufal.morphodita.Tokenizer;
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 @Primary
 @Service
+@Scope("singleton")
+@Slf4j
 public class MorphoDitaServiceJNI implements MorphoDitaServiceAPI {
 
-    private static Logger logger = LoggerFactory.getLogger(MorphoDitaServiceJNI.class);
+    private Tagger tagger;
 
-    private static Tagger tagger = null;
-
-    private static final String taggerFileResource="czech-morfflex-pdt-161115.tagger";
-
-    static {
+    @Autowired
+    public MorphoDitaServiceJNI(cz.cvut.kbss.textanalysis.configuration.AnnotaceConf annotaceConf) {
         try {
-            logger.info("Finding {} ...", taggerFileResource);
-            final String taggerFile =
-                MorphoDitaServiceJNI.class.getResource("/czech-morfflex-pdt-161115.tagger")
-                                          .getFile();
-            logger.info("Found at {}", taggerFile);
-            logger.info("Loading tagger ... (looks up MorphoDita native library at {})",System.getProperty("java.library.path"));
-            tagger = Tagger.load(new File(taggerFile).getAbsolutePath());
-            logger.info("Tagger succesfully created");
+            log.info("Finding {} ...", annotaceConf.getMorphoditaTagger());
+            if (!new File(annotaceConf.getMorphoditaTagger()).exists()) {
+                log.info("No Morphodita tagger file found.");
+                return;
+            }
+            log.info("Found at {}", annotaceConf.getMorphoditaTagger());
+            log.info("Loading tagger ... (looks up MorphoDita native library at {})",
+                System.getProperty("java.library.path"));
+            tagger = Tagger.load(annotaceConf.getMorphoditaTagger());
+            log.info("Tagger succesfully created");
+            if (tagger == null) {
+                log.warn(
+                    "Creating tagger failed.");
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("Creating tagger failed.", e);
         }
-        if (tagger == null) {
-            logger.warn(
-                "Creating tagger failed.");
-        }
-    }
-
-    public static boolean available() {
-        return tagger != null;
     }
 
     @Override public List<List<MorphoDitaResultJson>> getMorphoDiteResultProcessed(String s) {
@@ -113,13 +107,15 @@ public class MorphoDitaServiceJNI implements MorphoDitaServiceAPI {
                 token.setTag(taggedLemma.getTag());
                 token.setToken(forms.get(j));
 
-                final long end = tokenRange.getStart()+tokenRange.getLength();
-                final long startNext = (j == tokenLemmas.size()-1) ? end :tokenRanges.get(j+1).getStart();
+                final long end = tokenRange.getStart() + tokenRange.getLength();
+                final long startNext =
+                    (j == tokenLemmas.size() - 1) ? end : tokenRanges.get(j + 1).getStart();
 
-                String spaces = StringUtils.repeat(" ",(int) (startNext-end));
-                token.setSpace( spaces );
+                String spaces = StringUtils.repeat(" ", (int) (startNext - end));
+                token.setSpace(spaces);
                 sentence.add(token);
-                //logger.debug("TAG: " + taggedLemma.getTag() + ", LEMMA: " + taggedLemma.getLemma() + ", FORM: " + forms.get(j) + ", SPACES:\""+spaces+"\"");
+                //logger.debug("TAG: " + taggedLemma.getTag() + ", LEMMA: " + taggedLemma
+                // .getLemma() + ", FORM: " + forms.get(j) + ", SPACES:\""+spaces+"\"");
             }
         }
         return result;

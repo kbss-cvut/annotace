@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  annotace:
+    container_name: annotace
+    image: annotace
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # path to morphodita ZIP file, from https://github.com/ufal/morphodita
+        MORPHODITA_ZIP: morphodita-1.9.2-bin.zip
+        # path to the morphodita shared library
+        MORPHODITA_ZIP_SO: /morphodita-1.9.2-bin/bin-linux64/java/libmorphodita_java.so
+        # path to the morphology model ZIP, from https://lindat.mff.cuni.cz/repository/xmlui/handle/11234/1-1836
+        MORPHODITA_MODEL: czech-morfflex-pdt-161115.zip
+        # path to the morphology model tagger
+        MORPHODITA_MODEL_TAGGER_FILE: /czech-morfflex-pdt-161115/czech-morfflex-pdt-161115.tagger
+    environment:
+      ANNOTACE_MORPHODITATAGGER: czech-morfflex-pdt-161115.tagger
+    ports:
+      - 8080:8080

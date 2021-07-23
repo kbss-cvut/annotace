@@ -18,7 +18,7 @@
  */
 package cz.cvut.kbss.textanalysis.service;
 
-import cz.cvut.kbss.model.Word;
+import cz.cvut.kbss.textanalysis.model.Word;
 
 public interface ChunkAnnotationService {
 

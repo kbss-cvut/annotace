@@ -1,6 +1,6 @@
 package cz.cvut.kbss.textanalysis.service.html2rdfa;
 
-import cz.cvut.kbss.model.Word;
+import cz.cvut.kbss.textanalysis.model.Word;
 import java.util.stream.Stream;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;

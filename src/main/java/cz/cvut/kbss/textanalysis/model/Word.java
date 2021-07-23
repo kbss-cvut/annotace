@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * © 2019 GitHub, Inc.
  */
-package cz.cvut.kbss.model;
+package cz.cvut.kbss.textanalysis.model;
 
 import java.util.Arrays;
 

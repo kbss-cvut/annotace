@@ -20,7 +20,6 @@ package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
-import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceJNI;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -34,8 +33,12 @@ import java.util.List;
 @Service
 public class XMLAnnotationService {
 
+    private MorphoDitaServiceAPI morphoDitaService;
+
     @Autowired
-    private MorphoDitaServiceAPI morphoDitaService = new MorphoDitaServiceJNI();
+    public XMLAnnotationService(final MorphoDitaServiceAPI morphoDitaService) {
+        this.morphoDitaService = morphoDitaService;
+    }
 
     public String stripSpans(String htmlDocument) {
         Document.OutputSettings settings = new Document.OutputSettings();

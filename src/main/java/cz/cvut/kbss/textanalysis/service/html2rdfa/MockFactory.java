@@ -18,8 +18,8 @@
  */
 package cz.cvut.kbss.textanalysis.service.html2rdfa;
 
-import cz.cvut.kbss.model.Word;
-import cz.cvut.kbss.model.Phrase;
+import cz.cvut.kbss.textanalysis.model.Word;
+import cz.cvut.kbss.textanalysis.model.Phrase;
 import cz.cvut.kbss.textanalysis.service.ChunkAnnotationService;
 import java.util.LinkedHashMap;
 import java.util.Map;

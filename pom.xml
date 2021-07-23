@@ -14,7 +14,7 @@
     <artifactId>czech-text-analysis</artifactId>
     <version>0.0.1</version>
     <name>Text Analysis for Czech Texts</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <description>Text analysis for Czech language and annotation recommendation service</description>
 
@@ -111,6 +111,12 @@
             <version>3.5</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -122,6 +128,13 @@
                 <configuration>
                     <source>11</source>
                     <target>11</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.20</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
@@ -186,7 +199,10 @@
                     </excludes>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 

@@ -18,7 +18,7 @@
  */
 package cz.cvut.kbss.textanalysis.rest;
 
-import cz.cvut.kbss.model.Word;
+import cz.cvut.kbss.textanalysis.model.Word;
 import cz.cvut.kbss.textanalysis.model.KerResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.service.AnnotationService;

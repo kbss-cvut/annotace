@@ -1,0 +1,4 @@
+annotace:
+  serverPort: 8080
+  morphoditaTagger: /home/kremep1/soft/annotace/czech-morfflex-pdt-161115.tagger
+  morphoditaServer: http://lindat.mff.cuni.cz/services/morphodita/api

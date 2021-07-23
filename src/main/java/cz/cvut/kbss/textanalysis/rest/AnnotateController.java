@@ -19,7 +19,6 @@
 package cz.cvut.kbss.textanalysis.rest;
 
 import cz.cvut.kbss.textanalysis.dto.TextAnalysisInput;
-import cz.cvut.kbss.textanalysis.service.AnnotationService;
 import cz.cvut.kbss.textanalysis.service.HtmlAnnotationService;
 
 import java.net.URI;
@@ -38,11 +37,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AnnotateController {
 
-    @Autowired
     private HtmlAnnotationService service;
 
     @Autowired
-    private AnnotationService annotationService;
+    public AnnotateController(HtmlAnnotationService service) {
+        this.service = service;
+    }
 
     @RequestMapping(value = "/annotate", method = RequestMethod.POST,
                     produces = MediaType.APPLICATION_XML_VALUE,
@@ -69,7 +69,7 @@ public class AnnotateController {
 
 
         final String htmlDocument = input.getContent();
-        return service.annotate(annotationService, uriSet, htmlDocument);
+        return service.annotate(uriSet, htmlDocument);
     }
 
     @RequestMapping(value = "/annotate-html", method = RequestMethod.POST,
@@ -80,6 +80,6 @@ public class AnnotateController {
         @RequestParam(value = "ontologyUrl", required = false) Set<URI> ontologyUrl,
         @RequestBody String htmlDocument)
         throws Exception {
-        return service.annotate(annotationService, ontologyUrl, htmlDocument);
+        return service.annotate(ontologyUrl, htmlDocument);
     }
 }

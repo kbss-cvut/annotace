@@ -22,6 +22,7 @@ import cz.cuni.mff.ufal.morphodita.Tagger;
 import cz.cuni.mff.ufal.morphodita.TokenRange;
 import cz.cuni.mff.ufal.morphodita.TokenRanges;
 import cz.cuni.mff.ufal.morphodita.Tokenizer;
+import cz.cvut.kbss.textanalysis.configuration.MorphoditaConf;
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
 import java.io.File;
 import java.util.ArrayList;
@@ -42,17 +43,17 @@ public class MorphoDitaServiceJNI implements MorphoDitaServiceAPI {
     private Tagger tagger;
 
     @Autowired
-    public MorphoDitaServiceJNI(cz.cvut.kbss.textanalysis.configuration.AnnotaceConf annotaceConf) {
+    public MorphoDitaServiceJNI(MorphoditaConf conf) {
         try {
-            log.info("Finding {} ...", annotaceConf.getMorphoditaTagger());
-            if (!new File(annotaceConf.getMorphoditaTagger()).exists()) {
+            log.info("Finding {} ...", conf.getTagger());
+            if (!new File(conf.getTagger()).exists()) {
                 log.info("No Morphodita tagger file found.");
                 return;
             }
-            log.info("Found at {}", annotaceConf.getMorphoditaTagger());
+            log.info("Found at {}", conf.getTagger());
             log.info("Loading tagger ... (looks up MorphoDita native library at {})",
                 System.getProperty("java.library.path"));
-            tagger = Tagger.load(annotaceConf.getMorphoditaTagger());
+            tagger = Tagger.load(conf.getTagger());
             log.info("Tagger succesfully created");
             if (tagger == null) {
                 log.warn(

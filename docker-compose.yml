@@ -16,6 +16,6 @@ services:
         # path to the morphology model tagger
         MORPHODITA_MODEL_TAGGER_FILE: /czech-morfflex-pdt-161115/czech-morfflex-pdt-161115.tagger
     environment:
-      ANNOTACE_MORPHODITATAGGER: czech-morfflex-pdt-161115.tagger
+      ANNOTACE_MORPHODITA_TAGGER: czech-morfflex-pdt-161115.tagger
     ports:
       - 8080:8080

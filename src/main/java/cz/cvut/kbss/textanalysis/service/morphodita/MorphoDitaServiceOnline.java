@@ -15,7 +15,7 @@
 
 package cz.cvut.kbss.textanalysis.service.morphodita;
 
-import cz.cvut.kbss.textanalysis.configuration.AnnotaceConf;
+import cz.cvut.kbss.textanalysis.configuration.MorphoditaConf;
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResult;
 import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
 import java.util.List;
@@ -28,18 +28,18 @@ public class MorphoDitaServiceOnline implements MorphoDitaServiceAPI {
 
     private RestTemplateBuilder restTemplateBuilder;
 
-    private AnnotaceConf annotaceConf;
+    private MorphoditaConf conf;
 
     @Autowired
     public MorphoDitaServiceOnline(final RestTemplateBuilder restTemplateBuilder,
-                                   final AnnotaceConf annotaceConf) {
+                                   final MorphoditaConf conf) {
         this.restTemplateBuilder = restTemplateBuilder;
-        this.annotaceConf = annotaceConf;
+        this.conf = conf;
     }
 
     public List<List<MorphoDitaResultJson>> getMorphoDiteResultProcessed(String s) {
         final MorphoDitaResult morphoDitaResult = restTemplateBuilder.build().getForObject(
-            annotaceConf.getMorphoditaServer() +
+            conf.getServer() +
                 "/tag?data=" + s + "&output=json",
             MorphoDitaResult.class);
         return morphoDitaResult.getResult();

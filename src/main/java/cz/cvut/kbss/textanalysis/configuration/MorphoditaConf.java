@@ -10,12 +10,10 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationProperties("annotace")
-public class AnnotaceConf {
+@ConfigurationProperties("annotace.morphodita")
+public class MorphoditaConf {
 
-    private String serverPort;
+    private String tagger;
 
-    private String morphoditaTagger;
-
-    private String morphoditaServer;
+    private String server;
 }

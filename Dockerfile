@@ -18,9 +18,10 @@ ARG MORPHODITA_ZIP_SO
 RUN mkdir annotace
 WORKDIR /annotace
 COPY . .
-COPY --from=unzip $MORPHODITA_MODEL_TAGGER_FILE /
+COPY --from=unzip $MORPHODITA_MODEL_TAGGER_FILE /tagger
 COPY --from=unzip $MORPHODITA_ZIP_SO /lib
-RUN mvn package
+RUN mvn -Dannotace.morphodita.tagger=/tagger test
+RUN mvn -DskipTests=true package
 
 FROM openjdk:11 as runtime
 ARG MORPHODITA_MODEL_TAGGER_FILE

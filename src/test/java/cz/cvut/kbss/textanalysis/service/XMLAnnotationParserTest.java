@@ -1,6 +1,5 @@
 package cz.cvut.kbss.textanalysis.service;
 
-import cz.cvut.kbss.textanalysis.configuration.AnnotaceConf;
 import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceJNI;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -12,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class,
-    classes = {XMLAnnotationParser.class, XMLAnnotationService.class, MorphoDitaServiceJNI.class, AnnotaceConf.class})
+    classes = {XMLAnnotationParser.class, XMLAnnotationService.class, MorphoDitaServiceJNI.class})
 public class XMLAnnotationParserTest {
 
     @Autowired

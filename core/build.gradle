@@ -1,0 +1,55 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group 'cz.cvut.kbss'
+description 'Text analysis for Czech language and annotation recommendation service'
+version '0.0.1'
+
+repositories {
+    jcenter()
+    maven {
+        name = 'kbss-private'
+        url = uri('https://kbss.felk.cvut.cz/m2repo-private')
+    }
+}
+
+compileJava {
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.jsoup:jsoup:1.11.3'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.1'
+    implementation('com.fasterxml.jackson.core:jackson-databind:2.12.1') {
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+    }
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
+    implementation 'org.apache.jena:apache-jena-libs:3.8.0'
+    implementation 'cz.cvut.kbss:morphodita:0.0.1'
+    implementation 'org.apache.commons:commons-math3:3.5'
+    implementation 'org.mockito:mockito-junit-jupiter:2.21.0'
+
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+
+    annotationProcessor "org.projectlombok:lombok:1.18.20"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+bootJar {
+    archiveFileName = "annotace-${project.version}.jar"
+}

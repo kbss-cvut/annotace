@@ -12,7 +12,7 @@ RUN unzip $MORPHODITA_MODEL
 COPY $MORPHODITA_ZIP .
 RUN unzip $MORPHODITA_ZIP
 
-FROM maven:3.8.1-jdk-11 as buildMaven
+FROM gradle:7.1.1-jdk11 as buildMaven
 ARG MORPHODITA_MODEL_TAGGER_FILE
 ARG MORPHODITA_ZIP_SO
 RUN mkdir annotace
@@ -20,8 +20,8 @@ WORKDIR /annotace
 COPY . .
 COPY --from=unzip $MORPHODITA_MODEL_TAGGER_FILE /tagger
 COPY --from=unzip $MORPHODITA_ZIP_SO /lib
-RUN mvn -Dannotace.morphodita.tagger=/tagger test
-RUN mvn -DskipTests=true package
+RUN ANNOTACE_MORPHODITA_TAGGER=/tagger gradle test
+RUN gradle bootJar
 
 FROM openjdk:11 as runtime
 ARG MORPHODITA_MODEL_TAGGER_FILE

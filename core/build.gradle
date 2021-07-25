@@ -1,20 +1,9 @@
 plugins {
     id 'org.springframework.boot' version '2.4.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
 }
 
-group 'cz.cvut.kbss'
 description 'Text analysis for Czech language and annotation recommendation service'
-version '0.0.1'
-
-repositories {
-    jcenter()
-    maven {
-        name = 'kbss-private'
-        url = uri('https://kbss.felk.cvut.cz/m2repo-private')
-    }
-}
 
 compileJava {
     sourceCompatibility = '11'

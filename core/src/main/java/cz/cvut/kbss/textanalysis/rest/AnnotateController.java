@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AnnotateController {
 
-    private HtmlAnnotationService service;
+    private final HtmlAnnotationService service;
 
     @Autowired
     public AnnotateController(HtmlAnnotationService service) {
@@ -63,7 +63,7 @@ public class AnnotateController {
 
         } else {
             uri = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
-                    "CONSTRUCT {?s ?p ?o} WHERE {?s a <"+iTerm+"> . ?s ?p ?o}");
+                    "CONSTRUCT {?s ?p ?o} WHERE {?s a <"+iTerm+"> . ?s ?p ?o}", java.nio.charset.StandardCharsets.UTF_8.toString());
             uriSet.add(URI.create(uri));
         }
 

@@ -1,2 +1,8 @@
 rootProject.name = 'annotace'
 include 'core'
+include 'api'
+include 'lemmatizer-spark'
+include 'lemmatizer-morphodita'
+include 'keywordextractor-ker'
+
+include 'lemmatizer-tests'

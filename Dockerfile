@@ -27,7 +27,6 @@ FROM openjdk:11 as runtime
 ARG MORPHODITA_MODEL_TAGGER_FILE
 ARG MORPHODITA_ZIP_SO
 COPY --from=buildMaven /annotace/core/build/libs/*.jar /
-RUN ls -ltr /
 RUN mv *.jar annotace.jar
 COPY --from=unzip $MORPHODITA_MODEL_TAGGER_FILE /
 COPY --from=unzip $MORPHODITA_ZIP_SO /lib

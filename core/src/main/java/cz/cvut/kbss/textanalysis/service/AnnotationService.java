@@ -18,26 +18,27 @@
  */
 package cz.cvut.kbss.textanalysis.service;
 
+import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.model.Phrase;
 import cz.cvut.kbss.textanalysis.model.Word;
-import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
+import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import cz.cvut.kbss.textanalysis.model.KerResult;
-import cz.cvut.kbss.textanalysis.model.MorphoDitaResultJson;
+import cz.cvut.kbss.textanalysis.keywordextractor.model.KeywordExtractorResult;
+import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
 
 @Service
 public class AnnotationService {
 
     @Autowired
-    private MorphoDitaServiceAPI morphoDitaService;
+    private LemmatizerApi morphoDitaService;
 
-    public List<Word> getAnnotations(final String textChunk, final List<QueryResult> queryResultList, final KerResult result) throws AnnotationException {
+    public List<Word> getAnnotations(final String textChunk, final List<QueryResult> queryResultList, final KeywordExtractorResult result) throws AnnotationException {
         try {
             return this._getAnnotations(textChunk, queryResultList, result);
         } catch (Exception e) {
@@ -45,29 +46,30 @@ public class AnnotationService {
         }
     }
 
-    private List<Word> _getAnnotations(final String textChunk, final List<QueryResult> queryResultList,final KerResult result) {
-        final List<List<MorphoDitaResultJson>> morphoDitaResult = morphoDitaService.getMorphoDiteResultProcessed(textChunk);
-        return annotateOntologieLables(morphoDitaResult, queryResultList,result);
+    private List<Word> _getAnnotations(final String textChunk, final List<QueryResult> queryResultList,final KeywordExtractorResult result) {
+        final LemmatizerResult lemmatizerResult = morphoDitaService.process(textChunk);
+        return annotateOntologieLables(lemmatizerResult, queryResultList,result);
     }
 
-    private List<Word> annotateOntologieLables(List<List<MorphoDitaResultJson>> morphoDitaList, List<QueryResult> queryResultList,final KerResult kerResult) {
+    private List<Word> annotateOntologieLables(LemmatizerResult lemmatizerResult, List<QueryResult> queryResultList, final KeywordExtractorResult kerResult) {
 
         List<Word> annotationsResults = new ArrayList<>();
 
-        for (List<MorphoDitaResultJson> results : morphoDitaList) {
-            for (MorphoDitaResultJson result : results) {
+        for (List<SingleLemmaResult> results : lemmatizerResult.getResult()) {
+            for (SingleLemmaResult result : results) {
 
                 List<Phrase> matchedAnnotations = new ArrayList<>();
                 boolean isKeyword = false;
                 boolean isMatched = false;
 
                 for (QueryResult queryResults : queryResultList) {
-                    for (MorphoDitaResultJson ontologyResults : queryResults.getMorphoDitaResultList()) {
+                    for (SingleLemmaResult ontologyResults : queryResults.getMorphoDitaResultList()) {
 
                         boolean singleMatch = queryResults.getMorphoDitaResultList().size() == 1;
 
                         if ((result.getLemma().contentEquals(ontologyResults.getLemma())) &&
-                             result.getTag().charAt(10) == ontologyResults.getTag().charAt(10)) {
+                            (result.isNegated() ^ ontologyResults.isNegated())) {
+//                            result.getTag().charAt(10) == ontologyResults.getTag().charAt(10)) {
 
                             Phrase matchedAnnotation = new Phrase(
                                     queryResults.getType(),
@@ -96,8 +98,8 @@ public class AnnotationService {
                                     matchedAnnotations.add(matchedAnnotation);
                 }
 
-                final MorphoDitaResultJson res = result;
-                annotationsResults.add( new Word(res.getLemma(), res.getToken(), res.getSpace() == null ? "":res.getSpace(), matchedAnnotations.toArray(new Phrase[]{})) );
+                final SingleLemmaResult res = result;
+                annotationsResults.add( new Word(res.getLemma(), res.getToken(), res.getSpaces() == null ? "":res.getSpaces(), matchedAnnotations.toArray(new Phrase[]{})) );
 
             }
         }

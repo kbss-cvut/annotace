@@ -1,0 +1,9 @@
+application:
+  version: ${version}
+
+annotace:
+  morphodita:
+    tagger: /home/kremep1/soft/annotace/czech-morfflex-pdt-161115.tagger
+    service: http://lindat.mff.cuni.cz/services/morphodita/api
+  ker:
+    service: http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.04&maximum-words=30

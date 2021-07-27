@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import cz.cvut.kbss.textanalysis.Stopwords;
-import org.apache.commons.math3.util.Precision;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
@@ -130,7 +129,7 @@ public class Annotator {
                     score = numberOfTokens / labelCount ;
                     if (score > 1) score = 1.0;
                     content = content + parseLemma(word.getLemma()) + " ";
-                    annotateNode((Element) currentNode, content.trim(), matchedPhrase, Precision.round(score, 2),i++);
+                    annotateNode((Element) currentNode, content.trim(), matchedPhrase, Math.round(100 * score ) / (double) 100,i++);
 
                     final List<TextNode> textNodes = ((Element) currentNode).textNodes();
                     if (textNodes.isEmpty()) {

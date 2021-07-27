@@ -20,6 +20,8 @@ package cz.cvut.kbss.textanalysis.dto;
 
 import java.net.URI;
 import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represents input passed to the text analysis service.
@@ -27,6 +29,8 @@ import java.util.Set;
  * Mainly contains the content to analyze and identification of the vocabulary whose terms will be used in the text
  * analysis.
  */
+@Getter
+@Setter
 public class TextAnalysisInput {
 
     /**
@@ -45,29 +49,4 @@ public class TextAnalysisInput {
      * If not specified, the whole {@link #vocabularyRepository} is searched for terms.
      */
     private Set<URI> vocabularyContexts;
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public URI getVocabularyRepository() {
-        return vocabularyRepository;
-    }
-
-    public void setVocabularyRepository(URI vocabularyRepository) {
-        this.vocabularyRepository = vocabularyRepository;
-    }
-
-    public Set<URI> getVocabularyContexts() {
-        return vocabularyContexts;
-    }
-
-    public void setVocabularyContexts(Set<URI> vocabularyContexts) {
-        this.vocabularyContexts = vocabularyContexts;
-    }
-
 }

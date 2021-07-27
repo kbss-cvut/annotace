@@ -3,7 +3,7 @@ package cz.cvut.kbss.service.textanalysis.html2rdfa;
 import cz.cvut.kbss.textanalysis.service.ChunkAnnotationService;
 import cz.cvut.kbss.textanalysis.service.HtmlAnnotationService;
 import cz.cvut.kbss.service.textanalysis.ServiceTestConfiguration;
-import cz.cvut.kbss.textanalysis.service.html2rdfa.MockFactory;
+import cz.cvut.kbss.service.textanalysis.MockFactory;
 import java.io.File;
 import java.io.IOException;
 import org.jsoup.Jsoup;
@@ -19,7 +19,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@ComponentScan(basePackages = "cz.cvut.kbss")
 @ContextConfiguration(
     classes = {ServiceTestConfiguration.class},
     initializers = {ConfigDataApplicationContextInitializer.class}

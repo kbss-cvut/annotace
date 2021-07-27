@@ -18,9 +18,11 @@
  */
 package cz.cvut.kbss.textanalysis.rest;
 
+import cz.cvut.kbss.textanalysis.Constants;
 import cz.cvut.kbss.textanalysis.dto.TextAnalysisInput;
 import cz.cvut.kbss.textanalysis.service.HtmlAnnotationService;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.HashSet;
@@ -31,7 +33,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -51,19 +52,19 @@ public class AnnotateController {
         throws Exception {
         Set<URI> uriSet = new HashSet<>();
         String uri;
-        String iTerm = "http://onto.fel.cvut.cz/ontologies/slovnik/agendovy/popis-dat/pojem/term";
+        String iTerm = Constants.NS_POPIS_DAT + "term";
         if (input.getVocabularyContexts() != null) {
             Set<URI> allGraphs = input.getVocabularyContexts();
 
             for(URI graphUri : allGraphs) {
-                 uri = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
-                        "CONSTRUCT {?s ?p ?o} WHERE { GRAPH <" + graphUri + "> {?s a <" +iTerm+ "> .?s ?p ?o}}", java.nio.charset.StandardCharsets.UTF_8.toString());
+                 uri = input.getVocabularyRepository() + "?query=" + encode(
+                        "CONSTRUCT {?s ?p ?o} WHERE { GRAPH <" + graphUri + "> {?s a <" +iTerm+ "> .?s ?p ?o}}");
                 uriSet.add(URI.create(uri));
             }
 
         } else {
-            uri = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
-                    "CONSTRUCT {?s ?p ?o} WHERE {?s a <"+iTerm+"> . ?s ?p ?o}", java.nio.charset.StandardCharsets.UTF_8.toString());
+            uri = input.getVocabularyRepository() + "?query=" + encode(
+                    "CONSTRUCT {?s ?p ?o} WHERE {?s a <"+iTerm+"> . ?s ?p ?o}");
             uriSet.add(URI.create(uri));
         }
 
@@ -72,14 +73,7 @@ public class AnnotateController {
         return service.annotate(uriSet, htmlDocument);
     }
 
-    @RequestMapping(value = "/annotate-html", method = RequestMethod.POST,
-                    produces = MediaType.APPLICATION_XML_VALUE,
-                    consumes = MediaType.TEXT_HTML_VALUE)
-
-    public String annotateHtml(
-        @RequestParam(value = "ontologyUrl", required = false) Set<URI> ontologyUrl,
-        @RequestBody String htmlDocument)
-        throws Exception {
-        return service.annotate(ontologyUrl, htmlDocument);
+    private String encode(String s) throws UnsupportedEncodingException {
+        return URLEncoder.encode(s, java.nio.charset.StandardCharsets.UTF_8.toString());
     }
 }

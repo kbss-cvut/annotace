@@ -1,5 +1,5 @@
 /**
- * Annotac
+ * Annotace
  * Copyright (C) 2019 Czech Technical University in Prague
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,7 +57,7 @@ public class AnnotateController {
 
             for(URI graphUri : allGraphs) {
                  uri = input.getVocabularyRepository() + "?query=" + URLEncoder.encode(
-                        "CONSTRUCT {?s ?p ?o} WHERE { GRAPH <" + graphUri + "> {?s a <" +iTerm+ "> .?s ?p ?o}}");
+                        "CONSTRUCT {?s ?p ?o} WHERE { GRAPH <" + graphUri + "> {?s a <" +iTerm+ "> .?s ?p ?o}}", java.nio.charset.StandardCharsets.UTF_8.toString());
                 uriSet.add(URI.create(uri));
             }
 

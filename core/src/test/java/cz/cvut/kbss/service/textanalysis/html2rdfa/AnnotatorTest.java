@@ -2,7 +2,7 @@ package cz.cvut.kbss.service.textanalysis.html2rdfa;
 
 import cz.cvut.kbss.textanalysis.model.Word;
 import cz.cvut.kbss.textanalysis.service.html2rdfa.Annotator;
-import cz.cvut.kbss.service.textanalysis.MockFactory;
+import cz.cvut.kbss.service.textanalysis.TestChunkFactory;
 import java.util.stream.Stream;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -20,7 +20,7 @@ public class AnnotatorTest {
     }
 
     private Word[] getChunk(int i) {
-        return MockFactory.chunks.values().toArray(new Word[][]{})[i];
+        return TestChunkFactory.createTestChunks().values().toArray(new Word[][]{})[i];
     }
 
     @Test

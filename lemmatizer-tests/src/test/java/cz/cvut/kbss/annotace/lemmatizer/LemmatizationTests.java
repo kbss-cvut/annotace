@@ -3,7 +3,6 @@ package cz.cvut.kbss.annotace.lemmatizer;
 import cz.cvut.kbss.annotace.configuration.MorphoditaConf;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
-import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,22 +30,29 @@ public class LemmatizationTests {
 
     @BeforeEach
     public void init() {
-        this.lemmatizers = new LemmatizerApi[]{sut1, sut2};
+        this.lemmatizers = new LemmatizerApi[] {sut1, sut2};
     }
 
     @ParameterizedTest
     @ValueSource(strings = {
         "Budovou se rozumí nadzemní stavba. Bez střechy se nejedná o budovu.",
-        "Kromě toho, že je králem severu, je John Snow anglickým lékařem a lídrem ve vývoji anestezie a lékařské hygieny.",
+        "Kromě toho, že je králem severu, je John Snow anglickým lékařem a lídrem ve vývoji "
+            + "anestezie a lékařské hygieny.",
         "Květinou ženu neuhodíš."
     })
     void check(final String val) {
         final List<LemmatizerResult> results = new ArrayList<>();
-        Arrays.stream(lemmatizers).forEach( l -> {
+        Arrays.stream(lemmatizers).forEach(l -> {
             results.add(l.process(val));
         });
-            results.forEach( r -> {
-                System.out.println(r);
+        results.forEach(r -> {
+            System.out.println(r.getLemmatizer());
+            r.getResult().forEach(l -> {
+                l.forEach(x -> {
+                    System.out.print(String.format("%1$" + 30 + "s", x.getLemma()));
+                });
+                System.out.println();
             });
+        });
     }
 }

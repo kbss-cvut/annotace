@@ -12,20 +12,30 @@ processResources {
 dependencies {
     implementation project(':api')
     implementation project(':keywordextractor-ker')
-    implementation project(':lemmatizer-morphodita')
+    implementation project(':lemmatizer-spark')
 
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.jsoup:jsoup:1.11.3'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.1'
-    implementation('com.fasterxml.jackson.core:jackson-databind:2.12.1') {
-        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
-    }
+    implementation('org.springframework.boot:spring-boot-starter-web:2.5.3')
+    implementation('org.jsoup:jsoup:1.11.3')
+//    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.1'
+//    implementation('com.fasterxml.jackson.core:jackson-databind:2.12.1') {
+//        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+//    }
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
-    implementation 'org.apache.jena:apache-jena-libs:3.8.0'
+    implementation('org.apache.jena:apache-jena-libs:3.8.0')
 
-    testImplementation 'org.mockito:mockito-junit-jupiter:2.21.0'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    testImplementation('org.mockito:mockito-junit-jupiter:2.21.0')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+}
+
+allprojects {
+    configurations.all {
+        resolutionStrategy {
+            dependencySubstitution {
+                substitute module('org.codehaus.janino:janino') with module('org.codehaus.janino:janino:3.0.16')
+                substitute module('org.codehaus.janino:commons-compiler') with module('org.codehaus.janino:commons-compiler:3.0.16')
+            }
+        }
     }
 }
 

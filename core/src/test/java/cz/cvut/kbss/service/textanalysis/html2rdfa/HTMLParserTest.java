@@ -1,8 +1,12 @@
 package cz.cvut.kbss.service.textanalysis.html2rdfa;
 
+import static org.mockito.Mockito.lenient;
+
+
+import cz.cvut.kbss.textanalysis.keywordextractor.KeywordExtractorAPI;
+import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.service.ChunkAnnotationService;
 import cz.cvut.kbss.textanalysis.service.HtmlAnnotationService;
-import cz.cvut.kbss.service.textanalysis.ServiceTestConfiguration;
 import cz.cvut.kbss.service.textanalysis.TestChunkFactory;
 import java.io.File;
 import java.io.IOException;
@@ -12,35 +16,30 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(
-    classes = {ServiceTestConfiguration.class},
-    initializers = {ConfigDataApplicationContextInitializer.class}
-)
+@ExtendWith(MockitoExtension.class)
 public class HTMLParserTest {
 
+    @InjectMocks
     private HtmlAnnotationService sut;
 
     @Mock
-    private ChunkAnnotationService chunkAnnotationService;
+    private LemmatizerApi api;
 
-    @Autowired
-    public HTMLParserTest(HtmlAnnotationService service) {
-        this.sut = service;
-    }
+    @Mock
+    private KeywordExtractorAPI ker;
+
+    @Mock
+    private ChunkAnnotationService chunkAnnotationService;
 
     @BeforeEach
     public void init() {
         TestChunkFactory.createTestChunks().forEach(
             (cText,cAnnotation) -> {
-                Mockito.when(chunkAnnotationService.process(cText)).thenReturn(cAnnotation);
+                lenient().when(chunkAnnotationService.process(cText)).thenReturn(cAnnotation);
             }
         );
     }

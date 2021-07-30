@@ -6,3 +6,5 @@ include 'lemmatizer-morphodita'
 include 'keywordextractor-ker'
 
 include 'lemmatizer-tests'
+
+include 'dist'

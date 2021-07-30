@@ -6,8 +6,8 @@ dependencies {
     implementation project(':lemmatizer-morphodita')
 
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.4.4'
-    testImplementation('org.springframework.boot:spring-boot-starter-test:2.4.4') {
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.3'
+    testImplementation('org.springframework.boot:spring-boot-starter-test:2.5.3') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 }

@@ -4,10 +4,8 @@ dependencies {
     implementation project(':api')
 
     implementation 'cz.cvut.kbss:morphodita:0.0.1'
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.4.4'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.3'
 
     testImplementation group: 'org.springframework', name: 'spring-aspects', version: '5.3.9'
-    testImplementation('org.springframework.boot:spring-boot-starter-test:2.4.4') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    testImplementation('org.springframework.boot:spring-boot-starter-test:2.5.3')
 }

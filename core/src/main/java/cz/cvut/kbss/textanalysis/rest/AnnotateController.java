@@ -28,6 +28,7 @@ import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.jena.vocabulary.SKOS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +53,7 @@ public class AnnotateController {
         throws Exception {
         Set<URI> uriSet = new HashSet<>();
         String uri;
-        String iTerm = Constants.NS_POPIS_DAT + "term";
+        String iTerm = SKOS.Concept.toString();
         if (input.getVocabularyContexts() != null) {
             Set<URI> allGraphs = input.getVocabularyContexts();
 

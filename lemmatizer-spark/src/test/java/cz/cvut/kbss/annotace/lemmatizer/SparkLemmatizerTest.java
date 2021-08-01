@@ -1,9 +1,7 @@
 package cz.cvut.kbss.annotace.lemmatizer;
 
+import cz.cvut.kbss.annotace.configuration.SparkConf;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
-import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class,
-    classes = { SparkLemmatizer.class})
+    classes = {SparkConf.class, SparkLemmatizer.class})
 public class SparkLemmatizerTest {
 
     @Autowired

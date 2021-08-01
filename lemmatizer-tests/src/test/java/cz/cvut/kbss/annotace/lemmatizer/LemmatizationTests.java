@@ -1,6 +1,7 @@
 package cz.cvut.kbss.annotace.lemmatizer;
 
 import cz.cvut.kbss.annotace.configuration.MorphoditaConf;
+import cz.cvut.kbss.annotace.configuration.SparkConf;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class,
-    classes = {MorphoditaConf.class, MorphoDitaServiceJNI.class, SparkLemmatizer.class})
+    classes = {MorphoditaConf.class, SparkConf.class, MorphoDitaServiceJNI.class, SparkLemmatizer.class})
 public class LemmatizationTests {
 
     @Autowired

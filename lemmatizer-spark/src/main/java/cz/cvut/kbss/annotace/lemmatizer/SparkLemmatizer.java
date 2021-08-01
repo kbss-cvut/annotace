@@ -8,32 +8,47 @@ import com.johnsnowlabs.nlp.SparkNLP;
 import com.johnsnowlabs.nlp.annotators.LemmatizerModel;
 import com.johnsnowlabs.nlp.annotators.Tokenizer;
 import com.johnsnowlabs.nlp.annotators.sbd.pragmatic.SentenceDetector;
+import cz.cvut.kbss.annotace.configuration.SparkConf;
+import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
-import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.ml.Pipeline;
 import org.apache.spark.ml.PipelineModel;
 import org.apache.spark.ml.PipelineStage;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class SparkLemmatizer implements LemmatizerApi {
 
     private SparkSession spark;
 
-    @PostConstruct
-    public void init() {
+    private Map<String, LemmatizerModel> lemmatizers = new HashMap<>();
+
+    @Autowired
+    public SparkLemmatizer(SparkConf conf) {
         spark = SparkNLP.start(false, false, false, "2G");
-//        spark = SparkNLP.start(falseMorphoditaConf, false);
+        conf.getLemmatizers().forEach((language, lemmatizer) -> {
+            try {
+                log.info("Loading lemmatizer {} in lang {}", lemmatizer, language);
+                lemmatizers.put(language,
+                    LemmatizerModel.pretrained(lemmatizer, language));
+                log.info("Lemmatizer successfully loaded.");
+            } catch(Exception e) {
+                log.warn("Lemmatizer not loaded due to an error.", e);
+            }
+        });
     }
 
     @Override
@@ -56,7 +71,7 @@ public class SparkLemmatizer implements LemmatizerApi {
 //        perceptronModel.setInputCols(new String[] {"sentence", "token"});
 //        perceptronModel.setOutputCol("pos");
 
-        final LemmatizerModel lemmatizer = LemmatizerModel.pretrained("lemma", lang);
+        final LemmatizerModel lemmatizer = lemmatizers.get(lang);
         lemmatizer.setInputCols(new String[] {"token"});
         lemmatizer.setOutputCol("lemma");
 
@@ -64,7 +79,8 @@ public class SparkLemmatizer implements LemmatizerApi {
             new PipelineStage[] {documentAssembler, sentenceDetector, tokenizer,
 //                perceptronModel,
                 lemmatizer});
-        final Dataset data = spark.createDataset(Arrays.asList(text), Encoders.STRING()).toDF("text");
+        final Dataset data =
+            spark.createDataset(Arrays.asList(text), Encoders.STRING()).toDF("text");
         final PipelineModel model = pipeline.fit(data);
 
         final LightPipeline lPipeline = new LightPipeline(model, true);

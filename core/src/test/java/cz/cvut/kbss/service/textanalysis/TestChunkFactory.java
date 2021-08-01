@@ -20,25 +20,22 @@ package cz.cvut.kbss.service.textanalysis;
 
 import cz.cvut.kbss.textanalysis.model.Word;
 import cz.cvut.kbss.textanalysis.model.Phrase;
-import cz.cvut.kbss.textanalysis.service.ChunkAnnotationService;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 public class TestChunkFactory {
 
     public static Map<String,Word[]> createTestChunks() {
         final Map<String, Word[]> chunks = new LinkedHashMap<>();
         // DUMMY CHUNK 0
-        final Phrase pT = new Phrase("http://test.org/pojem/Test", false, true, "test");
+        final Phrase pT = new Phrase("http://test.org/pojem/Test", false, true, "test", "testP");
         final Word[] chunk0Annotations = new Word[] {new Word("Test", "Test", "", pT)};
         chunks.put("Test", chunk0Annotations);
 
         // DUMMY CHUNK 1
         final Phrase pMP =
-            new Phrase("http://test.org/pojem/metropolitni-plan", false, true, "metropolitní plán");
-        final Phrase pD = new Phrase(null, true, true, null);
+            new Phrase("http://test.org/pojem/metropolitni-plan", false, true, "metropolitní plán", "testP");
+        final Phrase pD = new Phrase(null, true, true, null, "testP");
         final Word[] chunk1Annotations =
             new Word[] {new Word("Metropolitní", "Metropolitni", " ", pMP),
                 new Word("Plán", "plan", "  ", pMP),
@@ -49,7 +46,7 @@ public class TestChunkFactory {
 
         // DUMMY CHUNK 2
         final Phrase pZU =
-            new Phrase("http://test.org/pojem/zastavene-uzemi", true, true, "zastavěné území");
+            new Phrase("http://test.org/pojem/zastavene-uzemi", true, true, "zastavěné území", "testP");
         final Word[] chunk2Annotations = new Word[] {new Word("Zastavěné", "Zastavene", " ", pZU),
             new Word("území", "uzemi", " ", pZU)};
         chunks.put("Zastavene uzemi", chunk2Annotations);
@@ -61,11 +58,11 @@ public class TestChunkFactory {
             + "odpovídajícím rozsahu řešeného území.\n"
             + "    ";
         final Phrase pMPX =
-            new Phrase("http://test.org/pojem/metropolitni-plan", true, true, "metropolitní plán");
-        final Phrase pU = new Phrase("http://test.org/pojem/uzemi", true, true, "uzemi");
+            new Phrase("http://test.org/pojem/metropolitni-plan", true, true, "metropolitní plán","testP");
+        final Phrase pU = new Phrase("http://test.org/pojem/uzemi", true, true, "uzemi", "testP");
         final Phrase pSUP = new Phrase("http://test.org/pojem/spravni-uzemi-prahy", true, true,
-            "správní území Prahy");
-        final Phrase pM = new Phrase(null, true, true, null);
+            "správní území Prahy", "testP");
+        final Phrase pM = new Phrase(null, true, true, null, "testP");
         final Word[] chunk3Annotations = new Word[] {
             new Word("(2)", "(2)", " "),
             new Word("Metropolitní", "Metropolitní", " ", pMPX),

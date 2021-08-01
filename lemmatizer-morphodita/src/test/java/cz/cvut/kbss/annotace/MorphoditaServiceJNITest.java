@@ -29,6 +29,6 @@ public class MorphoditaServiceJNITest {
     }
 
     @Test void testJNIMorphodita() {
-        sut.process("ahoj  svete, jak se mas? Ja se mam dobre. A ty ?");
+        sut.process("ahoj  svete, jak se mas? Ja se mam dobre. A ty ?", "cs");
     }
 }

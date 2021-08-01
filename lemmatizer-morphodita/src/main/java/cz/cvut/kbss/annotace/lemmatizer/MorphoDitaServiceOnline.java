@@ -36,7 +36,7 @@ public class MorphoDitaServiceOnline implements LemmatizerApi {
         this.conf = conf;
     }
 
-    public LemmatizerResult process(String s) {
+    public LemmatizerResult process(String s, String lang) {
         final LemmatizerResult morphoDitaResult = restTemplateBuilder.build().getForObject(
             conf.getService() +
                 "/tag?data=" + s + "&output=json",

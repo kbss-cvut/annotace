@@ -21,5 +21,12 @@ import java.util.List;
 
 public interface LemmatizerApi {
 
-    LemmatizerResult process(String s);
+    /**
+     * Lemmatizes the given text w.r.t. the given language.
+     *
+     * @param text text to lemmatize
+     * @param lang language to use
+     * @return result of the lemmatizations
+     */
+    LemmatizerResult process(String text, String lang);
 }

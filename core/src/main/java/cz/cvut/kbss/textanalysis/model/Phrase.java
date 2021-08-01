@@ -32,4 +32,6 @@ public class Phrase {
     private final boolean fullMatch;
 
     private final String termLabel;
+
+    private final String propertyName;
 }

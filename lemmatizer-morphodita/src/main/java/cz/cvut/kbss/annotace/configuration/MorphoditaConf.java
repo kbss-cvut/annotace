@@ -1,5 +1,6 @@
 package cz.cvut.kbss.annotace.configuration;
 
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -13,7 +14,10 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("annotace.morphodita")
 public class MorphoditaConf {
 
-    private String tagger;
+    /**
+     * Map language to tagger file.
+     */
+    private Map<String,String> taggers;
 
     private String service;
 }

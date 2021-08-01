@@ -29,10 +29,13 @@ public class QueryResult {
 
     private String label;
 
-    private List<SingleLemmaResult> morphoDitaResultList;
+    private String propertyName;
 
-    public QueryResult(String type, String label) {
+    private List<SingleLemmaResult> singleLemmaResults;
+
+    public QueryResult(String type, String label, String propertyName) {
         this.type = type;
         this.label = label;
+        this.propertyName = propertyName;
     }
 }

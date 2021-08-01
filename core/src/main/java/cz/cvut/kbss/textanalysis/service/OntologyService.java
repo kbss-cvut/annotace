@@ -21,10 +21,8 @@ package cz.cvut.kbss.textanalysis.service;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
-import cz.cvut.kbss.textanalysis.service.morphodita.MorphoDitaServiceAPI;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -48,6 +46,8 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.util.FileUtils;
+import org.apache.jena.vocabulary.SKOS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +75,7 @@ public class OntologyService {
         try {
             entity = client.execute(request).getEntity();
         } catch (IOException e) {
-            LOG.error("Error executing Get request to the repository");
+            log.error("Error executing Get request to the repository");
         }
 
         final File file;
@@ -118,7 +118,7 @@ public class OntologyService {
                 + "?s ?p ?o ."
                 + "?s a <http://www.w3.org/2004/02/skos/core#Concept> . "
                 + "FILTER (lang(?o) = '" + lang + "') ."
-                + "FILTER (?p = skos:prefLabel || ?p = skos:hiddenLabel || ?p = skos:altLabel)"
+                + "FILTER (?p IN (<" + SKOS.prefLabel.toString()+ ">, <" + SKOS.hiddenLabel.toString() + ">, <" + SKOS.altLabel + ">))"
                 + "}";
 
         QueryExecution queryExecution = QueryExecutionFactory.create(query, model);
@@ -140,8 +140,8 @@ public class OntologyService {
             }
         }
         //printList(queryResultList);
-        log.debug("number of retrieved lables is: " + queryResultList.size());
-        //Store all lables in one string and call morphoDita only once then map the queryResult
+        log.debug("number of retrieved labels is: " + queryResultList.size());
+        //Store all labels in one string and call lemmatizer only once then map the queryResult
         // objects to corresponding sub-array
         final StringBuilder sb = new StringBuilder();
         for (QueryResult qr : queryResultList) {
@@ -149,13 +149,13 @@ public class OntologyService {
         }
         final String ontologieLabels = sb.toString();
 
-        log.debug("Morphological anlysis for ontology labels has started:");
+        log.debug("Morphological analysis for ontology labels has started:");
         LemmatizerResult lemmatizerResult =
             lemmatizerServiceApi.process(ontologieLabels, lang);
 
         int i = 0;
         for (QueryResult queryResult : queryResultList) {
-            queryResult.setMorphoDitaResultList(lemmatizerResult.getResult().get(i));
+            queryResult.setSingleLemmaResults(lemmatizerResult.getResult().get(i));
             i++;
         }
 

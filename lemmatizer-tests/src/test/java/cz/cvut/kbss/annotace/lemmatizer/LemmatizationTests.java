@@ -43,7 +43,7 @@ public class LemmatizationTests {
     void check(final String val) {
         final List<LemmatizerResult> results = new ArrayList<>();
         Arrays.stream(lemmatizers).forEach(l -> {
-            results.add(l.process(val));
+            results.add(l.process(val, "cs"));
         });
         results.forEach(r -> {
             System.out.println(r.getLemmatizer());

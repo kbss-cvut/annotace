@@ -37,13 +37,16 @@ import cz.cvut.kbss.textanalysis.model.QueryResult;
 public class AnnotationService {
 
     @Autowired
-    private LemmatizerApi morphoDitaService;
+    private LemmatizerApi lemmatizer;
 
     public Stopwords stopwords = new Stopwords();
 
     List<String> stopwordsList;
 
-    public List<Word> getAnnotations(final String textChunk, final List<QueryResult> queryResultList, final KeywordExtractorResult result, String lang) throws AnnotationException {
+    public List<Word> getAnnotations(final String textChunk,
+                                     final List<QueryResult> queryResultList,
+                                     final KeywordExtractorResult result, String lang)
+        throws AnnotationException {
         try {
             return this._getAnnotations(textChunk, queryResultList, result, lang);
         } catch (Exception e) {
@@ -51,8 +54,10 @@ public class AnnotationService {
         }
     }
 
-    private List<Word> _getAnnotations(final String textChunk, final List<QueryResult> queryResultList,final KeywordExtractorResult result, String lang) {
-        final LemmatizerResult lemmatizerResult = morphoDitaService.process(textChunk, lang);
+    private List<Word> _getAnnotations(final String textChunk,
+                                       final List<QueryResult> queryResultList,
+                                       final KeywordExtractorResult result, String lang) {
+        final LemmatizerResult lemmatizerResult = lemmatizer.process(textChunk, lang);
         return annotateOntologieLables(lemmatizerResult, queryResultList,result, lang);
     }
 
@@ -72,12 +77,14 @@ public class AnnotationService {
                 boolean isNotNegation;
 
                 for (QueryResult queryResults : queryResultList) {
-                    for (SingleLemmaResult ontologyResults : queryResults.getMorphoDitaResultList()) {
+                    for (SingleLemmaResult ontologyResults : queryResults.getSingleLemmaResults()) {
 
-                        isMatched = queryResults.getMorphoDitaResultList().size() == 1;
-                        isNotNegation = result.isNegated() ^ ontologyResults.isNegated();
+                        isMatched = queryResults.getSingleLemmaResults().size() == 1;
+                        isNotNegation = !(result.isNegated() ^ ontologyResults.isNegated());
 
-                        if ((result.getLemma().contentEquals(ontologyResults.getLemma())) &&
+                        if ((result.getLemma().contentEquals(ontologyResults.getLemma())
+                            || result.getToken().toLowerCase().contentEquals(ontologyResults.getToken().toLowerCase())
+                            || result.getLemma().toLowerCase().contentEquals(ontologyResults.getToken().toLowerCase())) &&
                              isNotNegation) {
 
                             Phrase matchedAnnotation = new Phrase(
@@ -85,19 +92,20 @@ public class AnnotationService {
                                     (kerResult.getKeywords().contains(result.getLemma())
                                                     &&(result.getToken().equals(queryResults.getLabel()))),
                                     isMatched,
-                                    queryResults.getLabel());
+                                    queryResults.getLabel(),
+                                    queryResults.getPropertyName());
 
                                     matchedAnnotations.add(matchedAnnotation);
                                 }
                     }
                 }
 
-                if((matchedAnnotations.isEmpty()) && (isKeyword) && !(isStopword) && !(isMatched)) {
+                if((matchedAnnotations.isEmpty()) && (isKeyword) && !(isStopword)) {
                     Phrase matchedAnnotation = new Phrase(
                                             "",
                                             true,
                                             true,
-                            "");
+                            "","");
                                     matchedAnnotations.add(matchedAnnotation);
                 }
 

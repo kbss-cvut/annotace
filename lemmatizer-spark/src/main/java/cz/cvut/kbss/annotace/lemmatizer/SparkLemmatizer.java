@@ -13,6 +13,7 @@ import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -36,7 +37,7 @@ public class SparkLemmatizer implements LemmatizerApi {
     }
 
     @Override
-    public LemmatizerResult process(String s) {
+    public LemmatizerResult process(final String text, final String lang) {
         final DocumentAssembler documentAssembler = new DocumentAssembler();
         documentAssembler.setInputCol("text");
         documentAssembler.setOutputCol("document");
@@ -55,7 +56,7 @@ public class SparkLemmatizer implements LemmatizerApi {
 //        perceptronModel.setInputCols(new String[] {"sentence", "token"});
 //        perceptronModel.setOutputCol("pos");
 
-        final LemmatizerModel lemmatizer = LemmatizerModel.pretrained("lemma", "cs");
+        final LemmatizerModel lemmatizer = LemmatizerModel.pretrained("lemma", lang);
         lemmatizer.setInputCols(new String[] {"token"});
         lemmatizer.setOutputCol("lemma");
 
@@ -63,18 +64,15 @@ public class SparkLemmatizer implements LemmatizerApi {
             new PipelineStage[] {documentAssembler, sentenceDetector, tokenizer,
 //                perceptronModel,
                 lemmatizer});
-        final Dataset data = spark.createDataset(Arrays.asList(s), Encoders.STRING()).toDF("text");
+        final Dataset data = spark.createDataset(Arrays.asList(text), Encoders.STRING()).toDF("text");
         final PipelineModel model = pipeline.fit(data);
 
         final LightPipeline lPipeline = new LightPipeline(model, true);
 //        final Map<String,List<String>> map = lPipeline.annotateJava(s);
-        final Map<String, List<JavaAnnotation>> map = lPipeline.fullAnnotateJava(s);
+        final Map<String, List<JavaAnnotation>> map = lPipeline.fullAnnotateJava(text);
 
         final List<List<SingleLemmaResult>> res = new ArrayList<>();
 
-        map.get("sentence").forEach(sentence -> {
-            res.add(new ArrayList<>());
-        });
         final List<JavaAnnotation> tokens = map.get("token");
 
         for (int i = 0; i < tokens.size(); i++) {
@@ -89,11 +87,10 @@ public class SparkLemmatizer implements LemmatizerApi {
             r.setNegated(false);
 
             int startNext =
-                (tokens.size() - 1 == i) ? a.end() : tokens.get(i + 1).begin();
+                (tokens.size() - 1 == i) ? a.end() : tokens.get(i + 1).begin() - 1;
             r.setSpaces(Strings.repeat(" ", startNext - (a.end())));
 
-            int sentence = Integer.parseInt(a.metadata().get("sentence"));
-            res.get(sentence).add(r);
+            res.add(Collections.singletonList(r));
         }
 
         final LemmatizerResult result = new LemmatizerResult();

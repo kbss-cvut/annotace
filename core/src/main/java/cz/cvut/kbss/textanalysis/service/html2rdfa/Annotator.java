@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import cz.cvut.kbss.model.Phrase;
-import cz.cvut.kbss.model.Word;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -49,8 +47,6 @@ public class Annotator {
     private String uniqueId = generateID();
 
     List<String> stopwordsList;
-
-
 
     public Annotator(String lang) {
         stopwordsList = stopwords.getStopwords(lang);
@@ -148,7 +144,7 @@ public class Annotator {
                     score = numberOfTokens / labelCount ;
                     if (score > 1) score = 1.0;
                     content.append(parseLemma(word.getLemma())).append(" ");
-                    annotateNode((Element) currentNode, content.trim(), matchedPhrase, Math.round(100 * score ) / (double) 100,i++);
+                    annotateNode((Element) currentNode, content.toString().trim(), matchedPhrase, Math.round(100 * score ) / (double) 100,i++);
 
                     final List<TextNode> textNodes = ((Element) currentNode).textNodes();
                     if (textNodes.isEmpty()) {

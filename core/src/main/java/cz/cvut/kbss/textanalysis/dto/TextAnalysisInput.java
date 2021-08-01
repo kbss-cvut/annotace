@@ -49,4 +49,9 @@ public class TextAnalysisInput {
      * If not specified, the whole {@link #vocabularyRepository} is searched for terms.
      */
     private Set<URI> vocabularyContexts;
+
+    /**
+     * Language for annotation.
+     */
+    private String language;
 }

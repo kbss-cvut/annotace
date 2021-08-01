@@ -22,7 +22,7 @@ public class SparkLemmatizerTest {
     @Test
     void check() {
 //        l.lemmatize("Kromě toho, že je králem severu, je John Snow anglickým lékařem a lídrem ve vývoji anestezie a lékařské hygieny.");
-        final LemmatizerResult result = sut.process("Budovou se rozumí nadzemní stavba. Bez střechy se nejedná o budovu.");
+        final LemmatizerResult result = sut.process("Budovou se rozumí nadzemní stavba. Bez střechy se nejedná o budovu.", "cs");
         System.out.println(result);
 
 //        l.lemmatize("Květinou ženu neuhodíš.");

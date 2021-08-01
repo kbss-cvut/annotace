@@ -1,0 +1,6 @@
+application:
+  version: ${version}
+
+annotace:
+  ker:
+    service: http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.04&maximum-words=30

@@ -49,19 +49,19 @@ public class HTMLParserTest {
         final String html =
             "<html><body><p>" + chunks[1] + "</p><p>" + chunks[2] + "</p></body></html>";
         final Document doc = Jsoup.parse(html);
-        final Document doc2 = sut.annotate(chunkAnnotationService,doc);
+        final Document doc2 = sut.annotate(chunkAnnotationService,doc,"cs");
         Assertions.assertEquals(3, doc2.select("span[typeof='ddo:výskyt-termu']").size());
     }
 
     @Test public void testParseInvalidHtmlSuccessfully() {
         final String html = "<p>Test chunk 1<div></p>Test chunk 2</div>";
         final Document doc = Jsoup.parse(html);
-        sut.annotate(chunkAnnotationService,doc);
+        sut.annotate(chunkAnnotationService,doc,"cs");
     }
 
     @Test public void testParseInvalidInputFail() {
         Assertions.assertThrows(Exception.class, () -> {
-            sut.annotate(chunkAnnotationService,null);
+            sut.annotate(chunkAnnotationService,null,"cs");
         });
     }
 
@@ -69,6 +69,6 @@ public class HTMLParserTest {
         throws IOException {
         sut.annotate(chunkAnnotationService, Jsoup
             .parse(new File(HtmlAnnotationService.class.getResource("/mpp.html").getFile()),
-                "utf-8"));
+                "utf-8"), "cs");
     }
 }

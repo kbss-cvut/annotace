@@ -1,14 +1,14 @@
 /**
  * Annotac Copyright (C) 2019 Czech Technical University in Prague
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with this program.  If
  * not, see <https://www.gnu.org/licenses/>. © 2019 GitHub, Inc.
  */
@@ -23,12 +23,14 @@ import cz.cuni.mff.ufal.morphodita.TokenRange;
 import cz.cuni.mff.ufal.morphodita.TokenRanges;
 import cz.cuni.mff.ufal.morphodita.Tokenizer;
 import cz.cvut.kbss.annotace.configuration.MorphoditaConf;
+import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
-import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -41,37 +43,48 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class MorphoDitaServiceJNI implements LemmatizerApi {
 
-    private Tagger tagger;
+    private Map<String, Tagger> taggers = new HashMap<>();
 
     @Autowired
     public MorphoDitaServiceJNI(MorphoditaConf conf) {
-        try {
-            log.info("Finding {} ...", conf.getTagger());
-            if (!new File(conf.getTagger()).exists()) {
-                log.info("No Morphodita tagger file found.");
-                return;
+        conf.getTaggers().forEach((lang, taggerPath) -> {
+            try {
+                log.info("Finding {} ...", taggerPath);
+                if (!new File(taggerPath).exists()) {
+                    log.info("Tagger file %s for language %s not found.", taggerPath, lang);
+                    return;
+                }
+                log.info("Found at {}", taggerPath);
+                log.info("Loading tagger ... (looks up MorphoDita native library at {})",
+                    System.getProperty("java.library.path"));
+                Tagger tagger = Tagger.load(taggerPath);
+                if (tagger == null) {
+                    log.warn(
+                        "Creating tagger failed.");
+                } else {
+                    taggers.put(lang,tagger);
+                    log.info("Tagger {} for lang {} succesfully created.", tagger, lang);
+                }
+            } catch (Exception e) {
+                log.info("Creating tagger {} for lang {} failed.", taggerPath, lang);
             }
-            log.info("Found at {}", conf.getTagger());
-            log.info("Loading tagger ... (looks up MorphoDita native library at {})",
-                System.getProperty("java.library.path"));
-            tagger = Tagger.load(conf.getTagger());
-            log.info("Tagger succesfully created");
-            if (tagger == null) {
-                log.warn(
-                    "Creating tagger failed.");
-            }
-        } catch (Exception e) {
-            log.info("Creating tagger failed.", e);
-        }
+        });
     }
 
-    @Override public LemmatizerResult process(String s) {
+    @Override
+    public LemmatizerResult process(String s, String lang) {
         final List<TokenRanges> tTr = new ArrayList<>();
         final List<Forms> tF = new ArrayList<>();
         final List<TaggedLemmas> tTl = new ArrayList<>();
 
-        final Tokenizer tk = Tokenizer.newCzechTokenizer();
+        final Tokenizer tk =
+            lang.equals("en") ? Tokenizer.newEnglishTokenizer() : Tokenizer.newCzechTokenizer();
         tk.setText(s);
+
+        Tagger tagger = taggers.get(lang);
+        if (tagger == null) {
+            throw new RuntimeException("No tagger for language " + lang + " available.");
+        }
 
         while (true) {
             final Forms f = new Forms();
@@ -87,14 +100,15 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
             }
         }
 
-        final List<List<SingleLemmaResult>> result = transform(tF, tTl, tTr);
+        final List<List<SingleLemmaResult>> result = transform(s, tF, tTl, tTr);
         final LemmatizerResult result2 = new LemmatizerResult();
         result2.setResult(result);
         result2.setLemmatizer(this.getClass().getName());
         return result2;
     }
 
-    private List<List<SingleLemmaResult>> transform(final List<Forms> lForms,
+    private List<List<SingleLemmaResult>> transform(final String s,
+                                                    final List<Forms> lForms,
                                                     final List<TaggedLemmas> lTaggedLemmas,
                                                     final List<TokenRanges> lTokenRanges) {
         final List<List<SingleLemmaResult>> result = new ArrayList<>();
@@ -118,6 +132,13 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
                     (j == tokenLemmas.size() - 1) ? end : tokenRanges.get(j + 1).getStart();
 
                 String spaces = " ".repeat((int) (startNext - end));
+                if (spaces.equals("") && (s.contains(forms.get(j).concat(" ")) ||
+                    (s.contains(forms.get(j).concat("\r"))) ||
+                    (s.contains(forms.get(j).concat("\n"))))) {
+                    token.setSpaces(" ");
+                } else {
+                    token.setSpaces(spaces);
+                }
                 token.setSpaces(spaces);
                 sentence.add(token);
             }

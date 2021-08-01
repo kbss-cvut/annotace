@@ -35,6 +35,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
+import org.jsoup.select.Elements;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,28 +60,33 @@ public class HtmlAnnotationService {
         this.keywordExtractionService = kerService;
     }
 
-    public String annotate(Set<URI> vocabularies, String htmlDocument)
+    public String annotate(Set<URI> vocabularies, String htmlDocument, String lang, Boolean enableKeywordExtraction)
         throws HtmlAnnotationException {
-        final List<QueryResult> queryResultList = ontologyService.analyzeModel(vocabularies);
+        final List<QueryResult> queryResultList = ontologyService.analyzeModel(vocabularies, lang);
 
-        final Document doc = Jsoup.parse(htmlDocument);
+        final Document doc = unwrapSpan(Jsoup.parse(htmlDocument));
         final List<String> chunks = new ArrayList<>();
         final NodeVisitor chunkCollector =
             new ChunkIterator(chunk -> chunks.add(chunk.getWholeText()));
         NodeTraversor.traverse(chunkCollector, doc);
 
-        final String documentChunksString = chunks.stream().collect(Collectors.joining("\r\n"));
-        final KeywordExtractorResult kerResult = keywordExtractionService.process(documentChunksString);
+        final KeywordExtractorResult kerResult;
+        if (enableKeywordExtraction) {
+            final String documentChunksString = chunks.stream().collect(Collectors.joining("\r\n"));
+            kerResult = keywordExtractionService.process(documentChunksString);
+        } else {
+            kerResult = KeywordExtractorResult.createEmpty();
+        }
 
         return this.annotate(textChunk -> {
             try {
-                return annotationService.getAnnotations(textChunk, queryResultList, kerResult)
+                return annotationService.getAnnotations(textChunk, queryResultList, kerResult, lang)
                     .toArray(new Word[] {});
             } catch (Exception ex) {
                 log.error("Document annotation failed.", ex);
                 return new Word[] {new Word("", textChunk, "")};
             }
-        }, doc).toString();
+        }, doc, lang).toString();
     }
 
     class ChunkIterator implements NodeVisitor {
@@ -106,7 +112,7 @@ public class HtmlAnnotationService {
         }
     };
 
-    public Document annotate(final ChunkAnnotationService p, final Document doc) {
+    public Document annotate(final ChunkAnnotationService p, final Document doc, final String lang) {
         log.debug("Annotating document has started");
         final Document output = doc.clone();
         final Element eHtml = output.selectFirst("html");
@@ -115,7 +121,7 @@ public class HtmlAnnotationService {
 
         final Map<TextNode, List<Node>> replaceMap = new HashMap<>();
 
-        final Annotator a = new Annotator();
+        final Annotator a = new Annotator(lang);
         final NodeVisitor visitor = new ChunkIterator(chunk -> {
             final List<Node> newNode = a.annotate(
                 p.process(chunk.getWholeText())).collect(Collectors.toList());
@@ -136,5 +142,20 @@ public class HtmlAnnotationService {
         log.debug("Annotating document has finished");
 
         return output;
+    }
+
+    private Document unwrapSpan(Document doc) {
+        Elements elements = doc.getElementsByTag("span");
+        for (Element element: elements) {
+            if (isTermOccurrence(element) && element.hasText()) {
+                // Unwrap any suggested occurrence with score attribute to keep the annotations up-to-date with the vocabulary terms. Keep the assigned occurrences untouched.
+                element.select("span[score]").unwrap();
+            }
+        }
+        return doc;
+    }
+
+    private Boolean isTermOccurrence(Node node) {
+        return (node.attr("typeof").equals("http://onto.fel.cvut.cz/ontologies/application/termit/pojem/výskyt-termu") || node.attr("typeof").equals("ddo:výskyt-termu"));
     }
 }

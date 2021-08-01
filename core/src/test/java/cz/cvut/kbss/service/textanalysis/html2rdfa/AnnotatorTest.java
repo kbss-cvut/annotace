@@ -1,10 +1,9 @@
 package cz.cvut.kbss.service.textanalysis.html2rdfa;
 
+import cz.cvut.kbss.textanalysis.model.Phrase;
 import cz.cvut.kbss.textanalysis.model.Word;
 import cz.cvut.kbss.textanalysis.service.html2rdfa.Annotator;
 import cz.cvut.kbss.service.textanalysis.TestChunkFactory;
-import cz.cvut.kbss.model.Phrase;
-import cz.cvut.kbss.model.Word;
 import java.util.stream.Stream;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;

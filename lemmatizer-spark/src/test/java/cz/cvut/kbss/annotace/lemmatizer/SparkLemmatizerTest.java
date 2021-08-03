@@ -2,6 +2,9 @@ package cz.cvut.kbss.annotace.lemmatizer;
 
 import cz.cvut.kbss.annotace.configuration.SparkConf;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
+import java.util.Arrays;
+import java.util.Iterator;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +21,29 @@ public class SparkLemmatizerTest {
     private SparkLemmatizer sut;
 
     @Test
-    void check() {
-//        l.lemmatize("Kromě toho, že je králem severu, je John Snow anglickým lékařem a lídrem ve vývoji anestezie a lékařské hygieny.");
-        final LemmatizerResult result = sut.process("Budovou se rozumí nadzemní stavba. Bez střechy se nejedná o budovu.", "cs");
-        System.out.println(result);
+    void checkCzech() {
+        final LemmatizerResult result =
+            sut.process("Starý člověk chodí do kostela častěji než mladší lidé.",
+                "cs");
+        final Iterator<String> lemmas = Arrays.asList(
+            new String[] {"Starý", "člověk", "chodit", "do", "kostel", "často", "než", "mladý",
+                "člověk", "."}).iterator();
+        test(lemmas, result);
+    }
 
-//        l.lemmatize("Květinou ženu neuhodíš.");
+    @Test
+    void checkEnglish() {
+        final LemmatizerResult result = sut.process("UK is going down.", "en");
+        final Iterator<String> lemmas =
+            Arrays.asList(new String[] {"UK", "be", "go", "down", "."}).iterator();
+        test(lemmas, result);
+    }
+
+    private void test(final Iterator<String> correctLemmas, final LemmatizerResult result) {
+        Assertions.assertAll(
+            result.getResult().get(0).stream().map(r -> () -> {
+                Assertions.assertEquals(correctLemmas.next(), r.getLemma());
+            })
+        );
     }
 }

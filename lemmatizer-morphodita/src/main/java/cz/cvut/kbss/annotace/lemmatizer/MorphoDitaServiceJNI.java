@@ -124,7 +124,7 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
                 final TokenRange tokenRange = tokenRanges.get(j);
                 final SingleLemmaResult token = new SingleLemmaResult();
                 token.setLemma(taggedLemma.getLemma());
-                token.setNegated(taggedLemma.getTag().charAt(10) == 'N');
+                token.setNegated(taggedLemma.getTag().length() > 10 && taggedLemma.getTag().charAt(10) == 'N');
                 token.setToken(forms.get(j));
 
                 final long end = tokenRange.getStart() + tokenRange.getLength();

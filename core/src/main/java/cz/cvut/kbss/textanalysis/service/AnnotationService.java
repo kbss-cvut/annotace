@@ -1,5 +1,5 @@
 /**
- * Annotac
+ * Annotace
  * Copyright (C) 2019 Czech Technical University in Prague
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,10 +58,10 @@ public class AnnotationService {
                                        final List<QueryResult> queryResultList,
                                        final KeywordExtractorResult result, String lang) {
         final LemmatizerResult lemmatizerResult = lemmatizer.process(textChunk, lang);
-        return annotateOntologieLables(lemmatizerResult, queryResultList,result, lang);
+        return annotateOntologyLabels(lemmatizerResult, queryResultList,result, lang);
     }
 
-    private List<Word> annotateOntologieLables(LemmatizerResult lemmatizerResult, List<QueryResult> queryResultList, final KeywordExtractorResult kerResult, String lang) {
+    private List<Word> annotateOntologyLabels(LemmatizerResult lemmatizerResult, List<QueryResult> queryResultList, final KeywordExtractorResult kerResult, String lang) {
 
         List<Word> annotationsResults = new ArrayList<>();
 

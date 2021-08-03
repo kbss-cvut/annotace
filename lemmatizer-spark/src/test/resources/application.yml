@@ -1,4 +1,5 @@
 annotace:
   spark:
     lemmatizers:
-      cs: lemma
+      cs: model:lemma
+      en: pipeline:explain_document_ml

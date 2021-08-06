@@ -5,6 +5,7 @@ import cz.cvut.kbss.textanalysis.model.Word;
 import cz.cvut.kbss.textanalysis.service.html2rdfa.Annotator;
 import cz.cvut.kbss.service.textanalysis.TestChunkFactory;
 import java.util.stream.Stream;
+import org.apache.jena.vocabulary.SKOS;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.junit.jupiter.api.Assertions;
@@ -48,8 +49,10 @@ public class AnnotatorTest {
     @Test
     void testChoosePhraseReturnsPrefLabel() {
         Phrase[] phraseList = new Phrase[] {
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing",false, false, "wing", "http://www.w3.org/2004/02/skos/core#prefLabel"),
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false,false, "wing", "http://www.w3.org/2004/02/skos/core#altLabel"),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing",false, false, "wing",
+                    SKOS.prefLabel.toString()),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false,false, "wing",
+                    SKOS.altLabel.toString()),
                 };
         phraseList = a.sortArrayOfPhrasesLabelLength(phraseList);
         Assertions.assertEquals(a.choosePhrase(phraseList).getTermIri(), "http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing");
@@ -58,9 +61,9 @@ public class AnnotatorTest {
     @Test
     void testChoosePhraseReturnsPrefLabelWhenAltLabelExactMatchFound() {
         Phrase[] phraseList = new Phrase[] {
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/struktura",false, false, "struktura", "http://www.w3.org/2004/02/skos/core#prefLabel"),
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/typ-struktury", false,false, "struktura", "http://www.w3.org/2004/02/skos/core#altLabel"),
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/typ-struktury", false,false, "typ struktury", "http://www.w3.org/2004/02/skos/core#prefLabel"),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/struktura",false, false, "struktura", SKOS.prefLabel.toString()),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/typ-struktury", false,false, "struktura", SKOS.altLabel.toString()),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/typ-struktury", false,false, "typ struktury", SKOS.prefLabel.toString()),
         };
         phraseList = a.sortArrayOfPhrasesLabelLength(phraseList);
         Assertions.assertEquals(a.choosePhrase(phraseList).getTermIri(), "http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/struktura");
@@ -69,10 +72,10 @@ public class AnnotatorTest {
     @Test
     void testChoosePhraseReturnsPrefLabelevenWhenAltLabelWithMoreMatchesFound() {
         Phrase[] phraseList = new Phrase[] {
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing",false, false, "wing", "http://www.w3.org/2004/02/skos/core#prefLabel"),
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false,false, "wing", "http://www.w3.org/2004/02/skos/core#altLabel"),
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false,false, "right wing", "http://www.w3.org/2004/02/skos/core#prefLabel"),
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false,false, "right hand wing", "http://www.w3.org/2004/02/skos/core#altLabel"),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing",false, false, "wing", SKOS.prefLabel.toString()),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false,false, "wing", SKOS.altLabel.toString()),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false,false, "right wing", SKOS.prefLabel.toString()),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false,false, "right hand wing", SKOS.altLabel.toString()),
         };
         phraseList = a.sortArrayOfPhrasesLabelLength(phraseList);
         Assertions.assertEquals(a.choosePhrase(phraseList).getTermIri(), "http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing");
@@ -81,11 +84,11 @@ public class AnnotatorTest {
     @Test
     void testChoosePhraseReturnsHigherScoreWhenPartialMatch() {
         Phrase[] phraseList = new Phrase[] {
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing-connector",false, false, "wing connector", "http://www.w3.org/2004/02/skos/core#prefLabel"),
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false,false, "wing that will not match", "http://www.w3.org/2004/02/skos/core#prefLabel"),
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/right-wing",false, false, "Right wing", "http://www.w3.org/2004/02/skos/core#prefLabel"),
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false, false, "right hand wing and flap", "http://www.w3.org/2004/02/skos/core#altLabel"),
-                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/right-wing", false,false, "rh wing", "http://www.w3.org/2004/02/skos/core#altLabel")
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing-connector",false, false, "wing connector", SKOS.prefLabel.toString()),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false,false, "wing that will not match", SKOS.prefLabel.toString()),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/right-wing",false, false, "Right wing", SKOS.prefLabel.toString()),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false, false, "right hand wing and flap", SKOS.altLabel.toString()),
+                new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/right-wing", false,false, "rh wing", SKOS.altLabel.toString())
         };
         phraseList = a.sortArrayOfPhrasesLabelLength(phraseList);
         Assertions.assertEquals(a.choosePhrase(phraseList).getTermIri(), "http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/right-wing");

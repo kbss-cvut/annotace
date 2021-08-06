@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import cz.cvut.kbss.textanalysis.Stopwords;
+import org.apache.jena.vocabulary.SKOS;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
@@ -224,7 +225,7 @@ public class Annotator {
         // label length
         double score = getNumberOfTokens(p.getTermLabel()) * 3;
         // property type
-        score = p.getPropertyName().equals("http://www.w3.org/2004/02/skos/core#altLabel")? score * 3 : p.getPropertyName().equals("http://www.w3.org/2004/02/skos/core#hiddenLabel")? score * 4 : score;
+        score = p.getPropertyName().equals(SKOS.altLabel.toString())? score * 3 : p.getPropertyName().equals(SKOS.hiddenLabel.toString())? score * 4 : score;
         // number of times matched
             matches = (int) Arrays.stream(phraseList).filter(phrase -> phrase.getTermIri().equals(p.getTermIri())).count();
         switch (matches) {

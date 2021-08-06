@@ -112,11 +112,10 @@ public class OntologyService {
         RDFNode p;
         RDFNode o;
         ResultSet resultSet;
-        String query =  "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-                + "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>"
-                + "SELECT ?s ?p ?o WHERE {"
+        String query =
+                  "SELECT ?s ?p ?o WHERE {"
                 + "?s ?p ?o ."
-                + "?s a <http://www.w3.org/2004/02/skos/core#Concept> . "
+                + "?s a <" + SKOS.Concept.toString() + "> . "
                 + "FILTER (lang(?o) = '" + lang + "') ."
                 + "FILTER (?p IN (<" + SKOS.prefLabel.toString()+ ">, <" + SKOS.hiddenLabel.toString() + ">, <" + SKOS.altLabel + ">))"
                 + "}";

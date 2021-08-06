@@ -156,6 +156,6 @@ public class HtmlAnnotationService {
     }
 
     private Boolean isTermOccurrence(Node node) {
-        return (node.attr("typeof").equals("http://onto.fel.cvut.cz/ontologies/application/termit/pojem/výskyt-termu") || node.attr("typeof").equals("ddo:výskyt-termu"));
+        return (node.attr("typeof").equals(Constants.NS_TERMIT + "výskyt-termu") || node.attr("typeof").equals("ddo:výskyt-termu"));
     }
 }

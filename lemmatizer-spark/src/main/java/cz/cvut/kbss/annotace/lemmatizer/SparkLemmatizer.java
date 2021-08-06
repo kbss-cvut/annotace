@@ -86,35 +86,35 @@ public class SparkLemmatizer implements LemmatizerApi {
     }
 
     @Override
-    public LemmatizerResult process(String text, final String lang) {
-        final Map<String, List<JavaAnnotation>> map = pipelines.get(lang).fullAnnotateJava(text);
+    public LemmatizerResult process(final String text, final String lang) {
+        String[] labels = text.split("\n\n\n\n");
+        final List<List<SingleLemmaResult>> results = new ArrayList<>();
 
-        final List<SingleLemmaResult> res = new ArrayList<>();
+        for(final String label: labels) {
+            final Map<String, List<JavaAnnotation>> map = pipelines.get(lang).fullAnnotateJava(label);
+            final List<JavaAnnotation> tokens = map.get("token");
+            final List<SingleLemmaResult> res = new ArrayList<>();
+            results.add(res);
 
-        final List<JavaAnnotation> tokens = map.get("token");
+            for (int i = 0; i < tokens.size(); i++) {
+                final JavaAnnotation a = tokens.get(i);
+                final SingleLemmaResult r = new SingleLemmaResult();
+                r.setToken(a.result());
 
-        for (int i = 0; i < tokens.size(); i++) {
-            final JavaAnnotation a = tokens.get(i);
-            final SingleLemmaResult r = new SingleLemmaResult();
-            r.setToken(a.result());
+                final JavaAnnotation aLemma = map.get("lemmas").get(i);
+                r.setLemma(aLemma.result().replace("\u2018", "").replace("\u2019", ""));
 
-            final JavaAnnotation aLemma = map.get("lemmas").get(i);
-            r.setLemma(aLemma.result());
+                // TODO
+                r.setNegated(false);
 
-            // TODO
-            r.setNegated(false);
-
-            int startNext =
-                (tokens.size() - 1 == i) ? a.end() : tokens.get(i + 1).begin();
-            r.setSpaces(Strings.repeat(" ", startNext - (a.end())));
-
-            res.add(r);
+                int startNext =
+                    (tokens.size() - 1 == i) ? a.end() : tokens.get(i + 1).begin()-1;
+                r.setSpaces(Strings.repeat(" ", startNext - (a.end())));
+                res.add(r);
+            }
         }
 
         final LemmatizerResult result = new LemmatizerResult();
-        final List<List<SingleLemmaResult>> results = new ArrayList<>();
-        results.add(res);
-        results.add(new ArrayList<>());
         result.setResult(results);
         result.setLemmatizer(this.getClass().getName());
         return result;

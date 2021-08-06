@@ -5,4 +5,5 @@ annotace:
       en: /home/kremep1/soft/annotace/english-morphium-wsj-140407.tagger
   spark:
     lemmatizers:
-      cs: lemma
+      cs: model:lemma
+      en: pipeline:explain_document_ml

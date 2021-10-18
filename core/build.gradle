@@ -16,10 +16,7 @@ dependencies {
 
     implementation('org.springframework.boot:spring-boot-starter-web:2.5.5')
     implementation('org.jsoup:jsoup:1.14.3')
-//    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.1'
-//    implementation('com.fasterxml.jackson.core:jackson-databind:2.12.1') {
-//        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
-//    }
+
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
     implementation('org.apache.jena:apache-jena-libs:3.8.0')
 

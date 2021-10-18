@@ -4,8 +4,8 @@ dependencies {
     implementation project(':api')
 
     implementation 'cz.cvut.kbss:morphodita:0.0.1'
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.5'
 
-    testImplementation group: 'org.springframework', name: 'spring-aspects', version: '5.3.9'
-    testImplementation('org.springframework.boot:spring-boot-starter-test:2.5.3')
+    testImplementation 'org.springframework:spring-aspects:5.3.10'
+    testImplementation('org.springframework.boot:spring-boot-starter-test:2.5.5')
 }

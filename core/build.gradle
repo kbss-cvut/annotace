@@ -5,7 +5,7 @@ description 'Text analysis for Czech language and annotation recommendation serv
 
 processResources {
     filesMatching('application.yml') {
-        expand(["version": project.version]);
+        expand(["version": project.version])
     }
 }
 
@@ -14,8 +14,8 @@ dependencies {
     implementation project(':keywordextractor-ker')
     implementation project(':lemmatizer-spark')
 
-    implementation('org.springframework.boot:spring-boot-starter-web:2.5.3')
-    implementation('org.jsoup:jsoup:1.11.3')
+    implementation('org.springframework.boot:spring-boot-starter-web:2.5.5')
+    implementation('org.jsoup:jsoup:1.14.3')
 //    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.1'
 //    implementation('com.fasterxml.jackson.core:jackson-databind:2.12.1') {
 //        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'

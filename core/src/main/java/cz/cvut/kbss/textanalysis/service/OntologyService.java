@@ -1,6 +1,6 @@
-/**
- * Annotac
- * Copyright (C) 2019 Czech Technical University in Prague
+/*
+ * Annotace
+ * Copyright (C) 2021 Czech Technical University in Prague
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,148 +18,22 @@
  */
 package cz.cvut.kbss.textanalysis.service;
 
-import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
-import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
-
-import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.methods.RequestBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.util.FileUtils;
-import org.apache.jena.vocabulary.SKOS;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+public interface OntologyService {
 
-@Service
-@Slf4j
-public class OntologyService {
+    /**
+     * Reads ontology with the given URI;
+     *
+     * @param uri logical ontology URI to load
+     * @return Jena Model containing the ontology
+     */
+    Model readOntology(URI uri);
 
-    private static final String REPO_AUTH = "Basic dGVybWl0OnZsOGRjZXRlcm1pdGkzdDI=";
+    List<QueryResult> analyzeModel(Set<URI> uriSet, String lang);
 
-    private LemmatizerApi lemmatizerServiceApi;
-
-    @Autowired
-    public OntologyService(final LemmatizerApi morphoDitaService) {
-        this.lemmatizerServiceApi = morphoDitaService;
-    }
-
-    public Model readOntology(URI uri) {
-        HttpClient client = HttpClients.custom().build();
-        HttpUriRequest request = RequestBuilder.get()
-                .setUri(uri)
-                .setHeader("Authorization", REPO_AUTH)
-                .build();
-        HttpEntity entity = null;
-        try {
-            entity = client.execute(request).getEntity();
-        } catch (IOException e) {
-            log.error("Error executing Get request to the repository");
-        }
-
-        final File file;
-        Model model = ModelFactory.createDefaultModel();
-        model.read(uri.toString(), "text/turtle");
-        try {
-            file = File.createTempFile("model","");
-            if (entity != null) {
-                Files.write(Paths.get(file.toURI()), Collections.singleton(EntityUtils.toString(entity)));
-                model.read(file.getAbsolutePath(), FileUtils.langTurtle);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return model;
-    }
-
-    public List<QueryResult> analyzeModel(Set<URI> uriSet, String lang) {
-        List<QueryResult> allGraphs = new ArrayList<>();
-        List<QueryResult> singleGraph;
-
-        for(URI uri : uriSet) {
-            singleGraph = analyzeModel(readOntology(uri), lang);
-            allGraphs.addAll(singleGraph);
-        }
-        return allGraphs;
-    }
-
-    public List<QueryResult> analyzeModel(Model model, String lang) {
-        List<QueryResult> queryResultList = new ArrayList<>();
-        log.debug("Analyzing ontology model to get all labels");
-        RDFNode s;
-        RDFNode p;
-        RDFNode o;
-        ResultSet resultSet;
-        String query =
-                  "SELECT ?s ?p ?o WHERE {"
-                + "?s ?p ?o ."
-                + "?s a <" + SKOS.Concept.toString() + "> . "
-                + "FILTER (lang(?o) = '" + lang + "') ."
-                + "FILTER (?p IN (<" + SKOS.prefLabel.toString()+ ">, <" + SKOS.hiddenLabel.toString() + ">, <" + SKOS.altLabel + ">))"
-                + "}";
-
-        QueryExecution queryExecution = QueryExecutionFactory.create(query, model);
-        resultSet = queryExecution.execSelect();
-
-        for (; resultSet.hasNext(); ) {
-            QuerySolution querySolution = resultSet.nextSolution();
-            s = querySolution.get("s");
-            p = querySolution.get("p");
-            o = querySolution.get("o");
-            if (!o.asLiteral().getString().isEmpty()) {
-                QueryResult queryResultobject =
-                        new QueryResult(s.asNode().toString(), o.asLiteral().getString(), p.asNode().toString());
-                queryResultList.add(queryResultobject);
-            } else {
-                QueryResult queryResultobject =
-                        new QueryResult(s.asNode().toString(), "null", "null");
-                queryResultList.add(queryResultobject);
-            }
-        }
-        //printList(queryResultList);
-        log.debug("number of retrieved labels is: " + queryResultList.size());
-        //Store all labels in one string and call lemmatizer only once then map the queryResult
-        // objects to corresponding sub-array
-        final StringBuilder sb = new StringBuilder();
-        for (QueryResult qr : queryResultList) {
-            sb.append(qr.getLabel().trim()).append("\n\n\n\n");
-        }
-        final String ontologieLabels = sb.toString();
-
-        log.debug("Morphological analysis for ontology labels has started:");
-        LemmatizerResult lemmatizerResult =
-            lemmatizerServiceApi.process(ontologieLabels, lang);
-
-        int i = 0;
-        for (QueryResult queryResult : queryResultList) {
-            queryResult.setSingleLemmaResults(lemmatizerResult.getResult().get(i));
-            i++;
-        }
-
-        log.debug("Morphological analysis for ontology labels has finished");
-        return queryResultList;
-
-    }
-}
+    List<QueryResult> analyzeModel(Model model, String lang);}

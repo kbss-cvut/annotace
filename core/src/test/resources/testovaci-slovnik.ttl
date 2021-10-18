@@ -1,0 +1,32 @@
+
+<http://onto.fel.cvut.cz/ontologies/slovník/agendový/popis-dat/pojem/model/instance387342818>
+  a <http://onto.fel.cvut.cz/ontologies/slovník/agendový/popis-dat/pojem/model> .
+
+<https://slovník.gov.cz/generický/testovaci-slovnik-0-0> a <http://onto.fel.cvut.cz/ontologies/slovník/agendový/popis-dat/pojem/slovník>;
+  <http://onto.fel.cvut.cz/ontologies/slovník/agendový/popis-dat/pojem/má-glosář> <https://slovník.gov.cz/generický/testovaci-slovnik-0-0/glosář-1-0-0>;
+  <http://onto.fel.cvut.cz/ontologies/slovník/agendový/popis-dat/pojem/má-model> <http://onto.fel.cvut.cz/ontologies/slovník/agendový/popis-dat/pojem/model/instance387342818>;
+  <http://purl.org/dc/terms/title> "testovaci slovnik"@cs .
+
+<https://slovník.gov.cz/generický/testovaci-slovnik-0-0/glosář-1-0-0> a <http://onto.fel.cvut.cz/ontologies/slovník/agendový/popis-dat/pojem/glosář>,
+    <http://www.w3.org/2002/07/owl#Ontology>, <http://www.w3.org/2004/02/skos/core#ConceptScheme>;
+  <http://purl.org/dc/terms/created> "2021-09-23T20:19:21.112Z"^^<http://www.w3.org/2001/XMLSchema#dateTime>;
+  <http://purl.org/dc/terms/creator> "Petr Křemen";
+  <http://purl.org/dc/terms/title> "testovaci slovnik"@cs;
+  <http://www.w3.org/2004/02/skos/core#hasTopConcept> <https://slovník.gov.cz/generický/testovaci-slovnik-0-0/pojem/parcela> .
+
+<https://slovník.gov.cz/generický/testovaci-slovnik-0-0/pojem/parcela> a <http://www.w3.org/2004/02/skos/core#Concept>;
+  <http://purl.org/dc/terms/source> "Písmeno b) paragraf 2 zákona č. ....";
+  <http://www.w3.org/2004/02/skos/core#definition> "pozemek, který je geometricky určit"@cs;
+  <http://www.w3.org/2004/02/skos/core#inScheme> <https://slovník.gov.cz/generický/testovaci-slovnik-0-0/glosář-1-0-0>;
+  <http://www.w3.org/2004/02/skos/core#prefLabel> "Parcela"@cs;
+  <http://www.w3.org/2004/02/skos/core#scopeNote> "příklady ";
+  <http://www.w3.org/2004/02/skos/core#topConceptOf> <https://slovník.gov.cz/generický/testovaci-slovnik-0-0/glosář-1-0-0> .
+
+<https://slovník.gov.cz/generický/testovaci-slovnik-0-0/pojem/stavební-parcela> a
+    <http://onto.fel.cvut.cz/ontologies/ufo/object-type>, <http://www.w3.org/2004/02/skos/core#Concept>;
+  <http://purl.org/dc/terms/source> "Písmeno c) paragraf 3 zákona č. ....";
+  <http://www.w3.org/2004/02/skos/core#broader> <https://slovník.gov.cz/generický/testovaci-slovnik-0-0/pojem/parcela>;
+  <http://www.w3.org/2004/02/skos/core#definition> "stavební parcela není pozemková kjnlabndla"@cs;
+  <http://www.w3.org/2004/02/skos/core#inScheme> <https://slovník.gov.cz/generický/testovaci-slovnik-0-0/glosář-1-0-0>;
+  <http://www.w3.org/2004/02/skos/core#prefLabel> "Stavební parcela"@cs;
+  <http://www.w3.org/2004/02/skos/core#scopeNote> "Příklady"@cs .

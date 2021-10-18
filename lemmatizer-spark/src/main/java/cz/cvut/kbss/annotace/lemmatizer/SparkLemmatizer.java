@@ -14,6 +14,7 @@ import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +63,10 @@ public class SparkLemmatizer implements LemmatizerApi {
                     tokenizer.setInputCols(new String[] {"sentence"});
                     tokenizer.setOutputCol("token");
 
+                    final List<String> chars = new ArrayList<>(Arrays.asList(tokenizer.getContextChars()));
+                    chars.add("`");
+                    tokenizer.setContextChars(chars.toArray(new String[]{}));
+
                     log.info(" - loading lemmatizer {}", modelName, language);
                     final LemmatizerModel lemmatizer = LemmatizerModel.pretrained(modelName, language);
                     lemmatizer.setInputCols(new String[] {"token"});
@@ -104,7 +109,7 @@ public class SparkLemmatizer implements LemmatizerApi {
                 final JavaAnnotation aLemma = map.get("lemmas").get(i);
                 r.setLemma(aLemma.result().replace("\u2018", "").replace("\u2019", ""));
 
-                // TODO
+                // TODO implement negated properly.
                 r.setNegated(false);
 
                 int startNext =

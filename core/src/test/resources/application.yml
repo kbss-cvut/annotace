@@ -7,3 +7,7 @@ annotace:
     service: http://lindat.mff.cuni.cz/services/morphodita/api
   ker:
     service: http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.04&maximum-words=30
+  spark:
+    lemmatizers:
+      cs: model:lemma
+      en: pipeline:explain_document_ml

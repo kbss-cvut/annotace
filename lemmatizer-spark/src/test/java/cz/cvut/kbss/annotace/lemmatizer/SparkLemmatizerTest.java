@@ -5,6 +5,7 @@ import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import java.util.Arrays;
 import java.util.Iterator;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class SparkLemmatizerTest {
     }
 
     @Test
+    @Disabled
     void checkEnglish() {
         final LemmatizerResult result = sut.process("UK is going down.", "en");
         final Iterator<String> lemmas =

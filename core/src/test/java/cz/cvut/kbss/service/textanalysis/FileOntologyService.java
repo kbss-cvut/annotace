@@ -24,11 +24,11 @@ public class FileOntologyService extends AbstractOntologyService {
     }
 
     private InputStream getModelStream(URI uri) {
-        final String localName = uri.toString().substring(uri.toString().lastIndexOf("/") + 1);
+        final String localName = uri.toString().substring(uri.toString().lastIndexOf("/") + 1,uri.toString().lastIndexOf("?") );
         return getClass().getResourceAsStream("/" + localName + ".ttl");
     }
 
-    public Model readOntology(URI uri) {
+    public Model readOntology(URI uri, final String userName, final String password) {
         final Model model = ModelFactory.createDefaultModel();
         model.read(getModelStream(uri), null, FileUtils.langTurtle);
         return model;

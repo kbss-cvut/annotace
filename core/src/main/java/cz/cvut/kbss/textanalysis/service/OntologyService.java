@@ -26,14 +26,7 @@ import org.apache.jena.rdf.model.Model;
 
 public interface OntologyService {
 
-    /**
-     * Reads ontology with the given URI;
-     *
-     * @param uri logical ontology URI to load
-     * @return Jena Model containing the ontology
-     */
-    Model readOntology(URI uri);
+    List<QueryResult> analyzeModel(Set<URI> uriSet, String userName, String password, String lang);
 
-    List<QueryResult> analyzeModel(Set<URI> uriSet, String lang);
-
-    List<QueryResult> analyzeModel(Model model, String lang);}
+    List<QueryResult> analyzeModel(Model model, String lang);
+}

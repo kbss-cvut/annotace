@@ -22,6 +22,7 @@ import java.net.URI;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * Represents input passed to the text analysis service.
@@ -31,6 +32,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Accessors(chain = true)
 public class TextAnalysisInput {
 
     /**
@@ -42,6 +44,16 @@ public class TextAnalysisInput {
      * URI of the repository containing vocabulary whose terms are used in the text analysis.
      */
     private URI vocabularyRepository;
+
+    /**
+     * Username to access the repository
+     */
+    private String vocabularyRepositoryUserName;
+
+    /**
+     * Password to access the repository
+     */
+    private String vocabularyRepositoryPassword;
 
     /**
      * URI of the context containing vocabulary whose terms are used in the text analysis. Optional.

@@ -48,14 +48,22 @@ public abstract class AbstractOntologyService implements OntologyService {
         this.lemmatizerServiceApi = morphoDitaService;
     }
 
-    public abstract Model readOntology(URI uri);
+    /**
+     * Reads ontology with the given URI;
+     *
+     * @param uri logical ontology URI to load
+     * @param userName (optional) username to log with
+     * @param password (optional) password to log with
+     * @return Jena Model containing the ontology
+     */
+    public abstract Model readOntology(final URI uri, final String userName, final String password);
 
-    public List<QueryResult> analyzeModel(Set<URI> uriSet, String lang) {
+    public List<QueryResult> analyzeModel(final Set<URI> uriSet, final String username, final String password, final String lang) {
         List<QueryResult> allGraphs = new ArrayList<>();
         List<QueryResult> singleGraph;
 
         for(URI uri : uriSet) {
-            singleGraph = analyzeModel(readOntology(uri), lang);
+            singleGraph = analyzeModel(readOntology(uri, username, password), lang);
             allGraphs.addAll(singleGraph);
         }
         return allGraphs;

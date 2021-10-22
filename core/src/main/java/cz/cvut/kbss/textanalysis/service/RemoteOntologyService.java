@@ -19,18 +19,18 @@
 package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
-import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.methods.RequestBuilder;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -43,40 +43,30 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class RemoteOntologyService extends AbstractOntologyService {
 
-    private static final String REPO_AUTH = "Basic dGVybWl0OnZsOGRjZXRlcm1pdGkzdDI=";
-
     @Autowired
-    public RemoteOntologyService(final LemmatizerApi morphoDitaService) {
-        super(morphoDitaService);
+    public RemoteOntologyService(final LemmatizerApi lemmatizer) {
+        super(lemmatizer);
     }
 
-    public Model readOntology(URI uri) {
-        HttpClient client = HttpClients.custom().build();
-        HttpUriRequest request = RequestBuilder.get()
-            .setUri(uri)
-            .setHeader("Authorization", REPO_AUTH)
-            .build();
-        HttpEntity entity = null;
-        try {
-            entity = client.execute(request).getEntity();
-        } catch (IOException e) {
-            log.error("Error executing Get request to the repository");
+    public Model readOntology(URI uri, String userName, String password) {
+        final HttpClientBuilder httpClient = HttpClientBuilder.create();
+        if (userName != null) {
+            final CredentialsProvider provider = new BasicCredentialsProvider();
+            provider.setCredentials(
+                AuthScope.ANY,
+                new UsernamePasswordCredentials(userName, password)
+            );
+            httpClient.setDefaultCredentialsProvider(provider);
         }
-
-        final File file;
-        Model model = ModelFactory.createDefaultModel();
-        model.read(uri.toString(), "text/turtle");
-        try {
-            file = File.createTempFile("model", "");
+        final Model model = ModelFactory.createDefaultModel();
+        try (final CloseableHttpResponse response = httpClient.build().execute(new HttpGet(uri))) {
+            final HttpEntity entity = response.getEntity();
             if (entity != null) {
-                Files.write(Paths.get(file.toURI()),
-                    Collections.singleton(EntityUtils.toString(entity)));
-                model.read(file.getAbsolutePath(), FileUtils.langTurtle);
+                model.read(new StringReader(EntityUtils.toString(entity)), FileUtils.langTurtle);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error getting the ontology : ", e);
         }
-
         return model;
     }
 }

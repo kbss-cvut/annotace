@@ -48,7 +48,7 @@ public class RemoteOntologyService extends AbstractOntologyService {
         super(lemmatizer);
     }
 
-    public Model readOntology(URI uri, String userName, String password) {
+    public Model readOntology(final URI uri, final String userName, final String password) {
         final HttpClientBuilder httpClient = HttpClientBuilder.create();
         if (userName != null) {
             final CredentialsProvider provider = new BasicCredentialsProvider();

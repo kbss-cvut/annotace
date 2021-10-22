@@ -22,11 +22,9 @@ import cz.cvut.kbss.textanalysis.model.QueryResult;
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
-import org.apache.jena.rdf.model.Model;
 
 public interface OntologyService {
 
     List<QueryResult> analyzeModel(Set<URI> uriSet, String userName, String password, String lang);
 
-    List<QueryResult> analyzeModel(Model model, String lang);
 }

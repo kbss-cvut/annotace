@@ -61,8 +61,9 @@ public class RemoteOntologyService extends AbstractOntologyService {
         final Model model = ModelFactory.createDefaultModel();
         try (final CloseableHttpResponse response = httpClient.build().execute(new HttpGet(uri))) {
             final HttpEntity entity = response.getEntity();
+            final String entityString = EntityUtils.toString(entity);
             if (entity != null) {
-                model.read(new StringReader(EntityUtils.toString(entity)), FileUtils.langTurtle);
+                model.read(new StringReader(entityString), null, FileUtils.langTurtle);
             }
         } catch (IOException e) {
             log.error("Error getting the ontology : ", e);

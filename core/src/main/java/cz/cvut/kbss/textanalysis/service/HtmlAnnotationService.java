@@ -100,7 +100,7 @@ public class HtmlAnnotationService {
         final List<QueryResult> queryResultList = ontologyService
             .analyzeModel(vocabularies, input.getVocabularyRepositoryUserName(), input.getVocabularyRepositoryPassword(), lang);
 
-        final Document doc = unwrapSpan(Jsoup.parse(input.getContent()));
+        final Document doc = Jsoup.parse(unwrapSpan(Jsoup.parse(input.getContent())).toString());
         final List<String> chunks = new ArrayList<>();
         final NodeVisitor chunkCollector =
             new ChunkIterator(chunk -> chunks.add(chunk.getWholeText()));
@@ -164,16 +164,17 @@ public class HtmlAnnotationService {
         final NodeVisitor visitor = new ChunkIterator(chunk -> {
             final List<Node> newNode = a.annotate(
                 p.process(chunk.getWholeText())).collect(Collectors.toList());
-            replaceMap.put(chunk, newNode);
+//            if (!(newNode.size() == 1 && chunk.getWholeText().trim().equals(newNode.iterator().next().toString()))) {
+                replaceMap.put(chunk, newNode);
+//            }
         });
 
         NodeTraversor.traverse(visitor, output);
 
         for (final Map.Entry<TextNode, List<Node>> e : replaceMap.entrySet()) {
-            if (!(e.getKey().parentNode().nodeName().equals("span")) || (
-                (e.getKey().parentNode().nodeName().equals("span")) && !(e.getKey().parentNode()
-                    .attr("typeof").equals("ddo:výskyt-termu")))) {
-                Node node = e.getKey().text("");
+            if (!(e.getKey().parentNode().nodeName().equals("span")
+                && e.getKey().parentNode().attr("typeof").equals("ddo:výskyt-termu"))) {
+                final Node node = e.getKey().text("");
                 e.getValue().forEach(node::before);
             }
         }

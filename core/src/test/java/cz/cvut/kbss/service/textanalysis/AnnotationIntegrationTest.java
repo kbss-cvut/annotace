@@ -40,4 +40,25 @@ public class AnnotationIntegrationTest {
 
         assertEquals(4, count);
     }
+
+    @Test
+    public void testAnnotateIsIdempotent()
+        throws IOException, HtmlAnnotationException {
+
+        final String content = Jsoup
+            .parse(new File(HtmlAnnotationService.class.getResource("/test-simple.html").getFile()),"utf-8").toString();
+
+        final TextAnalysisInput input = new TextAnalysisInput()
+            .setVocabularyRepository(URI.create("https://slovník.gov.cz/generický/testovaci-slovnik"))
+            .setLanguage("cs")
+            .setContent(content);
+
+        final String annotatedContent1 = sut.annotate(true, input);
+
+        input.setContent(annotatedContent1);
+        final String annotatedContent2 = sut.annotate(true, input);
+
+        // hard to compare directly due to blank nodes
+        assertEquals(annotatedContent1.length(), annotatedContent2.length());
+    }
 }

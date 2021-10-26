@@ -9,9 +9,13 @@ import cz.cvut.kbss.textanalysis.service.HtmlAnnotationService;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -41,12 +45,13 @@ public class AnnotationIntegrationTest {
         assertEquals(4, count);
     }
 
-    @Test
-    public void testAnnotateIsIdempotent()
+    @ParameterizedTest
+    @MethodSource("getIdempotentTexts")
+    public void testAnnotateIsIdempotent(final String file)
         throws IOException, HtmlAnnotationException {
 
         final String content = Jsoup
-            .parse(new File(HtmlAnnotationService.class.getResource("/test-simple.html").getFile()),"utf-8").toString();
+            .parse(new File(HtmlAnnotationService.class.getResource("/" + file).getFile()),"utf-8").toString();
 
         final TextAnalysisInput input = new TextAnalysisInput()
             .setVocabularyRepository(URI.create("https://slovník.gov.cz/generický/testovaci-slovnik"))
@@ -60,5 +65,12 @@ public class AnnotationIntegrationTest {
 
         // hard to compare directly due to blank nodes
         assertEquals(annotatedContent1.length(), annotatedContent2.length());
+    }
+
+    private static Stream<Arguments> getIdempotentTexts() {
+        return Stream.of(
+            Arguments.of("test-simple.html"),
+            Arguments.of("test-simple-2.html")
+        );
     }
 }

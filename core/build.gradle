@@ -14,11 +14,11 @@ dependencies {
     implementation project(':keywordextractor-ker')
     implementation project(':lemmatizer-spark')
 
-    implementation('org.springframework.boot:spring-boot-starter-web:2.5.5')
-    implementation('org.jsoup:jsoup:1.14.3')
+    implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    implementation('org.jsoup:jsoup:1.15.4')
 
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
-    implementation('org.apache.jena:apache-jena-libs:3.8.0')
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
+    implementation('org.apache.jena:apache-jena-libs:3.17.0')
 
     testImplementation('org.apache.commons:commons-lang3:3.12.0')
     testImplementation('org.mockito:mockito-junit-jupiter:4.0.0')

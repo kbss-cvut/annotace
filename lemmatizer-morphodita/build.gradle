@@ -1,5 +1,9 @@
 apply plugin: 'io.spring.dependency-management'
 
+//test {
+//    systemProperty ("java.library.path", "/path/to/directory/containing/libmorphodita_java.so")
+//}
+
 dependencies {
     implementation project(':api')
 

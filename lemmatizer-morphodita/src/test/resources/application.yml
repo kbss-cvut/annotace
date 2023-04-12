@@ -1,5 +1,5 @@
 annotace:
   morphodita:
     taggers:
-      cs: /home/kremep1/soft/annotace/czech-morfflex-pdt-161115.tagger
-      en: /home/kremep1/soft/annotace/english-morphium-wsj-140407.tagger
+      cs: czech-morfflex-pdt-161115.tagger
+      en: english-morphium-wsj-140407.tagger

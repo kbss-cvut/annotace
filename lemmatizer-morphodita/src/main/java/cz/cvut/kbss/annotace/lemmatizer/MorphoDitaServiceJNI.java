@@ -51,7 +51,7 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
             try {
                 log.info("Finding {} ...", taggerPath);
                 if (!new File(taggerPath).exists()) {
-                    log.info("Tagger file %s for language %s not found.", taggerPath, lang);
+                    log.info("Tagger file {} for language {} not found.", taggerPath, lang);
                     return;
                 }
                 log.info("Found at {}", taggerPath);
@@ -63,7 +63,7 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
                         "Creating tagger failed.");
                 } else {
                     taggers.put(lang,tagger);
-                    log.info("Tagger {} for lang {} succesfully created.", tagger, lang);
+                    log.info("Tagger {} for lang {} successfully created.", tagger, lang);
                 }
             } catch (Exception e) {
                 log.info("Creating tagger {} for lang {} failed.", taggerPath, lang);

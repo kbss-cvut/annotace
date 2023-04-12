@@ -14,7 +14,7 @@ version = "0.0.1.r${revision}.${hash}";
 ext {
     springBootVersion = "2.7.10"
     springVersion = "5.3.26"
-    jacksonVersion = "2.13.5"
+    jacksonVersion = "2.14.2"
     junitVersion = "5.9.2"
 }
 

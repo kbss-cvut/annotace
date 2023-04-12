@@ -35,7 +35,7 @@ subprojects {
     version parent.version
 
     repositories {
-        jcenter()
+        mavenCentral()
         maven {
             name = 'kbss-private'
             url = uri('https://kbss.felk.cvut.cz/m2repo-private')

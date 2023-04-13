@@ -12,9 +12,6 @@ def hash = "git rev-parse --short HEAD".execute().text.trim()
 version = "0.0.1.r${revision}.${hash}";
 
 ext {
-    springBootVersion = "2.7.10"
-    springVersion = "5.3.26"
-    jacksonVersion = "2.14.2"
     junitVersion = "5.9.2"
 }
 
@@ -49,7 +46,7 @@ subprojects {
 
         annotationProcessor "org.projectlombok:lombok:1.18.20"
 
-        testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
-        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+        testImplementation(libs.junit.api)
+        testRuntimeOnly(libs.junit.engine)
     }
 }

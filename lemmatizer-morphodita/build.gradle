@@ -8,8 +8,8 @@ dependencies {
     implementation project(":api")
 
     implementation "cz.cvut.kbss:morphodita:0.0.1"
-    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    implementation(libs.spring.boot.web)
 
-    testImplementation "org.springframework:spring-aspects:${springVersion}"
-    testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    testImplementation(libs.spring.aspects)
+    testImplementation(libs.spring.boot.test)
 }

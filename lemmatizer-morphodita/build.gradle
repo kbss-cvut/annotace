@@ -1,13 +1,13 @@
-apply plugin: 'io.spring.dependency-management'
+apply plugin: "io.spring.dependency-management"
 
 //test {
 //    systemProperty ("java.library.path", "/path/to/directory/containing/libmorphodita_java.so")
 //}
 
 dependencies {
-    implementation project(':api')
+    implementation project(":api")
 
-    implementation 'cz.cvut.kbss:morphodita:0.0.1'
+    implementation "cz.cvut.kbss:morphodita:0.0.1"
     implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 
     testImplementation "org.springframework:spring-aspects:${springVersion}"

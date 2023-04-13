@@ -1,13 +1,17 @@
-apply plugin: 'io.spring.dependency-management'
+apply plugin: "io.spring.dependency-management"
+
+//test {
+//    systemProperty ("java.library.path", "/path/to/directory/containing/libmorphodita_java.so")
+//}
 
 dependencies {
-    implementation project(':api')
-    implementation project(':lemmatizer-spark')
-    implementation project(':lemmatizer-morphodita')
+    implementation project(":api")
+    implementation project(":lemmatizer-spark")
+    implementation project(":lemmatizer-morphodita")
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.2'
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.5'
-    testImplementation('org.springframework.boot:spring-boot-starter-test:2.5.5') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    testImplementation(libs.junit.params)
+    implementation(libs.spring.boot.web)
+    testImplementation(libs.spring.boot.test) {
+        exclude group: "org.junit.vintage", module: "junit-vintage-engine"
     }
 }

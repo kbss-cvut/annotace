@@ -1,5 +1,5 @@
 dependencies {
-    implementation project(':api')
+    implementation project(":api")
 
-    implementation('org.springframework.boot:spring-boot-starter-web:2.5.5')
+    implementation(libs.spring.boot.web)
 }

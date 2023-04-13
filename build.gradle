@@ -1,23 +1,27 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.3' apply false
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE' apply false
+    id "org.springframework.boot" version "2.7.10" apply false
+    id "io.spring.dependency-management" version "1.0.11.RELEASE" apply false
 }
 
-group 'cz.cvut.kbss'
-description 'Text analysis for Czech language and annotation recommendation service'
-version '0.0.1'
+group "cz.cvut.kbss"
+description "Text analysis for Czech language and annotation recommendation service"
+version "0.0.1"
 
-def revision = 'git rev-list --count HEAD'.execute().text.trim()
-def hash = 'git rev-parse --short HEAD'.execute().text.trim()
+def revision = "git rev-list --count HEAD".execute().text.trim()
+def hash = "git rev-parse --short HEAD".execute().text.trim()
 version = "0.0.1.r${revision}.${hash}";
 
+ext {
+    junitVersion = "5.9.2"
+}
+
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'java-library'
+    apply plugin: "java"
+    apply plugin: "java-library"
 
     compileJava {
-        sourceCompatibility = '11'
-        targetCompatibility = '11'
+        sourceCompatibility = "11"
+        targetCompatibility = "11"
     }
 
     test {
@@ -28,21 +32,21 @@ subprojects {
     version parent.version
 
     repositories {
-        jcenter()
+        mavenCentral()
         maven {
-            name = 'kbss-private'
-            url = uri('https://kbss.felk.cvut.cz/m2repo-private')
+            name = "kbss-private"
+            url = uri("https://kbss.felk.cvut.cz/m2repo-private")
         }
     }
 
     dependencies {
-        implementation 'org.slf4j:slf4j-api:1.7.30'
-        implementation 'ch.qos.logback:logback-classic:1.2.3'
-        compileOnly 'org.projectlombok:lombok:1.18.20'
+        implementation "org.slf4j:slf4j-api:1.7.36"
+        implementation "ch.qos.logback:logback-classic:1.2.11"
+        compileOnly "org.projectlombok:lombok:1.18.20"
 
         annotationProcessor "org.projectlombok:lombok:1.18.20"
 
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+        testImplementation(libs.junit.api)
+        testRuntimeOnly(libs.junit.engine)
     }
 }

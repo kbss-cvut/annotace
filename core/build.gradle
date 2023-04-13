@@ -1,28 +1,28 @@
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
 
-description 'Text analysis for Czech language and annotation recommendation service'
+description "Text analysis for Czech language and annotation recommendation service"
 
 processResources {
-    filesMatching('application.yml') {
+    filesMatching("application.yml") {
         expand(["version": project.version])
     }
 }
 
 dependencies {
-    implementation project(':api')
-    implementation project(':keywordextractor-ker')
-    implementation project(':lemmatizer-spark')
+    implementation project(":api")
+    implementation project(":keywordextractor-ker")
+    implementation project(":lemmatizer-spark")
 
-    implementation('org.springframework.boot:spring-boot-starter-web:2.5.5')
-    implementation('org.jsoup:jsoup:1.14.3')
+    implementation(libs.spring.boot.web)
+    implementation("org.jsoup:jsoup:1.15.4")
 
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
-    implementation('org.apache.jena:apache-jena-libs:3.8.0')
+    implementation(libs.jackson.annotations)
+    implementation("org.apache.jena:apache-jena-libs:3.17.0")
 
-    testImplementation('org.apache.commons:commons-lang3:3.12.0')
-    testImplementation('org.mockito:mockito-junit-jupiter:4.0.0')
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation("org.apache.commons:commons-lang3:3.12.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.0.0")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 }
 
@@ -30,8 +30,8 @@ allprojects {
     configurations.all {
         resolutionStrategy {
             dependencySubstitution {
-                substitute module('org.codehaus.janino:janino') with module('org.codehaus.janino:janino:3.0.16')
-                substitute module('org.codehaus.janino:commons-compiler') with module('org.codehaus.janino:commons-compiler:3.0.16')
+                substitute module("org.codehaus.janino:janino") using module("org.codehaus.janino:janino:3.0.16")
+                substitute module("org.codehaus.janino:commons-compiler") using module("org.codehaus.janino:commons-compiler:3.0.16")
             }
         }
     }

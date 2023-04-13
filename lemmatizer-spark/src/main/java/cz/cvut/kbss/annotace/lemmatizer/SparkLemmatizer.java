@@ -1,10 +1,7 @@
 package cz.cvut.kbss.annotace.lemmatizer;
 
 import com.google.common.base.Strings;
-import com.johnsnowlabs.nlp.DocumentAssembler;
-import com.johnsnowlabs.nlp.JavaAnnotation;
-import com.johnsnowlabs.nlp.LightPipeline;
-import com.johnsnowlabs.nlp.SparkNLP;
+import com.johnsnowlabs.nlp.*;
 import com.johnsnowlabs.nlp.annotators.LemmatizerModel;
 import com.johnsnowlabs.nlp.annotators.Tokenizer;
 import com.johnsnowlabs.nlp.annotators.sbd.pragmatic.SentenceDetector;
@@ -38,7 +35,7 @@ public class SparkLemmatizer implements LemmatizerApi {
 
     @Autowired
     public SparkLemmatizer(SparkConf conf) {
-        spark = SparkNLP.start(false, false, false, "2G");
+        spark = SparkNLP.start(false, false, false, "2G", "", "", "", scala.collection.immutable.Map$.MODULE$.empty());
         conf.getLemmatizers().forEach((language, sparkObject) -> {
             try {
                 log.info("Creating pipeline for lang {}", language);
@@ -67,7 +64,7 @@ public class SparkLemmatizer implements LemmatizerApi {
                     chars.add("`");
                     tokenizer.setContextChars(chars.toArray(new String[]{}));
 
-                    log.info(" - loading lemmatizer {}", modelName, language);
+                    log.info(" - loading lemmatizer {} using language {}", modelName, language);
                     final LemmatizerModel lemmatizer = LemmatizerModel.pretrained(modelName, language);
                     lemmatizer.setInputCols(new String[] {"token"});
                     lemmatizer.setOutputCol("lemmas");
@@ -96,24 +93,24 @@ public class SparkLemmatizer implements LemmatizerApi {
         final List<List<SingleLemmaResult>> results = new ArrayList<>();
 
         for(final String label: labels) {
-            final Map<String, List<JavaAnnotation>> map = pipelines.get(lang).fullAnnotateJava(label);
-            final List<JavaAnnotation> tokens = map.get("token");
+            final Map<String, List<IAnnotation>> map = pipelines.get(lang).fullAnnotateJava(label);
+            final List<IAnnotation> tokens = map.get("token");
             final List<SingleLemmaResult> res = new ArrayList<>();
             results.add(res);
 
             for (int i = 0; i < tokens.size(); i++) {
-                final JavaAnnotation a = tokens.get(i);
+                final JavaAnnotation a = (JavaAnnotation) tokens.get(i);
                 final SingleLemmaResult r = new SingleLemmaResult();
                 r.setToken(a.result());
 
-                final JavaAnnotation aLemma = map.get("lemmas").get(i);
+                final JavaAnnotation aLemma = (JavaAnnotation) map.get("lemmas").get(i);
                 r.setLemma(aLemma.result().replace("\u2018", "").replace("\u2019", ""));
 
                 // TODO implement negated properly.
                 r.setNegated(false);
 
                 int startNext =
-                    (tokens.size() - 1 == i) ? a.end() : tokens.get(i + 1).begin()-1;
+                    (tokens.size() - 1 == i) ? a.end() : ((JavaAnnotation) tokens.get(i + 1)).begin()-1;
                 r.setSpaces(Strings.repeat(" ", startNext - (a.end())));
                 res.add(r);
             }

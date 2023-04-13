@@ -4,7 +4,7 @@ ARG MORPHODITA_ZIP_SO
 
 ########################################################################################################################
 
-FROM openjdk:11 as unzip
+FROM eclipse-temurin:11-jdk-alpine as unzip
 ARG MORPHODITA_MODEL
 ARG MORPHODITA_ZIP
 COPY $MORPHODITA_MODEL .
@@ -12,7 +12,7 @@ RUN unzip $MORPHODITA_MODEL
 COPY $MORPHODITA_ZIP .
 RUN unzip $MORPHODITA_ZIP
 
-FROM gradle:7.1.1-jdk11 as buildMaven
+FROM gradle:8.0.2-jdk11-alpine as buildMaven
 ARG MORPHODITA_MODEL_TAGGER_FILE
 ARG MORPHODITA_ZIP_SO
 RUN mkdir annotace
@@ -22,7 +22,7 @@ COPY --from=unzip $MORPHODITA_MODEL_TAGGER_FILE /tagger
 COPY --from=unzip $MORPHODITA_ZIP_SO /lib
 RUN gradle bootJar -Pcore,lemmatizer-spark,keywordextractor-ker
 
-FROM openjdk:11 as runtime
+FROM eclipse-temurin:11-jdk-alpine as runtime
 ARG MORPHODITA_MODEL_TAGGER_FILE
 ARG MORPHODITA_ZIP_SO
 COPY --from=buildMaven /annotace/core/build/libs/*.jar /

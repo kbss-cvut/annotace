@@ -74,14 +74,14 @@ public class AnnotationService {
                 List<Phrase> matchedAnnotations = new ArrayList<>();
                 boolean isKeyword = kerResult.getKeywords().contains(result.getLemma());
                 boolean isStopword = stopwordsList.contains(result.getLemma());
-                boolean isMatched = false;
+                boolean isMatched;
                 boolean isNotNegation;
 
                 for (QueryResult queryResults : queryResultList) {
                     for (SingleLemmaResult ontologyResults : queryResults.getSingleLemmaResults()) {
 
                         isMatched = queryResults.getSingleLemmaResults().size() == 1;
-                        isNotNegation = !(result.isNegated() ^ ontologyResults.isNegated());
+                        isNotNegation = result.isNegated() == ontologyResults.isNegated();
 
                         if ((result.getLemma().contentEquals(ontologyResults.getLemma())
                             || result.getToken().toLowerCase().contentEquals(ontologyResults.getToken().toLowerCase())
@@ -110,21 +110,12 @@ public class AnnotationService {
                                     matchedAnnotations.add(matchedAnnotation);
                 }
 
-                final SingleLemmaResult res = result;
-                annotationsResults.add( new Word(res.getLemma(), res.getToken(), res.getSpaces() == null ? "":res.getSpaces(), matchedAnnotations.toArray(new Phrase[]{})) );
+                annotationsResults.add( new Word(result.getLemma(), result.getToken(), result.getSpaces() == null ? "" :
+                                                                                       result.getSpaces(), matchedAnnotations.toArray(new Phrase[]{})) );
 
             }
         }
 
         return annotationsResults;
     }
-
-    private boolean checkForNegation(String s, String r) {
-//        checkForNegation(result.getTag(), ontologyResults.getTag());
-        if (s.length() > 10)
-            return (s.charAt(10) == r.charAt(10));
-        else
-            return true;
-    }
-
 }

@@ -26,26 +26,19 @@ import cz.cvut.kbss.annotace.configuration.MorphoditaConf;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 
-@Primary
-@Service
-@Scope("singleton")
 @Slf4j
 public class MorphoDitaServiceJNI implements LemmatizerApi {
 
     private final Map<String, Tagger> taggers = new HashMap<>();
 
-    @Autowired
     public MorphoDitaServiceJNI(MorphoditaConf conf) {
         conf.getTaggers().forEach((lang, taggerPath) -> {
             try {

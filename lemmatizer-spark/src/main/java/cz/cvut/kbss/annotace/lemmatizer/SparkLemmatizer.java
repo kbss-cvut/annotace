@@ -1,7 +1,11 @@
 package cz.cvut.kbss.annotace.lemmatizer;
 
 import com.google.common.base.Strings;
-import com.johnsnowlabs.nlp.*;
+import com.johnsnowlabs.nlp.DocumentAssembler;
+import com.johnsnowlabs.nlp.IAnnotation;
+import com.johnsnowlabs.nlp.JavaAnnotation;
+import com.johnsnowlabs.nlp.LightPipeline;
+import com.johnsnowlabs.nlp.SparkNLP;
 import com.johnsnowlabs.nlp.annotators.LemmatizerModel;
 import com.johnsnowlabs.nlp.annotators.Tokenizer;
 import com.johnsnowlabs.nlp.annotators.sbd.pragmatic.SentenceDetector;
@@ -10,22 +14,20 @@ import cz.cvut.kbss.annotace.configuration.SparkConf;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.ml.Pipeline;
 import org.apache.spark.ml.PipelineModel;
 import org.apache.spark.ml.PipelineStage;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Slf4j
 public class SparkLemmatizer implements LemmatizerApi {
 
@@ -33,7 +35,6 @@ public class SparkLemmatizer implements LemmatizerApi {
 
     private final Map<String, LightPipeline> pipelines = new HashMap<>();
 
-    @Autowired
     public SparkLemmatizer(SparkConf conf) {
         spark = SparkNLP.start(false, false, false, "2G", "", "", "", scala.collection.immutable.Map$.MODULE$.empty());
         conf.getLemmatizers().forEach((language, sparkObject) -> {

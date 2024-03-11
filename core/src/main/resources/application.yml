@@ -2,9 +2,14 @@ application:
   version: ${version}
 
 annotace:
+  lemmatizer: spark
   ker:
     service: http://lindat.mff.cuni.cz/services/ker?language=cs&threshold=0.04&maximum-words=30
   spark:
     lemmatizers:
       cs: model:lemma
       en: pipeline:explain_document_ml
+  morphodita:
+    taggers:
+      cs: czech-morfflex-pdt-161115.tagger
+      en: english-morphium-wsj-140407.tagger

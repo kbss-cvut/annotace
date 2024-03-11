@@ -2,16 +2,16 @@ package cz.cvut.kbss.annotace.lemmatizer;
 
 import cz.cvut.kbss.annotace.configuration.SparkConf;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
-import java.util.Arrays;
-import java.util.Iterator;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Arrays;
+import java.util.Iterator;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class,
@@ -33,7 +33,6 @@ public class SparkLemmatizerTest {
     }
 
     @Test
-    @Disabled
     void checkEnglish() {
         final LemmatizerResult result = sut.process("UK is going down.", "en");
         final Iterator<String> lemmas =

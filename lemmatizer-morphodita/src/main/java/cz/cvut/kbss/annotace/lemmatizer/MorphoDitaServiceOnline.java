@@ -16,22 +16,17 @@
 package cz.cvut.kbss.annotace.lemmatizer;
 
 import cz.cvut.kbss.annotace.configuration.MorphoditaConf;
-import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
-import org.springframework.beans.factory.annotation.Autowired;
+import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.stereotype.Service;
 
-@Service
 public class MorphoDitaServiceOnline implements LemmatizerApi {
 
     private final RestTemplateBuilder restTemplateBuilder;
 
     private final MorphoditaConf conf;
 
-    @Autowired
-    public MorphoDitaServiceOnline(final RestTemplateBuilder restTemplateBuilder,
-                                   final MorphoditaConf conf) {
+    public MorphoDitaServiceOnline(RestTemplateBuilder restTemplateBuilder, MorphoditaConf conf) {
         this.restTemplateBuilder = restTemplateBuilder;
         this.conf = conf;
     }

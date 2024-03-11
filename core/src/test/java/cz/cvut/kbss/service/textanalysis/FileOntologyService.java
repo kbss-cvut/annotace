@@ -10,11 +10,13 @@ import org.apache.jena.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
 @Import(ServiceTestConfiguration.class)
 @Primary
+@Profile("test")
 public class FileOntologyService extends AbstractOntologyService {
 
     @Autowired

@@ -22,17 +22,6 @@ import cz.cvut.kbss.textanalysis.keywordextractor.model.KeywordExtractorResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.model.Word;
 import cz.cvut.kbss.textanalysis.service.html2rdfa.Annotator;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jena.vocabulary.SKOS;
 import org.jsoup.Jsoup;
@@ -46,15 +35,27 @@ import org.jsoup.select.NodeVisitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
 @Service
 @Slf4j
 public class HtmlAnnotationService {
 
-    private AnnotationService annotationService;
+    private final AnnotationService annotationService;
 
-    private OntologyService ontologyService;
+    private final OntologyService ontologyService;
 
-    private KeywordExtractorAPI keywordExtractionService;
+    private final KeywordExtractorAPI keywordExtractionService;
 
     @Autowired
     public HtmlAnnotationService(AnnotationService annotationService,
@@ -85,16 +86,10 @@ public class HtmlAnnotationService {
     }
 
     private String encode(String s) {
-        try {
-            return URLEncoder.encode(s, java.nio.charset.StandardCharsets.UTF_8.toString());
-        } catch(final UnsupportedEncodingException e ) {
-            log.error("Error during URL encoding: ", e);
-            return s;
-        }
+        return URLEncoder.encode(s, StandardCharsets.UTF_8);
     }
 
-    public String annotate(Boolean enableKeywordExtraction, final TextAnalysisInput input)
-        throws HtmlAnnotationException {
+    public String annotate(Boolean enableKeywordExtraction, final TextAnalysisInput input) {
         final Set<URI> vocabularies = getQueryUrlsForVocabularyContext(input);
         final String lang = input.getLanguage();
         final List<QueryResult> queryResultList = ontologyService
@@ -102,13 +97,12 @@ public class HtmlAnnotationService {
 
         final Document doc = Jsoup.parse(unwrapSpan(Jsoup.parse(input.getContent())).toString());
         final List<String> chunks = new ArrayList<>();
-        final NodeVisitor chunkCollector =
-            new ChunkIterator(chunk -> chunks.add(chunk.getWholeText()));
+        final NodeVisitor chunkCollector = new ChunkIterator(chunk -> chunks.add(chunk.getWholeText()));
         NodeTraversor.traverse(chunkCollector, doc);
 
         final KeywordExtractorResult kerResult;
         if (enableKeywordExtraction) {
-            final String documentChunksString = chunks.stream().collect(Collectors.joining("\r\n"));
+            final String documentChunksString = String.join("\r\n", chunks);
             kerResult = keywordExtractionService.process(documentChunksString);
         } else {
             kerResult = KeywordExtractorResult.createEmpty();
@@ -125,7 +119,7 @@ public class HtmlAnnotationService {
         }, doc, lang).toString();
     }
 
-    class ChunkIterator implements NodeVisitor {
+    static class ChunkIterator implements NodeVisitor {
 
         final Consumer<TextNode> consumer;
 
@@ -155,8 +149,7 @@ public class HtmlAnnotationService {
         log.debug("Annotating document has started");
         final Document output = doc.clone();
         final Element eHtml = output.selectFirst("html");
-        eHtml.attr("prefix",
-            "ddo: " + Constants.NS_TERMIT);
+        eHtml.attr("prefix", "ddo: " + Constants.NS_TERMIT);
 
         final Map<TextNode, List<Node>> replaceMap = new HashMap<>();
 

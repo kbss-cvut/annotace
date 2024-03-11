@@ -29,9 +29,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SparkLemmatizer implements LemmatizerApi {
 
-    private SparkSession spark;
+    private final SparkSession spark;
 
-    private Map<String, LightPipeline> pipelines = new HashMap<>();
+    private final Map<String, LightPipeline> pipelines = new HashMap<>();
 
     @Autowired
     public SparkLemmatizer(SparkConf conf) {

@@ -21,10 +21,6 @@ package cz.cvut.kbss.textanalysis.service;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -34,14 +30,17 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.vocabulary.SKOS;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
-@Service
 @Slf4j
 public abstract class AbstractOntologyService implements OntologyService {
 
-    private LemmatizerApi lemmatizerServiceApi;
+    private final LemmatizerApi lemmatizerServiceApi;
 
     @Autowired
     public AbstractOntologyService(final LemmatizerApi morphoDitaService) {
@@ -72,10 +71,6 @@ public abstract class AbstractOntologyService implements OntologyService {
     public List<QueryResult> analyzeModel(Model model, String lang) {
         List<QueryResult> queryResultList = new ArrayList<>();
         log.debug("Analyzing ontology model to get all labels");
-        RDFNode s;
-        RDFNode p;
-        RDFNode o;
-        ResultSet resultSet;
         String query =
             "SELECT ?s ?p ?o WHERE {"
                 + "?s ?p ?o ."
@@ -84,22 +79,23 @@ public abstract class AbstractOntologyService implements OntologyService {
                 + "FILTER (?p IN (<" + SKOS.prefLabel.toString()+ ">, <" + SKOS.hiddenLabel.toString() + ">, <" + SKOS.altLabel + ">))"
                 + "}";
 
-        QueryExecution queryExecution = QueryExecutionFactory.create(query, model);
-        resultSet = queryExecution.execSelect();
+        try (final QueryExecution queryExecution = QueryExecutionFactory.create(query, model)) {
+            final ResultSet resultSet = queryExecution.execSelect();
 
-        for (; resultSet.hasNext(); ) {
-            QuerySolution querySolution = resultSet.nextSolution();
-            s = querySolution.get("s");
-            p = querySolution.get("p");
-            o = querySolution.get("o");
-            if (!o.asLiteral().getString().isEmpty()) {
-                QueryResult queryResultobject =
-                    new QueryResult(s.asNode().toString(), o.asLiteral().getString(), p.asNode().toString());
-                queryResultList.add(queryResultobject);
-            } else {
-                QueryResult queryResultobject =
-                    new QueryResult(s.asNode().toString(), "null", "null");
-                queryResultList.add(queryResultobject);
+            while (resultSet.hasNext()) {
+                QuerySolution querySolution = resultSet.nextSolution();
+                RDFNode s = querySolution.get("s");
+                RDFNode p = querySolution.get("p");
+                RDFNode o = querySolution.get("o");
+                if (!o.asLiteral().getString().isEmpty()) {
+                    QueryResult queryResultobject =
+                            new QueryResult(s.asNode().toString(), o.asLiteral().getString(), p.asNode().toString());
+                    queryResultList.add(queryResultobject);
+                } else {
+                    QueryResult queryResultobject =
+                            new QueryResult(s.asNode().toString(), "null", "null");
+                    queryResultList.add(queryResultobject);
+                }
             }
         }
         //printList(queryResultList);

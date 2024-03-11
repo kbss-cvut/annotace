@@ -1,5 +1,6 @@
 apply plugin: "io.spring.dependency-management"
 
+// Note the value should be the directory containing libmorphodita_java.so, not path to the file itself!
 //test {
 //    systemProperty ("java.library.path", "/path/to/directory/containing/libmorphodita_java.so")
 //}

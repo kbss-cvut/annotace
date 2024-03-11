@@ -19,9 +19,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(classes = {HtmlAnnotationService.class, FileOntologyService.class})
 @Import(ServiceTestConfiguration.class)
+@ActiveProfiles("test")
 public class AnnotationIntegrationTest {
 
     @Autowired

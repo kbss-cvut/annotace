@@ -27,7 +27,7 @@ dependencies {
 }
 
 allprojects {
-    configurations.all {
+    configurations.configureEach {
         resolutionStrategy {
             dependencySubstitution {
                 substitute module("org.codehaus.janino:janino") using module("org.codehaus.janino:janino:3.0.16")

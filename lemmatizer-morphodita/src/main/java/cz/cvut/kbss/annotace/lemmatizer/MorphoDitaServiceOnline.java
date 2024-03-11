@@ -25,9 +25,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class MorphoDitaServiceOnline implements LemmatizerApi {
 
-    private RestTemplateBuilder restTemplateBuilder;
+    private final RestTemplateBuilder restTemplateBuilder;
 
-    private MorphoditaConf conf;
+    private final MorphoditaConf conf;
 
     @Autowired
     public MorphoDitaServiceOnline(final RestTemplateBuilder restTemplateBuilder,

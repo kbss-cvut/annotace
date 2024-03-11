@@ -44,8 +44,7 @@ public class AnnotateController {
         consumes = MediaType.APPLICATION_JSON_VALUE)
     public String annotate(@RequestParam(value = "enableKeywordExtraction", defaultValue = "false")
                                Boolean enableKeywordExtraction,
-                           @RequestBody TextAnalysisInput input)
-        throws Exception {
+                           @RequestBody TextAnalysisInput input) {
         return service.annotate(enableKeywordExtraction, input);
     }
 }

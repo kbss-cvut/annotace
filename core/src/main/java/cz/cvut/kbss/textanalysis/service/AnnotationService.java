@@ -18,30 +18,31 @@
  */
 package cz.cvut.kbss.textanalysis.service;
 
-import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
-import cz.cvut.kbss.textanalysis.model.Phrase;
-import cz.cvut.kbss.textanalysis.model.Word;
-import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.Stopwords;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import cz.cvut.kbss.textanalysis.keywordextractor.model.KeywordExtractorResult;
+import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
+import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
+import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
+import cz.cvut.kbss.textanalysis.model.Phrase;
+import cz.cvut.kbss.textanalysis.model.QueryResult;
+import cz.cvut.kbss.textanalysis.model.Word;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import cz.cvut.kbss.textanalysis.keywordextractor.model.KeywordExtractorResult;
-import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
-import cz.cvut.kbss.textanalysis.model.QueryResult;
 
 @Service
 public class AnnotationService {
 
-    @Autowired
-    private LemmatizerApi lemmatizer;
+    private final LemmatizerApi lemmatizer;
 
     public Stopwords stopwords = new Stopwords();
 
     List<String> stopwordsList;
+
+    public AnnotationService(LemmatizerApi lemmatizer) {
+        this.lemmatizer = lemmatizer;
+    }
 
     public List<Word> getAnnotations(final String textChunk,
                                      final List<QueryResult> queryResultList,

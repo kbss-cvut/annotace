@@ -43,7 +43,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class MorphoDitaServiceJNI implements LemmatizerApi {
 
-    private Map<String, Tagger> taggers = new HashMap<>();
+    private final Map<String, Tagger> taggers = new HashMap<>();
 
     @Autowired
     public MorphoDitaServiceJNI(MorphoditaConf conf) {
@@ -59,8 +59,7 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
                     System.getProperty("java.library.path"));
                 Tagger tagger = Tagger.load(taggerPath);
                 if (tagger == null) {
-                    log.warn(
-                        "Creating tagger failed.");
+                    log.warn("Creating tagger failed.");
                 } else {
                     taggers.put(lang,tagger);
                     log.info("Tagger {} for lang {} successfully created.", tagger, lang);
@@ -132,7 +131,7 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
                     (j == tokenLemmas.size() - 1) ? end : tokenRanges.get(j + 1).getStart();
 
                 String spaces = " ".repeat((int) (startNext - end));
-                if (spaces.equals("") && (s.contains(forms.get(j).concat(" ")) ||
+                if (spaces.isEmpty() && (s.contains(forms.get(j).concat(" ")) ||
                     (s.contains(forms.get(j).concat("\r"))) ||
                     (s.contains(forms.get(j).concat("\n"))))) {
                     token.setSpaces(" ");

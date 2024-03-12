@@ -7,13 +7,14 @@ services:
       context: .
       dockerfile: Dockerfile-morphodita
       args:
-        # path to morphodita ZIP file, from https://github.com/ufal/morphodita
+        # path to MorphoDiTa ZIP file, from https://github.com/ufal/morphodita
         MORPHODITA_ZIP: lib/morphodita-1.9.2-bin.zip
-        # path to the morphodita shared library within the $MORPHODITA_ZIP
+        # path to the MorphoDiTa shared library within the $MORPHODITA_ZIP
         MORPHODITA_ZIP_SO: morphodita-1.9.2-bin/bin-linux64/java/libmorphodita_java.so
         # path to a directory containing taggers to use, from https://lindat.mff.cuni.cz/repository/xmlui/handle/11234/1-1836
         MORPHODITA_TAGGERS: lib/taggers
     environment:
+      # List of taggers mapped to individual supported languages (tagger names should correspond to files in $MORPHODITA_TAGGERS)
       ANNOTACE_MORPHODITA_TAGGERS_CS: czech-morfflex-pdt-161115.tagger
       ANNOTACE_MORPHODITA_TAGGERS_EN: english-morphium-wsj-140407.tagger
       ANNOTACE_MORPHODITA_TAGGERS_SK: slovak-morfflex-pdt-170914.tagger

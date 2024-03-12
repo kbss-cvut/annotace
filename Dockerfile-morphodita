@@ -1,34 +1,35 @@
-ARG MORPHODITA_MODEL
+ARG MORPHODITA_TAGGERS
 ARG MORPHODITA_ZIP
 ARG MORPHODITA_ZIP_SO
 
 ########################################################################################################################
 
-FROM eclipse-temurin:11-jdk-alpine as unzip
-ARG MORPHODITA_MODEL
+FROM alpine as unzip
+ARG MORPHODITA_TAGGERS
 ARG MORPHODITA_ZIP
-COPY $MORPHODITA_MODEL .
-RUN unzip $MORPHODITA_MODEL
-COPY $MORPHODITA_ZIP .
-RUN unzip $MORPHODITA_ZIP
+RUN mkdir taggers
+RUN mkdir morphodita
+COPY $MORPHODITA_TAGGERS /taggers
+COPY $MORPHODITA_ZIP /morphodita
+WORKDIR /morphodita
+RUN unzip *.zip
 
 FROM gradle:8.0.2-jdk11-alpine as buildMaven
-ARG MORPHODITA_MODEL_TAGGER_FILE
 ARG MORPHODITA_ZIP_SO
 RUN mkdir annotace
 WORKDIR /annotace
 COPY . .
-COPY --from=unzip $MORPHODITA_MODEL_TAGGER_FILE /tagger
-COPY --from=unzip $MORPHODITA_ZIP_SO /lib
-RUN gradle bootJar -Pcore,lemmatizer-spark,keywordextractor-ker
+RUN gradle clean bootJar -x test
 
 FROM eclipse-temurin:11-jdk-alpine as runtime
-ARG MORPHODITA_MODEL_TAGGER_FILE
 ARG MORPHODITA_ZIP_SO
-COPY --from=buildMaven /annotace/core/build/libs/*.jar /
+# Work around an issue with missing library on Alpine Linux - https://www.svlada.com/fun-times-with-gcc-musl-alpine-linux/
+RUN apk add --update --no-cache libc6-compat
+RUN cp /lib64/ld-linux-x86-64.so.2 /lib/
+COPY --from=buildMaven /annotace/core/build/libs/annotace-*.jar /
 RUN mv *.jar annotace.jar
-COPY --from=unzip $MORPHODITA_MODEL_TAGGER_FILE /
-COPY --from=unzip $MORPHODITA_ZIP_SO /lib
+COPY --from=unzip /taggers .
+COPY --from=unzip /morphodita/$MORPHODITA_ZIP_SO /lib
 
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/annotace.jar"]

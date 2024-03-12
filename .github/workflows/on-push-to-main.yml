@@ -1,7 +1,7 @@
-name: On push to 'termit'
+name: On push to 'main'
 on:
   push:
-    branches: [ termit ]
+    branches: [ main ]
   workflow_dispatch:
 env:
   IMAGE_NAME: annotace-spark
@@ -11,11 +11,11 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew build -x :lemmatizer-morphodita:build -x :lemmatizer-tests:build
+        run: ./gradlew build -x test
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
       - name: Log into registry
@@ -30,7 +30,7 @@ jobs:
           # Strip "v" prefix from tag name
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
           # Use Docker `latest` tag convention
-          [ "$VERSION" == "termit" ] && VERSION=latest
+          [ "$VERSION" == "main" ] && VERSION=latest
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION

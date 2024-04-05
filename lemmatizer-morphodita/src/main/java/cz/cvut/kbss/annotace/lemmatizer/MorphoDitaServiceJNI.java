@@ -131,7 +131,6 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
                 } else {
                     token.setSpaces(spaces);
                 }
-                token.setSpaces(spaces);
                 sentence.add(token);
             }
         }

@@ -64,15 +64,11 @@ public class LemmatizationTests {
     })
     void check(final String val) {
         final List<LemmatizerResult> results = new ArrayList<>();
-        Arrays.stream(lemmatizers).forEach(l -> {
-            results.add(l.process(val, "cs"));
-        });
+        Arrays.stream(lemmatizers).forEach(l -> results.add(l.process(val, "cs")));
         results.forEach(r -> {
             System.out.println(r.getLemmatizer());
             r.getResult().forEach(l -> {
-                l.forEach(x -> {
-                    System.out.print(String.format("%1$" + 30 + "s", x.getLemma()));
-                });
+                l.forEach(x -> System.out.printf("%1$" + 30 + "s", x.getLemma()));
                 System.out.println();
             });
         });

@@ -24,8 +24,8 @@ public interface ChunkAnnotationService {
     /**
      * Accepts a plain-text chunk and returns a stream of words
      *
-     * @param textChunk
-     * @return
+     * @param textChunk Chunk to annotate
+     * @return array of words extracted from the chunk
      */
     Word[] process(final String textChunk) ;
 }

@@ -18,8 +18,6 @@
 package cz.cvut.kbss.textanalysis.lemmatizer;
 
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
-import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
-import java.util.List;
 
 public interface LemmatizerApi {
 

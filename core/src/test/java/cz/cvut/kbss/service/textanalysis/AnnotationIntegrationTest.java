@@ -17,16 +17,8 @@
  */
 package cz.cvut.kbss.service.textanalysis;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-
 import cz.cvut.kbss.textanalysis.dto.TextAnalysisInput;
-import cz.cvut.kbss.textanalysis.service.HtmlAnnotationException;
 import cz.cvut.kbss.textanalysis.service.HtmlAnnotationService;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.Test;
@@ -38,6 +30,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest(classes = {HtmlAnnotationService.class, FileOntologyService.class})
 @Import(ServiceTestConfiguration.class)
 @ActiveProfiles("test")
@@ -47,8 +46,7 @@ public class AnnotationIntegrationTest {
     private HtmlAnnotationService sut;
 
     @Test
-    public void testAnnotateQuotedStrings()
-        throws IOException, HtmlAnnotationException {
+    public void testAnnotateQuotedStrings() throws IOException {
 
         final TextAnalysisInput input = new TextAnalysisInput()
             .setVocabularyRepository(URI.create("https://slovník.gov.cz/generický/testovaci-slovnik"))
@@ -66,8 +64,7 @@ public class AnnotationIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("getIdempotentTexts")
-    public void testAnnotateIsIdempotent(final String file)
-        throws IOException, HtmlAnnotationException {
+    public void testAnnotateIsIdempotent(final String file) throws IOException {
 
         final String content = Jsoup
             .parse(new File(HtmlAnnotationService.class.getResource("/" + file).getFile()),"utf-8").toString();

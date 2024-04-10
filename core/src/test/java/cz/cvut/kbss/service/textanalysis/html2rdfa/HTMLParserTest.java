@@ -55,9 +55,7 @@ public class HTMLParserTest {
     @BeforeEach
     public void init() {
         TestChunkFactory.createTestChunks().forEach(
-            (cText,cAnnotation) -> {
-                lenient().when(chunkAnnotationService.process(cText)).thenReturn(cAnnotation);
-            }
+            (cText,cAnnotation) -> lenient().when(chunkAnnotationService.process(cText)).thenReturn(cAnnotation)
         );
     }
 
@@ -77,9 +75,7 @@ public class HTMLParserTest {
     }
 
     @Test public void testParseInvalidInputFail() {
-        Assertions.assertThrows(Exception.class, () -> {
-            sut.annotate(chunkAnnotationService,null,"cs");
-        });
+        Assertions.assertThrows(Exception.class, () -> sut.annotate(chunkAnnotationService, null, "cs"));
     }
 
     @Test public void testAnnotateMetropolitanPlanSuccessfully()

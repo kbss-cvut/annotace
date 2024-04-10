@@ -20,6 +20,8 @@ package cz.cvut.kbss.annotace.keywordextractor;
 import cz.cvut.kbss.annotace.configuration.KerConf;
 import cz.cvut.kbss.textanalysis.keywordextractor.KeywordExtractorAPI;
 import cz.cvut.kbss.textanalysis.keywordextractor.model.KeywordExtractorResult;
+
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +58,7 @@ public class KerService implements KeywordExtractorAPI {
         final File file;
         try {
             file = File.createTempFile("ker-input","");
-            Files.write(Paths.get(file.toURI()), chunks.getBytes("utf-8"));
+            Files.write(Paths.get(file.toURI()), chunks.getBytes(StandardCharsets.UTF_8));
 
             Resource fileResource = new FileSystemResource(file);
             HttpHeaders headers = new HttpHeaders();

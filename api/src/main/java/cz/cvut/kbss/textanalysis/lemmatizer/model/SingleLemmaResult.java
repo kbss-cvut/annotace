@@ -1,6 +1,6 @@
-/**
- * Annotac
- * Copyright (C) 2019 Czech Technical University in Prague
+/*
+ * Annotace
+ * Copyright (C) 2024 Czech Technical University in Prague
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- * © 2019 GitHub, Inc.
  */
 package cz.cvut.kbss.textanalysis.lemmatizer.model;
 

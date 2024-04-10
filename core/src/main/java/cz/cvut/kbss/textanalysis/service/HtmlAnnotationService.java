@@ -1,18 +1,20 @@
-/**
- * Annotace Copyright (C) 2019 Czech Technical University in Prague
- * <p>
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU General Public License as published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * <p>
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
- * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License along with this program.  If
- * not, see <https://www.gnu.org/licenses/>. © 2019 GitHub, Inc.
+/*
+ * Annotace
+ * Copyright (C) 2024 Czech Technical University in Prague
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.textanalysis.Constants;
@@ -142,14 +144,13 @@ public class HtmlAnnotationService {
         }
     }
 
-    ;
-
     public Document annotate(final ChunkAnnotationService p, final Document doc,
                              final String lang) {
         log.debug("Annotating document has started");
         final Document output = doc.clone();
         output.outputSettings().prettyPrint(false);
         final Element eHtml = output.selectFirst("html");
+        assert eHtml != null;
         eHtml.attr("prefix", "ddo: " + Constants.NS_TERMIT);
 
         final Map<TextNode, List<Node>> replaceMap = new HashMap<>();

@@ -12,12 +12,11 @@ services:
         # path to the MorphoDiTa shared library within the $MORPHODITA_ZIP
         MORPHODITA_ZIP_SO: morphodita-1.9.2-bin/bin-linux64/java/libmorphodita_java.so
         # path to a directory containing taggers to use, from https://lindat.mff.cuni.cz/repository/xmlui/handle/11234/1-1836
-        MORPHODITA_TAGGERS: lib/taggers
+        MORPHODITA_TAGGERS: lib/tagger-morfflex2
     environment:
       # List of taggers mapped to individual supported languages (tagger names should correspond to files in $MORPHODITA_TAGGERS)
-      ANNOTACE_MORPHODITA_TAGGERS_CS: czech-morfflex-pdt-161115.tagger
-      ANNOTACE_MORPHODITA_TAGGERS_EN: english-morphium-wsj-140407.tagger
-      ANNOTACE_MORPHODITA_TAGGERS_SK: slovak-morfflex-pdt-170914.tagger
+      ANNOTACE_MORPHODITA_TAGGERS_CS: czech-morfflex2.0-pdtc1.0-220710.tagger
       ANNOTACE_LEMMATIZER: morphodita-jni
     ports:
       - 8888:8080
+    network_mode: host

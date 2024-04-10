@@ -53,12 +53,12 @@ public class SparkLemmatizer implements LemmatizerApi {
                     documentAssembler.setCleanupMode("disabled");
 
                     final SentenceDetector sentenceDetector = new SentenceDetector();
-                    sentenceDetector.setInputCols(new String[] {"document"});
+                    sentenceDetector.setInputCols(new String[]{"document"});
                     sentenceDetector.setOutputCol("sentence");
                     sentenceDetector.setExplodeSentences(false);
 
                     final Tokenizer tokenizer = new Tokenizer();
-                    tokenizer.setInputCols(new String[] {"sentence"});
+                    tokenizer.setInputCols(new String[]{"sentence"});
                     tokenizer.setOutputCol("token");
 
                     final List<String> chars = new ArrayList<>(Arrays.asList(tokenizer.getContextChars()));
@@ -67,22 +67,23 @@ public class SparkLemmatizer implements LemmatizerApi {
 
                     log.info(" - loading lemmatizer {} using language {}", modelName, language);
                     final LemmatizerModel lemmatizer = LemmatizerModel.pretrained(modelName, language);
-                    lemmatizer.setInputCols(new String[] {"token"});
+                    lemmatizer.setInputCols(new String[]{"token"});
                     lemmatizer.setOutputCol("lemmas");
                     log.info(" - lemmatizer loaded.");
                     final Pipeline p =
-                    new Pipeline().setStages(
-                        new PipelineStage[] {documentAssembler, sentenceDetector, tokenizer,
-                            lemmatizer});
-                    final PipelineModel m = p.fit(spark.createDataset(Collections.emptyList(),Encoders.STRING()).toDF("text"));
+                            new Pipeline().setStages(
+                                    new PipelineStage[]{documentAssembler, sentenceDetector, tokenizer,
+                                                        lemmatizer});
+                    final PipelineModel m =
+                            p.fit(spark.createDataset(Collections.emptyList(), Encoders.STRING()).toDF("text"));
                     pipeline = new LightPipeline(m, true);
                 } else {
-                    log.warn("Unsupported type of Spark object: '{}'",sparkObject);
+                    log.warn("Unsupported type of Spark object: '{}'", sparkObject);
                     return;
                 }
                 pipelines.put(language, pipeline);
                 log.info(" - pipeline created.");
-            } catch(Exception e) {
+            } catch (Exception e) {
                 log.warn("Lemmatizer not loaded due to an error.", e);
             }
         });
@@ -93,7 +94,7 @@ public class SparkLemmatizer implements LemmatizerApi {
         String[] labels = text.split("\n\n\n\n");
         final List<List<SingleLemmaResult>> results = new ArrayList<>();
 
-        for(final String label: labels) {
+        for (final String label : labels) {
             final Map<String, List<IAnnotation>> map = pipelines.get(lang).fullAnnotateJava(label);
             final List<IAnnotation> tokens = map.get("token");
             final List<SingleLemmaResult> res = new ArrayList<>();
@@ -103,6 +104,15 @@ public class SparkLemmatizer implements LemmatizerApi {
                 final JavaAnnotation a = (JavaAnnotation) tokens.get(i);
                 final SingleLemmaResult r = new SingleLemmaResult();
                 r.setToken(a.result());
+                if (i == 0 && a.getBegin() > 0) {
+                    int spaceCount = 0;
+                    int index = 0;
+                    while (index < a.getBegin() && Character.isSpaceChar(label.charAt(index))) {
+                        spaceCount++;
+                        index++;
+                    }
+                    r.setLeadingSpaces(" ".repeat(spaceCount));
+                }
 
                 final JavaAnnotation aLemma = (JavaAnnotation) map.get("lemmas").get(i);
                 r.setLemma(aLemma.result().replace("\u2018", "").replace("\u2019", ""));
@@ -110,9 +120,8 @@ public class SparkLemmatizer implements LemmatizerApi {
                 // TODO implement negated properly.
                 r.setNegated(false);
 
-                // TODO Leading spaces
                 int startNext =
-                    (tokens.size() - 1 == i) ? a.end() : ((JavaAnnotation) tokens.get(i + 1)).begin()-1;
+                        (tokens.size() - 1 == i) ? a.end() : ((JavaAnnotation) tokens.get(i + 1)).begin() - 1;
                 r.setTrailingSpaces(Strings.repeat(" ", startNext - (a.end())));
                 res.add(r);
             }

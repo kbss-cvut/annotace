@@ -118,18 +118,25 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
                 token.setLemma(taggedLemma.getLemma());
                 token.setNegated(taggedLemma.getTag().length() > 10 && taggedLemma.getTag().charAt(10) == 'N');
                 token.setToken(forms.get(j));
+                if (i == 0 && j == 0 && tokenRange.getStart() > 0) {
+                    int spaceCount = 0;
+                    int index = 0;
+                    while (index < tokenRange.getStart() && Character.isSpaceChar(s.charAt(index))) {
+                        spaceCount++;
+                        index++;
+                    }
+                    token.setLeadingSpaces(" ".repeat(spaceCount));
+                }
 
                 final long end = tokenRange.getStart() + tokenRange.getLength();
                 final long startNext =
                     (j == tokenLemmas.size() - 1) ? end : tokenRanges.get(j + 1).getStart();
 
                 String spaces = " ".repeat((int) (startNext - end));
-                if (spaces.isEmpty() && (s.contains(forms.get(j).concat(" ")) ||
-                    (s.contains(forms.get(j).concat("\r"))) ||
-                    (s.contains(forms.get(j).concat("\n"))))) {
-                    token.setSpaces(" ");
+                if (spaces.isEmpty() && (end < s.length() && Character.isSpaceChar(s.charAt((int) end)))) {
+                    token.setTrailingSpaces(" ");
                 } else {
-                    token.setSpaces(spaces);
+                    token.setTrailingSpaces(spaces);
                 }
                 sentence.add(token);
             }

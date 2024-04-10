@@ -27,7 +27,9 @@ public class SingleLemmaResult {
 
     private String lemma;
 
-    private String spaces;
+    private String leadingSpaces = "";
+
+    private String trailingSpaces = "";
 
     private boolean negated;
 }

@@ -110,9 +110,10 @@ public class SparkLemmatizer implements LemmatizerApi {
                 // TODO implement negated properly.
                 r.setNegated(false);
 
+                // TODO Leading spaces
                 int startNext =
                     (tokens.size() - 1 == i) ? a.end() : ((JavaAnnotation) tokens.get(i + 1)).begin()-1;
-                r.setSpaces(Strings.repeat(" ", startNext - (a.end())));
+                r.setTrailingSpaces(Strings.repeat(" ", startNext - (a.end())));
                 res.add(r);
             }
         }

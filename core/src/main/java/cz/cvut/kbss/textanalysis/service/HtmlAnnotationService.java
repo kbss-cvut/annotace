@@ -114,7 +114,7 @@ public class HtmlAnnotationService {
                     .toArray(new Word[] {});
             } catch (Exception ex) {
                 log.error("Document annotation failed.", ex);
-                return new Word[] {new Word("", textChunk, "")};
+                return new Word[] {new Word("", "", textChunk, "")};
             }
         }, doc, lang).toString();
     }
@@ -148,6 +148,7 @@ public class HtmlAnnotationService {
                              final String lang) {
         log.debug("Annotating document has started");
         final Document output = doc.clone();
+        output.outputSettings().prettyPrint(false);
         final Element eHtml = output.selectFirst("html");
         eHtml.attr("prefix", "ddo: " + Constants.NS_TERMIT);
 

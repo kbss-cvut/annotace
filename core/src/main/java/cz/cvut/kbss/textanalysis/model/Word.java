@@ -27,14 +27,17 @@ public class Word {
 
     private String lemma;
 
+    private String leadingChars;
+
     private String stopChars;
 
     private Phrase[] phrases;
 
-    public Word(String lemma, String token, String stopChars, Phrase... phrases) {
+    public Word(String lemma, String token, String leadingChars, String stopChars, Phrase... phrases) {
         this.lemma = lemma;
         this.token = token;
-        this.phrases = phrases;
+        this.leadingChars = leadingChars != null ? leadingChars : "";
         this.stopChars = stopChars;
+        this.phrases = phrases;
     }
 }

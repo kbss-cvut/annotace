@@ -45,7 +45,7 @@ public class Annotator {
 
     public Stopwords stopwords = new Stopwords();
 
-    private String uniqueId = generateID();
+    private final String uniqueId = generateID();
 
     List<String> stopwordsList;
 
@@ -74,7 +74,7 @@ public class Annotator {
 
                 if ((word.getPhrases() == null || word.getPhrases().length == 0) || ((currentNode instanceof TextNode || currentNode == null) && (isStopword(word.getToken())))) {
                     if (currentNode == null) {
-                        currentNode = new TextNode("");
+                        currentNode = new TextNode(word.getLeadingChars());
 
                     } else {
                         if (!(currentNode instanceof TextNode)) {
@@ -120,12 +120,11 @@ public class Annotator {
                             list.add(currentNode);
                             TextNode spaceTn = new TextNode(" ");
                             list.add(spaceTn);
-                            content = new StringBuilder();
                         }
                         else {
                             list.add(currentNode.childNode(0));
-                            content = new StringBuilder();
                         }
+                        content = new StringBuilder();
                         currentNode = createEmptySpanNode();
                         numberOfTokens = 1;
                     }
@@ -137,7 +136,7 @@ public class Annotator {
                     double labelCount;
 
                     Phrase matchedPhrase = choosePhrase(newPhrases);
-                    if (matchedPhrase.getTermIri() == null || matchedPhrase.getTermIri().equals("")) {
+                    if (matchedPhrase.getTermIri() == null || matchedPhrase.getTermIri().isEmpty()) {
                          labelCount = numberOfTokens;
                     } else
                          labelCount = getNumberOfTokens(matchedPhrase.getTermLabel());
@@ -166,7 +165,7 @@ public class Annotator {
             if (currentNode != null) {
                 if (previousWordisStopword && !(currentNode instanceof TextNode))
                     list.add(currentNode.childNode(0));
-                else if (!(currentNode instanceof TextNode) && (tn.text().substring(tn.text().length() - 1).equals(" "))) {
+                else if (!(currentNode instanceof TextNode) && (tn.text().endsWith(" "))) {
                     ((Element) currentNode).textNodes().get(0).text(tn.text().trim());
                     list.add(currentNode);
                     TextNode spaceTn = new TextNode(" ");
@@ -183,7 +182,7 @@ public class Annotator {
         node.attr("about", "_:" + uniqueId + i);
         String iri = phrase.getTermIri();
         node.attr("property", "ddo:je-výskytem-termu");
-        if ((iri != null) && (!iri.equals(""))) {
+        if ((iri != null) && (!iri.isEmpty())) {
             node.attr("resource", phrase.getTermIri());
         } else {
             node.attr("content", content);
@@ -210,8 +209,9 @@ public class Annotator {
             else {
                 return countScore(phraseList);
                 }
-        } else
+        } else {
         return phraseList[0];
+        }
     }
 
     private Phrase countScore(Phrase[] phraseList) {

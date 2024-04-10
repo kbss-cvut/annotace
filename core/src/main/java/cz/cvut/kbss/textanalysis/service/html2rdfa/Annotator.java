@@ -19,6 +19,7 @@ package cz.cvut.kbss.textanalysis.service.html2rdfa;
 
 import cz.cvut.kbss.textanalysis.model.Phrase;
 import cz.cvut.kbss.textanalysis.model.Word;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -57,8 +58,8 @@ public class Annotator {
 
         Node currentNode = null;
 
-        Phrase [] previousPhrases = null;
-        Phrase [] currentPhrases;
+        Phrase[] previousPhrases = null;
+        Phrase[] currentPhrases;
         StringBuilder content = new StringBuilder();
 
         double score;
@@ -71,7 +72,9 @@ public class Annotator {
             for (Word word : words) {
                 // TODO overlap
 
-                if ((word.getPhrases() == null || word.getPhrases().length == 0) || ((currentNode instanceof TextNode || currentNode == null) && (isStopword(word.getToken())))) {
+                if ((word.getPhrases() == null || word.getPhrases().length == 0)
+                        || ((currentNode instanceof TextNode || currentNode == null) && (isStopword(
+                        word.getToken())))) {
                     if (currentNode == null) {
                         currentNode = new TextNode(word.getLeadingChars());
 
@@ -102,25 +105,28 @@ public class Annotator {
                     Phrase[] newPhrases;
                     if (previousPhrases != null) {
                         Arrays.stream(previousPhrases).forEach(phrase -> commonPhraseIRI.add(phrase.getTermIri()));
-                        newPhrases = Arrays.stream(currentPhrases).filter(phrase -> commonPhraseIRI.contains(phrase.getTermIri())).collect(Collectors.toList()).toArray(new Phrase[]{});
-                    } else
-                    {
+                        newPhrases = Arrays.stream(currentPhrases)
+                                           .filter(phrase -> commonPhraseIRI.contains(phrase.getTermIri()))
+                                           .collect(Collectors.toList()).toArray(new Phrase[]{});
+                    } else {
                         newPhrases = currentPhrases;
                     }
 
                     if (currentNode == null) {
+                        if (!word.getLeadingChars().isEmpty()) {
+                            list.add(new TextNode(word.getLeadingChars()));
+                        }
                         currentNode = createEmptySpanNode();
                     } else if (currentNode instanceof TextNode) {
                         list.add(currentNode);
                         currentNode = createEmptySpanNode();
-                     } else if  (newPhrases.length == 0) {
+                    } else if (newPhrases.length == 0) {
                         if (!previousWordisStopword) {
                             ((Element) currentNode).textNodes().get(0).text(tn.text().trim());
                             list.add(currentNode);
                             TextNode spaceTn = new TextNode(" ");
                             list.add(spaceTn);
-                        }
-                        else {
+                        } else {
                             list.add(currentNode.childNode(0));
                         }
                         content = new StringBuilder();
@@ -136,14 +142,17 @@ public class Annotator {
 
                     Phrase matchedPhrase = choosePhrase(newPhrases);
                     if (matchedPhrase.getTermIri() == null || matchedPhrase.getTermIri().isEmpty()) {
-                         labelCount = numberOfTokens;
-                    } else
-                         labelCount = getNumberOfTokens(matchedPhrase.getTermLabel());
-
-                    score = numberOfTokens / labelCount ;
-                    if (score > 1) score = 1.0;
+                        labelCount = numberOfTokens;
+                    } else {
+                        labelCount = getNumberOfTokens(matchedPhrase.getTermLabel());
+                    }
+                    score = numberOfTokens / labelCount;
+                    if (score > 1) {
+                        score = 1.0;
+                    }
                     content.append(parseLemma(word.getLemma())).append(" ");
-                    annotateNode((Element) currentNode, content.toString().trim(), matchedPhrase, Math.round(100 * score ) / (double) 100,i++);
+                    annotateNode((Element) currentNode, content.toString().trim(), matchedPhrase,
+                                 Math.round(100 * score) / (double) 100, i++);
 
                     final List<TextNode> textNodes = ((Element) currentNode).textNodes();
                     if (textNodes.isEmpty()) {
@@ -169,15 +178,17 @@ public class Annotator {
                     list.add(currentNode);
                     TextNode spaceTn = new TextNode(" ");
                     list.add(spaceTn);
-                } else
+                } else {
                     list.add(currentNode);
+                }
             }
         }
 
         return list.stream();
     }
 
-    private void annotateNode(final Element node, final String content, final Phrase phrase, final double score, int i) {
+    private void annotateNode(final Element node, final String content, final Phrase phrase, final double score,
+                              int i) {
         node.attr("about", "_:" + uniqueId + i);
         String iri = phrase.getTermIri();
         node.attr("property", "ddo:je-výskytem-termu");
@@ -195,8 +206,9 @@ public class Annotator {
         return trimmed.isEmpty() ? 0 : trimmed.split("\\s+").length;
     }
 
-    public Phrase [] sortArrayOfPhrasesLabelLength(Phrase [] phraseList) {
-        return Arrays.stream(phraseList).sorted(Comparator.comparingInt(x -> getNumberOfTokens(x.getTermLabel()))).collect(Collectors.toList()).toArray(new Phrase[]{});
+    public Phrase[] sortArrayOfPhrasesLabelLength(Phrase[] phraseList) {
+        return Arrays.stream(phraseList).sorted(Comparator.comparingInt(x -> getNumberOfTokens(x.getTermLabel())))
+                     .collect(Collectors.toList()).toArray(new Phrase[]{});
     }
 
     public Phrase choosePhrase(Phrase[] phraseList) {
@@ -207,16 +219,18 @@ public class Annotator {
                 return phraseList[0];
             else {
                 return countScore(phraseList);
-                }
+            }
         } else {
-        return phraseList[0];
+            return phraseList[0];
         }
     }
 
     private Phrase countScore(Phrase[] phraseList) {
         final Map<Phrase, Double> scoredPhrases = new LinkedHashMap<>();
         Arrays.stream(phraseList).forEach(p -> scoredPhrases.put(p, countIndividualScore(p, phraseList)));
-        return scoredPhrases.entrySet().stream().sorted(comparingByValue()).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new)).entrySet().iterator().next().getKey();
+        return scoredPhrases.entrySet().stream().sorted(comparingByValue())
+                            .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new))
+                            .entrySet().iterator().next().getKey();
     }
 
     private Double countIndividualScore(Phrase p, Phrase[] phraseList) {
@@ -224,24 +238,27 @@ public class Annotator {
         // label length
         double score = getNumberOfTokens(p.getTermLabel()) * 3;
         // property type
-        score = p.getPropertyName().equals(SKOS.altLabel.toString())? score * 3 : p.getPropertyName().equals(SKOS.hiddenLabel.toString())? score * 4 : score;
+        score = p.getPropertyName().equals(SKOS.altLabel.toString()) ? score * 3 :
+                p.getPropertyName().equals(SKOS.hiddenLabel.toString()) ? score * 4 : score;
         // number of times matched
-            matches = (int) Arrays.stream(phraseList).filter(phrase -> phrase.getTermIri().equals(p.getTermIri())).count();
+        matches = (int) Arrays.stream(phraseList).filter(phrase -> phrase.getTermIri().equals(p.getTermIri())).count();
         switch (matches) {
-            case 2 : score *=1.3;
-            break;
-            case 1 : score *=1.7;
-            break;
+            case 2:
+                score *= 1.3;
+                break;
+            case 1:
+                score *= 1.7;
+                break;
         }
         return score;
     }
 
-    private boolean isStopword(String s){
+    private boolean isStopword(String s) {
         return stopwordsList.contains(s.trim());
     }
 
     private String parseLemma(String s) {
-        String [] parts = s.split("[-_]");
+        String[] parts = s.split("[-_]");
         if (!(parts.length < 1))
             return parts[0];
         else return s;
@@ -256,5 +273,4 @@ public class Annotator {
         UUID uuid = UUID.randomUUID();
         return uuid.toString().substring(0, 4).concat("-");
     }
-
 }

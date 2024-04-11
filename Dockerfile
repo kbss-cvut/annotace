@@ -2,7 +2,7 @@ FROM gradle:8.0.2-jdk11-alpine as build
 RUN mkdir annotace
 WORKDIR /annotace
 COPY . .
-RUN gradle bootJar -Pcore,lemmatizer-spark,keywordextractor-ker
+RUN gradle bootJar -x test
 
 FROM eclipse-temurin:11-jdk-alpine as runtime
 COPY --from=build /annotace/core/build/libs/*.jar /

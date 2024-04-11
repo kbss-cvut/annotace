@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   annotace:
     container_name: annotace

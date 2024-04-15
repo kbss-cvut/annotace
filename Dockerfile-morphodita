@@ -21,7 +21,7 @@ FROM eclipse-temurin:11-jdk-alpine as runtime
 ARG MORPHODITA_ZIP_SO
 # Work around an issue with missing library on Alpine Linux - https://www.svlada.com/fun-times-with-gcc-musl-alpine-linux/
 RUN apk add --update --no-cache libc6-compat
-RUN cp /lib64/ld-linux-x86-64.so.2 /lib/
+RUN cp -n /lib64/ld-linux-x86-64.so.2 /lib/
 COPY --from=buildMaven /annotace/core/build/libs/annotace-*.jar /
 RUN mv *.jar annotace.jar
 COPY --from=unzip /morphodita/$MORPHODITA_ZIP_SO /lib

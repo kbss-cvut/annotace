@@ -17,6 +17,7 @@
  */
 package cz.cvut.kbss.textanalysis.service.html2rdfa;
 
+import cz.cvut.kbss.textanalysis.Constants;
 import cz.cvut.kbss.textanalysis.model.Phrase;
 import cz.cvut.kbss.textanalysis.model.Word;
 
@@ -40,6 +41,8 @@ import static java.util.Map.Entry.comparingByValue;
 import static java.util.stream.Collectors.*;
 
 public class Annotator {
+
+    private static final Tag ANNOTATION_TAG = Tag.valueOf("span");
 
     private int i = 0;
 
@@ -189,7 +192,7 @@ public class Annotator {
 
     private void annotateNode(final Element node, final String content, final Phrase phrase, final double score,
                               int i) {
-        node.attr("about", "_:" + uniqueId + i);
+        node.attr("about", Constants.BNODE_PREFIX + uniqueId + i);
         String iri = phrase.getTermIri();
         node.attr("property", "ddo:je-výskytem-termu");
         if ((iri != null) && (!iri.isEmpty())) {
@@ -259,14 +262,16 @@ public class Annotator {
 
     private String parseLemma(String s) {
         String[] parts = s.split("[-_]");
-        if (!(parts.length < 1))
+        if (parts.length > 0) {
             return parts[0];
-        else return s;
-
+        }
+        else {
+            return s;
+        }
     }
 
     private Element createEmptySpanNode() {
-        return new Element(Tag.valueOf("span"), "");
+        return new Element(ANNOTATION_TAG, "");
     }
 
     public String generateID() {

@@ -42,7 +42,7 @@ import static java.util.stream.Collectors.*;
 
 public class Annotator {
 
-    private static final Tag ANNOTATION_TAG = Tag.valueOf("span");
+    private static final Tag ANNOTATION_TAG = Tag.valueOf(Constants.ANNOTATION_ELEMENT);
 
     private int i = 0;
 
@@ -119,10 +119,10 @@ public class Annotator {
                         if (!word.getLeadingChars().isEmpty()) {
                             list.add(new TextNode(word.getLeadingChars()));
                         }
-                        currentNode = createEmptySpanNode();
+                        currentNode = createEmptyAnnotationNode();
                     } else if (currentNode instanceof TextNode) {
                         list.add(currentNode);
-                        currentNode = createEmptySpanNode();
+                        currentNode = createEmptyAnnotationNode();
                     } else if (newPhrases.length == 0) {
                         if (!previousWordisStopword) {
                             ((Element) currentNode).textNodes().get(0).text(tn.text().trim());
@@ -133,7 +133,7 @@ public class Annotator {
                             list.add(currentNode.childNode(0));
                         }
                         content = new StringBuilder();
-                        currentNode = createEmptySpanNode();
+                        currentNode = createEmptyAnnotationNode();
                         numberOfTokens = 1;
                     }
                     // TODO multiple
@@ -200,7 +200,7 @@ public class Annotator {
         } else {
             node.attr("content", content);
         }
-        node.attr("typeof", "ddo:výskyt-termu");
+        node.attr("typeof", Constants.TERM_OCCURRENCE_PREFIXED);
         node.attr("score", Double.toString(score));
     }
 
@@ -270,7 +270,7 @@ public class Annotator {
         }
     }
 
-    private Element createEmptySpanNode() {
+    private Element createEmptyAnnotationNode() {
         return new Element(ANNOTATION_TAG, "");
     }
 

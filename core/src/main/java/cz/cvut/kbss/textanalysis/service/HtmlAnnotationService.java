@@ -75,13 +75,13 @@ public class HtmlAnnotationService {
         if (input.getVocabularyContexts() != null) {
             for (final URI graphUri : input.getVocabularyContexts()) {
                 final String uri = input.getVocabularyRepository() + "?query=" + encode(
-                    "CONSTRUCT {?s ?p ?o} WHERE { GRAPH <" + graphUri + "> {?s a <" + iTerm +
-                        "> .?s ?p ?o}}");
+                        "CONSTRUCT {?s ?p ?o} WHERE { GRAPH <" + graphUri + "> {?s a <" + iTerm +
+                                "> .?s ?p ?o}}");
                 uriSet.add(URI.create(uri));
             }
         } else {
             final String uri = input.getVocabularyRepository() + "?query=" + encode(
-                "CONSTRUCT {?s ?p ?o} WHERE {?s a <" + iTerm + "> . ?s ?p ?o}");
+                    "CONSTRUCT {?s ?p ?o} WHERE {?s a <" + iTerm + "> . ?s ?p ?o}");
             uriSet.add(URI.create(uri));
         }
         return uriSet;
@@ -95,7 +95,8 @@ public class HtmlAnnotationService {
         final Set<URI> vocabularies = getQueryUrlsForVocabularyContext(input);
         final String lang = input.getLanguage();
         final List<QueryResult> queryResultList = ontologyService
-            .analyzeModel(vocabularies, input.getVocabularyRepositoryUserName(), input.getVocabularyRepositoryPassword(), lang);
+                .analyzeModel(vocabularies, input.getVocabularyRepositoryUserName(),
+                              input.getVocabularyRepositoryPassword(), lang);
 
         final Document doc = Jsoup.parse(unwrapSpan(Jsoup.parse(input.getContent())).toString());
         final List<String> chunks = new ArrayList<>();
@@ -113,10 +114,10 @@ public class HtmlAnnotationService {
         return this.annotate(textChunk -> {
             try {
                 return annotationService.getAnnotations(textChunk, queryResultList, kerResult, lang)
-                    .toArray(new Word[] {});
+                                        .toArray(new Word[]{});
             } catch (Exception ex) {
                 log.error("Document annotation failed.", ex);
-                return new Word[] {new Word("", "", textChunk, "")};
+                return new Word[]{new Word("", "", textChunk, "")};
             }
         }, doc, lang).toString();
     }
@@ -151,36 +152,34 @@ public class HtmlAnnotationService {
         output.outputSettings().prettyPrint(false);
         final Element eHtml = output.selectFirst("html");
         assert eHtml != null;
-        eHtml.attr("prefix", "ddo: " + Constants.NS_TERMIT);
+        eHtml.attr("prefix", Constants.NS_TERMIT_PREFIX + ": " + Constants.NS_TERMIT);
 
         final Map<TextNode, List<Node>> replaceMap = new HashMap<>();
 
         final Annotator a = new Annotator(lang);
         final NodeVisitor visitor = new ChunkIterator(chunk -> {
             final List<Node> newNode = a.annotate(
-                p.process(chunk.getWholeText())).collect(Collectors.toList());
-//            if (!(newNode.size() == 1 && chunk.getWholeText().trim().equals(newNode.iterator().next().toString()))) {
-                replaceMap.put(chunk, newNode);
-//            }
+                    p.process(chunk.getWholeText())).collect(Collectors.toList());
+            replaceMap.put(chunk, newNode);
         });
 
         NodeTraversor.traverse(visitor, output);
 
         for (final Map.Entry<TextNode, List<Node>> e : replaceMap.entrySet()) {
-            if (!(e.getKey().parentNode().nodeName().equals("span")
-                && e.getKey().parentNode().attr("typeof").equals("ddo:výskyt-termu"))) {
+            final Node parent = e.getKey().parentNode();
+            if (parent != null && !(Constants.ANNOTATION_ELEMENT.equals(parent.nodeName()) && isTermOccurrence(
+                    parent))) {
                 final Node node = e.getKey().text("");
                 e.getValue().forEach(node::before);
             }
         }
-
         log.debug("Annotating document has finished");
 
         return output;
     }
 
     private Document unwrapSpan(Document doc) {
-        Elements elements = doc.getElementsByTag("span");
+        Elements elements = doc.getElementsByTag(Constants.ANNOTATION_ELEMENT);
         for (Element element : elements) {
             if (isTermOccurrence(element) && element.hasText()) {
                 // Unwrap any suggested occurrence with score attribute to keep the annotations up-to-date with the vocabulary terms. Keep the assigned occurrences untouched.
@@ -190,8 +189,8 @@ public class HtmlAnnotationService {
         return doc;
     }
 
-    private Boolean isTermOccurrence(Node node) {
-        return (node.attr("typeof").equals(Constants.NS_TERMIT + "výskyt-termu") ||
-            node.attr("typeof").equals("ddo:výskyt-termu"));
+    private boolean isTermOccurrence(Node node) {
+        final String typeOf = node.attr("typeof");
+        return (typeOf.equals(Constants.TERM_OCCURRENCE) || typeOf.equals(Constants.TERM_OCCURRENCE_PREFIXED));
     }
 }

@@ -18,8 +18,31 @@
 package cz.cvut.kbss.textanalysis;
 
 public class Constants {
-    public static final String NS_TERMIT =
-        "http://onto.fel.cvut.cz/ontologies/application/termit/pojem/";
+
+    /**
+     * Namespace of terms relevant for annotation.
+     */
+    public static final String NS_TERMIT = "http://onto.fel.cvut.cz/ontologies/application/termit/pojem/";
+
+    /**
+     * Prefix used to shorten {@link #NS_TERMIT}.
+     */
+    public static final String NS_TERMIT_PREFIX = "ddo";
+
+    /**
+     * IRI of the annotation type, written in full.
+     */
+    public static final String TERM_OCCURRENCE = NS_TERMIT + "výskyt-termu";
+
+    /**
+     * IRI of the annotation type, written using prefix.
+     */
+    public static final String TERM_OCCURRENCE_PREFIXED = NS_TERMIT_PREFIX + ":" + "výskyt-termu";
+
+    /**
+     * HTML element used to wrap annotated content.
+     */
+    public static final String ANNOTATION_ELEMENT = "span";
 
     /**
      * RDF blank node prefix.

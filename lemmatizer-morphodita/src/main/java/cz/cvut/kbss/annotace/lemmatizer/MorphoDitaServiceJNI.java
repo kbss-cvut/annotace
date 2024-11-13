@@ -25,6 +25,7 @@ import cz.cuni.mff.ufal.morphodita.TokenRange;
 import cz.cuni.mff.ufal.morphodita.TokenRanges;
 import cz.cuni.mff.ufal.morphodita.Tokenizer;
 import cz.cvut.kbss.annotace.configuration.MorphoditaConf;
+import cz.cvut.kbss.textanalysis.exception.UnsupportedLanguageException;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
@@ -77,7 +78,7 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
 
         Tagger tagger = taggers.get(lang);
         if (tagger == null) {
-            throw new RuntimeException("No tagger for language " + lang + " available.");
+            throw new UnsupportedLanguageException("No tagger for language '" + lang + "' available.");
         }
 
         while (true) {

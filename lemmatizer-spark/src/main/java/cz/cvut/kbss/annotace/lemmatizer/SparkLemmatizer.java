@@ -28,6 +28,7 @@ import com.johnsnowlabs.nlp.annotators.Tokenizer;
 import com.johnsnowlabs.nlp.annotators.sbd.pragmatic.SentenceDetector;
 import com.johnsnowlabs.nlp.pretrained.PretrainedPipeline;
 import cz.cvut.kbss.annotace.configuration.SparkConf;
+import cz.cvut.kbss.textanalysis.exception.UnsupportedLanguageException;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
@@ -112,7 +113,7 @@ public class SparkLemmatizer implements LemmatizerApi {
         final List<List<SingleLemmaResult>> results = new ArrayList<>();
 
         for (final String label : labels) {
-            final Map<String, List<IAnnotation>> map = pipelines.get(lang).fullAnnotateJava(label);
+            final Map<String, List<IAnnotation>> map = getPipeline(lang).fullAnnotateJava(label);
             final List<IAnnotation> tokens = map.get("token");
             final List<SingleLemmaResult> res = new ArrayList<>();
             results.add(res);
@@ -148,5 +149,12 @@ public class SparkLemmatizer implements LemmatizerApi {
         result.setResult(results);
         result.setLemmatizer(this.getClass().getName());
         return result;
+    }
+
+    private LightPipeline getPipeline(String lang) {
+        if (!pipelines.containsKey(lang)) {
+            throw new UnsupportedLanguageException("No pipeline found for language '" + lang + "'");
+        }
+        return pipelines.get(lang);
     }
 }

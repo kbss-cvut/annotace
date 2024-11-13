@@ -15,19 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package cz.cvut.kbss.textanalysis.lemmatizer;
+package cz.cvut.kbss.textanalysis.exception;
 
-import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
+/**
+ * Top level application-specific exception.
+ */
+public class AnnotaceException extends RuntimeException {
 
-public interface LemmatizerApi {
+    public AnnotaceException(String message) {
+        super(message);
+    }
 
-    /**
-     * Lemmatizes the given text w.r.t. the given language.
-     *
-     * @param text text to lemmatize
-     * @param lang language to use
-     * @return result of the lemmatizations
-     * @throws cz.cvut.kbss.textanalysis.exception.UnsupportedLanguageException If the given language is not supported
-     */
-    LemmatizerResult process(String text, String lang);
+    public AnnotaceException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public AnnotaceException(Throwable cause) {
+        super(cause);
+    }
 }

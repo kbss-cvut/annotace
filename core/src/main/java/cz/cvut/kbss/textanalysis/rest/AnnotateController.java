@@ -21,11 +21,14 @@ import cz.cvut.kbss.textanalysis.dto.TextAnalysisInput;
 import cz.cvut.kbss.textanalysis.service.HtmlAnnotationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class AnnotateController {
@@ -38,11 +41,16 @@ public class AnnotateController {
     }
 
     @RequestMapping(value = "/annotate", method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_XML_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_XML_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public String annotate(@RequestParam(value = "enableKeywordExtraction", defaultValue = "false")
-                               Boolean enableKeywordExtraction,
+                           Boolean enableKeywordExtraction,
                            @RequestBody TextAnalysisInput input) {
         return service.annotate(enableKeywordExtraction, input);
+    }
+
+    @GetMapping(value = "/languages", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<String> getSupportedLanguages() {
+        return service.getSupportedLanguages();
     }
 }

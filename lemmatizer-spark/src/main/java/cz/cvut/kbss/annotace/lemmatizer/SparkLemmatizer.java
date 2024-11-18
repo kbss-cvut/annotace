@@ -157,4 +157,9 @@ public class SparkLemmatizer implements LemmatizerApi {
         }
         return pipelines.get(lang);
     }
+
+    @Override
+    public List<String> getSupportedLanguages() {
+        return new ArrayList<>(pipelines.keySet());
+    }
 }

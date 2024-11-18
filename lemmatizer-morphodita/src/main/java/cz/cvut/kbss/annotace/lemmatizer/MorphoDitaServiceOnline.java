@@ -22,6 +22,8 @@ import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 
+import java.util.List;
+
 public class MorphoDitaServiceOnline implements LemmatizerApi {
 
     private final RestTemplateBuilder restTemplateBuilder;
@@ -41,5 +43,10 @@ public class MorphoDitaServiceOnline implements LemmatizerApi {
 
         morphoDitaResult.setLemmatizer(this.getClass().getName());
         return morphoDitaResult;
+    }
+
+    @Override
+    public List<String> getSupportedLanguages() {
+        return List.of();
     }
 }

@@ -52,12 +52,12 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
                 }
                 log.info("Found at {}", taggerPath);
                 log.info("Loading tagger ... (looks up MorphoDita native library at {})",
-                    System.getProperty("java.library.path"));
+                         System.getProperty("java.library.path"));
                 Tagger tagger = Tagger.load(taggerPath);
                 if (tagger == null) {
                     log.warn("Creating tagger failed.");
                 } else {
-                    taggers.put(lang,tagger);
+                    taggers.put(lang, tagger);
                     log.info("Tagger {} for lang {} successfully created.", tagger, lang);
                 }
             } catch (Exception e) {
@@ -73,7 +73,7 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
         final List<TaggedLemmas> tTl = new ArrayList<>();
 
         final Tokenizer tk =
-            lang.equals("en") ? Tokenizer.newEnglishTokenizer() : Tokenizer.newCzechTokenizer();
+                lang.equals("en") ? Tokenizer.newEnglishTokenizer() : Tokenizer.newCzechTokenizer();
         tk.setText(s);
 
         Tagger tagger = taggers.get(lang);
@@ -133,7 +133,7 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
 
                 final long end = tokenRange.getStart() + tokenRange.getLength();
                 final long startNext =
-                    (j == tokenLemmas.size() - 1) ? end : tokenRanges.get(j + 1).getStart();
+                        (j == tokenLemmas.size() - 1) ? end : tokenRanges.get(j + 1).getStart();
 
                 String spaces = " ".repeat((int) (startNext - end));
                 if (spaces.isEmpty() && (end < s.length() && Character.isSpaceChar(s.charAt((int) end)))) {
@@ -145,5 +145,10 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
             }
         }
         return result;
+    }
+
+    @Override
+    public List<String> getSupportedLanguages() {
+        return new ArrayList<>(taggers.keySet());
     }
 }

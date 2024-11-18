@@ -117,4 +117,13 @@ public class AnnotationService {
 
         return annotationsResults;
     }
+
+    /**
+     * Gets a list of languages supported by the lemmatizer.
+     *
+     * @return List of supported languages
+     */
+    public List<String> getSupportedLanguages() {
+        return lemmatizer.getSupportedLanguages();
+    }
 }

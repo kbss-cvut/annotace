@@ -193,4 +193,13 @@ public class HtmlAnnotationService {
         final String typeOf = node.attr("typeof");
         return (typeOf.equals(Constants.TERM_OCCURRENCE) || typeOf.equals(Constants.TERM_OCCURRENCE_PREFIXED));
     }
+
+    /**
+     * Returns a list of supported languages.
+     *
+     * @return List of supported languages
+     */
+    public List<String> getSupportedLanguages() {
+        return annotationService.getSupportedLanguages();
+    }
 }

@@ -19,6 +19,8 @@ package cz.cvut.kbss.textanalysis.lemmatizer;
 
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 
+import java.util.List;
+
 public interface LemmatizerApi {
 
     /**
@@ -30,4 +32,11 @@ public interface LemmatizerApi {
      * @throws cz.cvut.kbss.textanalysis.exception.UnsupportedLanguageException If the given language is not supported
      */
     LemmatizerResult process(String text, String lang);
+
+    /**
+     * Returns a set of languages for which annotation is supported.
+     *
+     * @return List of languages
+     */
+    List<String> getSupportedLanguages();
 }

@@ -194,7 +194,7 @@ public class Annotator {
                               int i) {
         node.attr("about", Constants.BNODE_PREFIX + uniqueId + i);
         String iri = phrase.getTermIri();
-        node.attr("property", "ddo:je-výskytem-termu");
+        node.attr("property", Constants.NS_TERMIT + ":je-přiřazením-termu");
         if ((iri != null) && (!iri.isEmpty())) {
             node.attr("resource", phrase.getTermIri());
         } else {

@@ -27,7 +27,7 @@ public class Constants {
     /**
      * Prefix used to shorten {@link #NS_TERMIT}.
      */
-    public static final String NS_TERMIT_PREFIX = "ddo";
+    public static final String NS_TERMIT_PREFIX = "termit";
 
     /**
      * IRI of the annotation type, written in full.

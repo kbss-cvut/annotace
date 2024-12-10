@@ -20,6 +20,7 @@ package cz.cvut.kbss.service.textanalysis.html2rdfa;
 import static org.mockito.Mockito.lenient;
 
 
+import cz.cvut.kbss.textanalysis.Constants;
 import cz.cvut.kbss.textanalysis.keywordextractor.KeywordExtractorAPI;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.service.ChunkAnnotationService;
@@ -65,7 +66,7 @@ public class HTMLParserTest {
             "<html><body><p>" + chunks[1] + "</p><p>" + chunks[2] + "</p></body></html>";
         final Document doc = Jsoup.parse(html);
         final Document doc2 = sut.annotate(chunkAnnotationService,doc,"cs");
-        Assertions.assertEquals(3, doc2.select("span[typeof='ddo:výskyt-termu']").size());
+        Assertions.assertEquals(3, doc2.select("span[typeof='" + Constants.NS_TERMIT_PREFIX + ":výskyt-termu']").size());
     }
 
     @Test public void testParseInvalidHtmlSuccessfully() {

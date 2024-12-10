@@ -17,6 +17,7 @@
  */
 package cz.cvut.kbss.service.textanalysis.html2rdfa;
 
+import cz.cvut.kbss.textanalysis.Constants;
 import cz.cvut.kbss.textanalysis.model.Phrase;
 import cz.cvut.kbss.textanalysis.model.Word;
 import cz.cvut.kbss.textanalysis.service.html2rdfa.Annotator;
@@ -51,9 +52,9 @@ public class AnnotatorTest {
 
         final Element element = (Element) aNodes[0];
         Assertions.assertNotNull(element.attr("about"));
-        Assertions.assertEquals("ddo:je-výskytem-termu",element.attr("property"));
+        Assertions.assertEquals(Constants.NS_TERMIT + ":je-přiřazením-termu", element.attr("property"));
         Assertions.assertEquals("http://test.org/pojem/Test",element.attr("resource"));
-        Assertions.assertEquals("ddo:výskyt-termu",element.attr("typeof"));
+        Assertions.assertEquals(Constants.NS_TERMIT_PREFIX + ":výskyt-termu",element.attr("typeof"));
     }
 
     @Test

@@ -3,25 +3,25 @@ ARG MORPHODITA_ZIP_SO
 
 ########################################################################################################################
 
-FROM alpine as unzip
+FROM alpine AS unzip
 ARG MORPHODITA_ZIP
 RUN mkdir morphodita
 COPY $MORPHODITA_ZIP /morphodita
 WORKDIR /morphodita
 RUN unzip *.zip
 
-FROM gradle:8.0.2-jdk11-alpine as buildMaven
+FROM gradle:8.0.2-jdk11-alpine AS build
 ARG MORPHODITA_ZIP_SO
 RUN mkdir annotace
 WORKDIR /annotace
 COPY . .
 RUN gradle clean bootJar -x test
 
-FROM eclipse-temurin:11-jdk-alpine as runtime
+FROM eclipse-temurin:11-jdk-alpine AS runtime
 ARG MORPHODITA_ZIP_SO
 # Work around an issue with missing library on Alpine Linux - https://www.svlada.com/fun-times-with-gcc-musl-alpine-linux/
 RUN apk add --update --no-cache libc6-compat
-COPY --from=buildMaven /annotace/core/build/libs/annotace-*.jar /
+COPY --from=build /annotace/core/build/libs/annotace-*.jar /
 RUN mv *.jar annotace.jar
 COPY --from=unzip /morphodita/$MORPHODITA_ZIP_SO /lib
 

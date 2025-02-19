@@ -52,7 +52,7 @@ public class AnnotatorTest {
 
         final Element element = (Element) aNodes[0];
         Assertions.assertNotNull(element.attr("about"));
-        Assertions.assertEquals(Constants.NS_TERMIT + ":je-přiřazením-termu", element.attr("property"));
+        Assertions.assertEquals(Constants.NS_TERMIT_PREFIX + ":je-přiřazením-termu", element.attr("property"));
         Assertions.assertEquals("http://test.org/pojem/Test",element.attr("resource"));
         Assertions.assertEquals(Constants.NS_TERMIT_PREFIX + ":výskyt-termu",element.attr("typeof"));
     }

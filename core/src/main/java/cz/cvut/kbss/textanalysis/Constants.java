@@ -37,7 +37,12 @@ public class Constants {
     /**
      * IRI of the annotation type, written using prefix.
      */
-    public static final String TERM_OCCURRENCE_PREFIXED = NS_TERMIT_PREFIX + ":" + "výskyt-termu";
+    public static final String TERM_OCCURRENCE_PREFIXED = NS_TERMIT_PREFIX + ":výskyt-termu";
+
+    /**
+     * IRI of the annotation property, written using prefix.
+     */
+    public static final String TERM_OCCURRENCE_PROPERTY_PREFIXED = NS_TERMIT_PREFIX + ":je-přiřazením-termu";
 
     /**
      * HTML element used to wrap annotated content.

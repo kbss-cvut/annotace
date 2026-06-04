@@ -1,5 +1,8 @@
 dependencies {
+    implementation enforcedPlatform(libs.quarkus.bom)
+
     implementation project(":api")
 
-    implementation(libs.spring.boot.web)
+    implementation(libs.quarkus.arc)
+    implementation(libs.quarkus.rest.jackson)
 }

@@ -1,5 +1,0 @@
-annotace:
-  spark:
-    lemmatizers:
-      cs: model:lemma
-      en: pipeline:explain_document_ml

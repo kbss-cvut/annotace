@@ -19,45 +19,58 @@ package cz.cvut.kbss.textanalysis.rest.handler;
 
 import cz.cvut.kbss.textanalysis.exception.AnnotaceException;
 import cz.cvut.kbss.textanalysis.exception.UnsupportedLanguageException;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
+import jakarta.ws.rs.ext.ExceptionMapper;
+import jakarta.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
- * Exception handlers for REST controllers.
+ * Exception handlers for REST endpoints.
  * <p>
  * The general pattern should be that unless an exception can be handled in a more appropriate place it bubbles up to a
- * REST controller which originally received the request. There, it is caught by this handler, logged and a reasonable
+ * REST endpoint which originally received the request. There, it is caught by these mappers, logged and a reasonable
  * error message is returned to the user.
  */
-@RestControllerAdvice
 public class RestExceptionHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestExceptionHandler.class);
 
-    private static void logException(AnnotaceException ex, HttpServletRequest request) {
-        LOG.error("Exception caught when processing request to '{}'.", request.getRequestURI(), ex);
+    private static void logException(AnnotaceException ex, UriInfo uriInfo) {
+        LOG.error("Exception caught when processing request to '{}'.", uriInfo.getPath(), ex);
     }
 
-    private static ErrorInfo errorInfo(HttpServletRequest request, Throwable e) {
-        return ErrorInfo.createWithMessage(e.getMessage(), request.getRequestURI());
+    private static ErrorInfo errorInfo(UriInfo uriInfo, Throwable e) {
+        return ErrorInfo.createWithMessage(e.getMessage(), uriInfo.getPath());
     }
 
-    @ExceptionHandler(UnsupportedLanguageException.class)
-    public ResponseEntity<ErrorInfo> unsupportedLanguageException(UnsupportedLanguageException ex,
-                                                                  HttpServletRequest request) {
-        logException(ex, request);
-        return new ResponseEntity<>(errorInfo(request, ex), HttpStatus.CONFLICT);
+    @Provider
+    public static class UnsupportedLanguageExceptionMapper
+            implements ExceptionMapper<UnsupportedLanguageException> {
+
+        @Context
+        UriInfo uriInfo;
+
+        @Override
+        public Response toResponse(UnsupportedLanguageException ex) {
+            logException(ex, uriInfo);
+            return Response.status(Response.Status.CONFLICT).entity(errorInfo(uriInfo, ex)).build();
+        }
     }
 
-    @ExceptionHandler(AnnotaceException.class)
-    public ResponseEntity<ErrorInfo> annotaceException(AnnotaceException ex, HttpServletRequest request) {
-        logException(ex, request);
-        return new ResponseEntity<>(errorInfo(request, ex), HttpStatus.INTERNAL_SERVER_ERROR);
+    @Provider
+    public static class AnnotaceExceptionMapper implements ExceptionMapper<AnnotaceException> {
+
+        @Context
+        UriInfo uriInfo;
+
+        @Override
+        public Response toResponse(AnnotaceException ex) {
+            logException(ex, uriInfo);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                           .entity(errorInfo(uriInfo, ex)).build();
+        }
     }
 }

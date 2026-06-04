@@ -43,7 +43,7 @@ public class MorphoDitaServiceJNI implements LemmatizerApi {
     private final Map<String, Tagger> taggers = new HashMap<>();
 
     public MorphoDitaServiceJNI(MorphoditaConf conf) {
-        conf.getTaggers().forEach((lang, taggerPath) -> {
+        conf.taggers().forEach((lang, taggerPath) -> {
             try {
                 log.info("Finding {} ...", taggerPath);
                 if (!new File(taggerPath).exists()) {

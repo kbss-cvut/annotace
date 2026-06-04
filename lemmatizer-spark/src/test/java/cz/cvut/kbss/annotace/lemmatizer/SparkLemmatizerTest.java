@@ -20,23 +20,26 @@ package cz.cvut.kbss.annotace.lemmatizer;
 import cz.cvut.kbss.annotace.configuration.SparkConf;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Map;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class,
-    classes = {SparkConf.class, SparkLemmatizer.class})
 public class SparkLemmatizerTest {
 
-    @Autowired
-    private SparkLemmatizer sut;
+    private static final SparkConf SPARK_CONF = () -> Map.of(
+        "cs", "model:lemma",
+        "en", "pipeline:explain_document_ml"
+    );
+
+    private static SparkLemmatizer sut;
+
+    @BeforeAll
+    static void init() {
+        sut = new SparkLemmatizer(SPARK_CONF);
+    }
 
     @Test
     void checkCzech() {

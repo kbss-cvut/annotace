@@ -1,6 +1,5 @@
 plugins {
-    id "org.springframework.boot" version "2.7.10" apply false
-    id "io.spring.dependency-management" version "1.0.11.RELEASE" apply false
+    id "io.quarkus" version "3.8.6" apply false
     id "com.github.hierynomus.license" version "0.16.1"
 }
 
@@ -22,12 +21,24 @@ subprojects {
     apply plugin: "com.github.hierynomus.license"
 
     compileJava {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
+        options.compilerArgs << '-parameters'
+    }
+    compileTestJava {
+        options.compilerArgs << '-parameters'
     }
 
     test {
         useJUnitPlatform()
+    }
+
+    configurations.configureEach {
+        resolutionStrategy {
+            // Spark/Spark-NLP are compiled against Scala 2.12; Quarkus BOM otherwise drags 2.13.x.
+            force "org.scala-lang:scala-library:2.12.15"
+            force "org.scala-lang:scala-reflect:2.12.15"
+        }
     }
 
     license {
@@ -52,9 +63,9 @@ subprojects {
     dependencies {
         implementation "org.slf4j:slf4j-api:1.7.36"
         implementation "ch.qos.logback:logback-classic:1.2.11"
-        compileOnly "org.projectlombok:lombok:1.18.20"
+        compileOnly "org.projectlombok:lombok:1.18.32"
 
-        annotationProcessor "org.projectlombok:lombok:1.18.20"
+        annotationProcessor "org.projectlombok:lombok:1.18.32"
 
         testImplementation(libs.junit.api)
         testRuntimeOnly(libs.junit.engine)

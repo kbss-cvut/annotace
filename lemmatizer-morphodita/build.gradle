@@ -1,16 +1,16 @@
-apply plugin: "io.spring.dependency-management"
-
 // Note the value should be the directory containing libmorphodita_java.so, not path to the file itself!
 //test {
 //    systemProperty ("java.library.path", "/path/to/directory/containing/libmorphodita_java.so")
 //}
 
 dependencies {
+    implementation enforcedPlatform(libs.quarkus.bom)
+
     implementation project(":api")
 
     implementation "cz.cvut.kbss:morphodita:0.0.1"
-    implementation(libs.spring.boot.web)
+    implementation(libs.quarkus.arc)
+    implementation(libs.quarkus.rest.client.jackson)
 
-    testImplementation(libs.spring.aspects)
-    testImplementation(libs.spring.boot.test)
+    testImplementation(libs.quarkus.junit5)
 }

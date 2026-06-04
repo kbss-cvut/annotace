@@ -28,7 +28,6 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.vocabulary.SKOS;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -41,7 +40,11 @@ public abstract class AbstractOntologyService implements OntologyService {
 
     private final LemmatizerApi lemmatizerServiceApi;
 
-    @Autowired
+    protected AbstractOntologyService() {
+        // Required by CDI for proxying; should not be used directly.
+        this.lemmatizerServiceApi = null;
+    }
+
     public AbstractOntologyService(final LemmatizerApi morphoDitaService) {
         this.lemmatizerServiceApi = morphoDitaService;
     }

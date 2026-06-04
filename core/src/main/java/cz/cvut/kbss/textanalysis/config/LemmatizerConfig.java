@@ -23,33 +23,38 @@ import cz.cvut.kbss.annotace.lemmatizer.MorphoDitaServiceJNI;
 import cz.cvut.kbss.annotace.lemmatizer.MorphoDitaServiceOnline;
 import cz.cvut.kbss.annotace.lemmatizer.SparkLemmatizer;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-@Configuration
+@ApplicationScoped
 @Slf4j
 public class LemmatizerConfig {
 
-    @Value("${annotace.lemmatizer:spark}")
-    private String lemmatizer;
+    @ConfigProperty(name = "annotace.lemmatizer", defaultValue = "spark")
+    String lemmatizer;
 
-    @Bean
-    public LemmatizerApi lemmatizer(ApplicationContext context) {
+    @Inject
+    MorphoditaConf morphoditaConf;
+
+    @Inject
+    SparkConf sparkConf;
+
+    @Produces
+    @ApplicationScoped
+    public LemmatizerApi lemmatizer() {
         switch (lemmatizer) {
             case "morphodita-jni":
                 log.info("Instantiating MorphoDiTa JNI lemmatizer.");
-                return new MorphoDitaServiceJNI(context.getBean(MorphoditaConf.class));
+                return new MorphoDitaServiceJNI(morphoditaConf);
             case "morphodita-online":
                 log.info("Instantiating MorhoDiTa online lemmatizer.");
-                return new MorphoDitaServiceOnline(context.getBean(RestTemplateBuilder.class), context.getBean(
-                        MorphoditaConf.class));
+                return new MorphoDitaServiceOnline(morphoditaConf);
             default:
                 log.info("Instantiating Apache Spark lemmatizer.");
-                return new SparkLemmatizer(context.getBean(SparkConf.class));
+                return new SparkLemmatizer(sparkConf);
         }
     }
 }

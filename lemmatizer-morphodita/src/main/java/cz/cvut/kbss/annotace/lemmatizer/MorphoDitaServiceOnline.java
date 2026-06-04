@@ -17,32 +17,52 @@
  */
 package cz.cvut.kbss.annotace.lemmatizer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.cvut.kbss.annotace.configuration.MorphoditaConf;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class MorphoDitaServiceOnline implements LemmatizerApi {
 
-    private final RestTemplateBuilder restTemplateBuilder;
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final MorphoditaConf conf;
 
-    public MorphoDitaServiceOnline(RestTemplateBuilder restTemplateBuilder, MorphoditaConf conf) {
-        this.restTemplateBuilder = restTemplateBuilder;
+    public MorphoDitaServiceOnline(MorphoditaConf conf) {
         this.conf = conf;
     }
 
     public LemmatizerResult process(String s, String lang) {
-        final LemmatizerResult morphoDitaResult = restTemplateBuilder.build().getForObject(
-            conf.getService() +
-                "/tag?data=" + s + "&output=json",
-            LemmatizerResult.class);
-
-        morphoDitaResult.setLemmatizer(this.getClass().getName());
-        return morphoDitaResult;
+        final String service = conf.service()
+                                   .orElseThrow(() -> new IllegalStateException(
+                                           "annotace.morphodita.service is not configured"));
+        final String url = service + "/tag?data=" + URLEncoder.encode(s, StandardCharsets.UTF_8)
+                + "&output=json";
+        try {
+            final HttpResponse<String> response = httpClient.send(
+                    HttpRequest.newBuilder(URI.create(url)).GET().build(),
+                    HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+            final LemmatizerResult morphoDitaResult =
+                    objectMapper.readValue(response.body(), LemmatizerResult.class);
+            morphoDitaResult.setLemmatizer(this.getClass().getName());
+            return morphoDitaResult;
+        } catch (IOException | InterruptedException e) {
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
+            throw new RuntimeException("MorphoDiTa online tagging failed", e);
+        }
     }
 
     @Override

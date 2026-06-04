@@ -17,22 +17,15 @@
  */
 package cz.cvut.kbss.annotace.configuration;
 
-import java.util.Map;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import io.smallrye.config.ConfigMapping;
 
-@Setter
-@Getter
-@Configuration
-@EnableConfigurationProperties
-@ConfigurationProperties("annotace.spark")
-public class SparkConf {
+import java.util.Map;
+
+@ConfigMapping(prefix = "annotace.spark")
+public interface SparkConf {
 
     /**
      * Languages to initialize.
      */
-    private Map<String, String> lemmatizers;
+    Map<String, String> lemmatizers();
 }

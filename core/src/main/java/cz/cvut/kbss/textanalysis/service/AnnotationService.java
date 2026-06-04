@@ -25,12 +25,12 @@ import cz.cvut.kbss.textanalysis.lemmatizer.model.SingleLemmaResult;
 import cz.cvut.kbss.textanalysis.model.Phrase;
 import cz.cvut.kbss.textanalysis.model.QueryResult;
 import cz.cvut.kbss.textanalysis.model.Word;
-import org.springframework.stereotype.Service;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@ApplicationScoped
 public class AnnotationService {
 
     private final LemmatizerApi lemmatizer;

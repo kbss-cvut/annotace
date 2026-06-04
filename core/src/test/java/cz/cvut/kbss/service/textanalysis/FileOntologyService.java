@@ -19,24 +19,24 @@ package cz.cvut.kbss.service.textanalysis;
 
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.service.AbstractOntologyService;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Alternative;
+import jakarta.inject.Inject;
+
 import java.io.InputStream;
 import java.net.URI;
+
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.util.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
 
-@Service
-@Import(ServiceTestConfiguration.class)
-@Primary
-@Profile("test")
+@Alternative
+@Priority(1)
+@ApplicationScoped
 public class FileOntologyService extends AbstractOntologyService {
 
-    @Autowired
+    @Inject
     public FileOntologyService(
         LemmatizerApi lemmatizerApi) {
         super(lemmatizerApi);

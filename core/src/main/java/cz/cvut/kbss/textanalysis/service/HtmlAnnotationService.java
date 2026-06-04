@@ -34,8 +34,8 @@ import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -49,7 +49,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-@Service
+@ApplicationScoped
 @Slf4j
 public class HtmlAnnotationService {
 
@@ -59,7 +59,7 @@ public class HtmlAnnotationService {
 
     private final KeywordExtractorAPI keywordExtractionService;
 
-    @Autowired
+    @Inject
     public HtmlAnnotationService(AnnotationService annotationService,
                                  OntologyService ontologyService,
                                  KeywordExtractorAPI kerService) {

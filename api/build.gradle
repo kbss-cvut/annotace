@@ -1,3 +1,4 @@
 dependencies {
+    implementation enforcedPlatform(libs.quarkus.bom)
     implementation(libs.jackson.annotations)
 }

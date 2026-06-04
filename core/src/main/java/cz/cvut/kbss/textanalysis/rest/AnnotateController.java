@@ -19,37 +19,41 @@ package cz.cvut.kbss.textanalysis.rest;
 
 import cz.cvut.kbss.textanalysis.dto.TextAnalysisInput;
 import cz.cvut.kbss.textanalysis.service.HtmlAnnotationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
 
 import java.util.List;
 
-@RestController
+@Path("/")
 public class AnnotateController {
 
     private final HtmlAnnotationService service;
 
-    @Autowired
+    @Inject
     public AnnotateController(HtmlAnnotationService service) {
         this.service = service;
     }
 
-    @RequestMapping(value = "/annotate", method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_XML_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String annotate(@RequestParam(value = "enableKeywordExtraction", defaultValue = "false")
+    @POST
+    @Path("/annotate")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_XML)
+    public String annotate(@QueryParam("enableKeywordExtraction") @DefaultValue("false")
                            Boolean enableKeywordExtraction,
-                           @RequestBody TextAnalysisInput input) {
+                           TextAnalysisInput input) {
         return service.annotate(enableKeywordExtraction, input);
     }
 
-    @GetMapping(value = "/languages", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GET
+    @Path("/languages")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<String> getSupportedLanguages() {
         return service.getSupportedLanguages();
     }

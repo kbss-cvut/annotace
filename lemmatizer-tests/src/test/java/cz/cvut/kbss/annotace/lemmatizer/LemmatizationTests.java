@@ -21,37 +21,52 @@ import cz.cvut.kbss.annotace.configuration.MorphoditaConf;
 import cz.cvut.kbss.annotace.configuration.SparkConf;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import java.util.Map;
+import java.util.Optional;
 
 // To enable, specify java.library.path containing libmorphodita_java.so (in build.gradle) and set
-// absolute paths to taggers in src/test/resources/application.yml
+// absolute paths to taggers in src/test/resources/application.properties
 @Disabled
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class,
-    classes = {MorphoditaConf.class, SparkConf.class, MorphoDitaServiceJNI.class, SparkLemmatizer.class})
 public class LemmatizationTests {
 
-    @Autowired
+    private static final SparkConf SPARK_CONF = () -> Map.of(
+        "cs", "model:lemma",
+        "en", "pipeline:explain_document_ml"
+    );
+
+    private static final MorphoditaConf MORPHODITA_CONF = new MorphoditaConf() {
+        @Override
+        public Map<String, String> taggers() {
+            return Map.of(
+                "cs", "czech-morfflex-pdt-161115.tagger",
+                "en", "english-morphium-wsj-140407.tagger"
+            );
+        }
+
+        @Override
+        public Optional<String> service() {
+            return Optional.empty();
+        }
+    };
+
     private SparkLemmatizer sut1;
 
-    @Autowired
     private MorphoDitaServiceJNI sut2;
 
     private LemmatizerApi[] lemmatizers;
 
     @BeforeEach
     public void init() {
+        this.sut1 = new SparkLemmatizer(SPARK_CONF);
+        this.sut2 = new MorphoDitaServiceJNI(MORPHODITA_CONF);
         this.lemmatizers = new LemmatizerApi[] {sut1, sut2};
     }
 

@@ -19,16 +19,14 @@ package cz.cvut.kbss.service.textanalysis;
 
 import cz.cvut.kbss.textanalysis.dto.TextAnalysisInput;
 import cz.cvut.kbss.textanalysis.service.HtmlAnnotationService;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,13 +35,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(classes = {HtmlAnnotationService.class, FileOntologyService.class})
-@Import(ServiceTestConfiguration.class)
-@ActiveProfiles("test")
+@QuarkusTest
 public class AnnotationIntegrationTest {
 
-    @Autowired
-    private HtmlAnnotationService sut;
+    @Inject
+    HtmlAnnotationService sut;
 
     @Test
     public void testAnnotateQuotedStrings() throws IOException {

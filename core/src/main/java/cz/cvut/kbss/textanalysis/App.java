@@ -17,16 +17,14 @@
  */
 package cz.cvut.kbss.textanalysis;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import io.quarkus.runtime.Quarkus;
+import io.quarkus.runtime.annotations.QuarkusMain;
 
-@ComponentScan(basePackages = {"cz.cvut.kbss"})
-@SpringBootApplication
+@QuarkusMain
 public class App {
 
-    public static void main(String[] args){
-        SpringApplication.run(App.class);
+    public static void main(String[] args) {
+        Quarkus.run(args);
     }
 
 }

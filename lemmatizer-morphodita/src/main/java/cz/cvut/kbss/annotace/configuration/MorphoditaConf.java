@@ -17,24 +17,18 @@
  */
 package cz.cvut.kbss.annotace.configuration;
 
-import java.util.Map;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import io.smallrye.config.ConfigMapping;
 
-@Setter
-@Getter
-@Configuration
-@EnableConfigurationProperties
-@ConfigurationProperties("annotace.morphodita")
-public class MorphoditaConf {
+import java.util.Map;
+import java.util.Optional;
+
+@ConfigMapping(prefix = "annotace.morphodita")
+public interface MorphoditaConf {
 
     /**
      * Map language to tagger file.
      */
-    private Map<String,String> taggers;
+    Map<String, String> taggers();
 
-    private String service;
+    Optional<String> service();
 }

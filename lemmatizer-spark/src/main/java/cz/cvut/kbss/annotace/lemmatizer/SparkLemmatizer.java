@@ -55,7 +55,7 @@ public class SparkLemmatizer implements LemmatizerApi {
 
     public SparkLemmatizer(SparkConf conf) {
         spark = SparkNLP.start(false, false, false, "2G", "", "", "", scala.collection.immutable.Map$.MODULE$.empty());
-        conf.getLemmatizers().forEach((language, sparkObject) -> {
+        conf.lemmatizers().forEach((language, sparkObject) -> {
             try {
                 log.info("Creating pipeline for lang {}", language);
                 final LightPipeline pipeline;

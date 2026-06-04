@@ -17,64 +17,74 @@
  */
 package cz.cvut.kbss.annotace.keywordextractor;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.cvut.kbss.annotace.configuration.KerConf;
 import cz.cvut.kbss.textanalysis.keywordextractor.KeywordExtractorAPI;
 import cz.cvut.kbss.textanalysis.keywordextractor.model.KeywordExtractorResult;
-
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.*;
-import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
-import java.io.File;
-import java.nio.file.Files;
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
-@Service
+@ApplicationScoped
 @Slf4j
 public class KerService implements KeywordExtractorAPI {
 
-    private final RestTemplate restTemplate;
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final KerConf config;
 
-    @Autowired
-    public KerService(RestTemplateBuilder restClientBuilder, KerConf config) {
-        this.restTemplate = restClientBuilder.build();
+    @Inject
+    public KerService(KerConf config) {
         this.config = config;
     }
 
     public KeywordExtractorResult process(final String chunks) {
-
-        final String kerUrl = config.getService();
-
-        final File file;
         try {
-            file = File.createTempFile("ker-input","");
-            Files.write(Paths.get(file.toURI()), chunks.getBytes(StandardCharsets.UTF_8));
+            final String boundary = "----AnnotaceBoundary" + UUID.randomUUID();
+            final byte[] body = buildMultipartBody(boundary, "file", "ker-input",
+                    chunks.getBytes(StandardCharsets.UTF_8));
 
-            Resource fileResource = new FileSystemResource(file);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            final HttpRequest request = HttpRequest.newBuilder(URI.create(config.service()))
+                    .header("Content-Type", "multipart/form-data; boundary=" + boundary)
+                    .POST(HttpRequest.BodyPublishers.ofByteArray(body))
+                    .build();
 
-            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            body.add("file", fileResource);
-
-            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-            KeywordExtractorResult response = this.restTemplate.postForObject(kerUrl, requestEntity, KeywordExtractorResult.class);
-            log.debug("Keywords: " + response.getKeywords());
-            return response;
+            final HttpResponse<String> response = httpClient.send(request,
+                    HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+            final KeywordExtractorResult result =
+                    objectMapper.readValue(response.body(), KeywordExtractorResult.class);
+            log.debug("Keywords: " + result.getKeywords());
+            return result;
         } catch (Exception e) {
             log.error("Error computing key phrases.", e);
             return KeywordExtractorResult.createEmpty();
+        }
+    }
+
+    private static byte[] buildMultipartBody(String boundary, String fieldName, String filename,
+                                             byte[] content) {
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            final String header = "--" + boundary + "\r\n"
+                    + "Content-Disposition: form-data; name=\"" + fieldName + "\"; filename=\""
+                    + filename + "\"\r\n"
+                    + "Content-Type: application/octet-stream\r\n\r\n";
+            out.write(header.getBytes(StandardCharsets.UTF_8));
+            out.write(content);
+            out.write(("\r\n--" + boundary + "--\r\n").getBytes(StandardCharsets.UTF_8));
+            return out.toByteArray();
+        } catch (java.io.IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

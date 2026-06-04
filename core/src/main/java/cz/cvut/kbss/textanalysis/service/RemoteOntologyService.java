@@ -32,19 +32,19 @@ import org.apache.http.util.EntityUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.util.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
 
 
-@Service
+@ApplicationScoped
 @Slf4j
 public class RemoteOntologyService extends AbstractOntologyService {
 
-    @Autowired
+    @Inject
     public RemoteOntologyService(final LemmatizerApi lemmatizer) {
         super(lemmatizer);
     }

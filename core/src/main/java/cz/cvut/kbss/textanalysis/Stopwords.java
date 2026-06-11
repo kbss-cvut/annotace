@@ -33,6 +33,7 @@ public class Stopwords {
 
     public List<String> getStopwords(String lang) {
         try (InputStream resource = getClass().getResourceAsStream("/stopwords-" + lang + ".txt")) {
+            assert resource != null;
             return new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8)).lines().collect(
                     Collectors.toList());
         } catch (IOException e) {

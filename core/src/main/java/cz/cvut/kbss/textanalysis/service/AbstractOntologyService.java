@@ -90,13 +90,13 @@ public abstract class AbstractOntologyService implements OntologyService {
                 RDFNode p = querySolution.get("p");
                 RDFNode o = querySolution.get("o");
                 if (!o.asLiteral().getString().isEmpty()) {
-                    QueryResult queryResultobject =
+                    QueryResult queryResultObject =
                             new QueryResult(s.asNode().toString(), o.asLiteral().getString(), p.asNode().toString());
-                    queryResultList.add(queryResultobject);
+                    queryResultList.add(queryResultObject);
                 } else {
-                    QueryResult queryResultobject =
+                    QueryResult queryResultObject =
                             new QueryResult(s.asNode().toString(), "null", "null");
-                    queryResultList.add(queryResultobject);
+                    queryResultList.add(queryResultObject);
                 }
             }
         }
@@ -108,11 +108,11 @@ public abstract class AbstractOntologyService implements OntologyService {
         for (QueryResult qr : queryResultList) {
             sb.append(qr.getLabel().trim()).append("\n\n\n\n");
         }
-        final String ontologieLabels = sb.toString();
+        final String ontologyLabels = sb.toString();
 
         log.debug("Morphological analysis for ontology labels has started:");
         LemmatizerResult lemmatizerResult =
-            lemmatizerServiceApi.process(ontologieLabels, lang);
+            lemmatizerServiceApi.process(ontologyLabels, lang);
 
         int i = 0;
         for (QueryResult queryResult : queryResultList) {

@@ -133,7 +133,7 @@ public class SparkLemmatizer implements LemmatizerApi {
                 }
 
                 final JavaAnnotation aLemma = (JavaAnnotation) map.get("lemmas").get(i);
-                r.setLemma(aLemma.result().replace("\u2018", "").replace("\u2019", ""));
+                r.setLemma(aLemma.result().replace("‘", "").replace("’", ""));
 
                 // TODO implement negated properly.
                 r.setNegated(false);

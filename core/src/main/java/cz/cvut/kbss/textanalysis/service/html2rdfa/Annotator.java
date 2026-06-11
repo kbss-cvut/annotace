@@ -18,27 +18,26 @@
 package cz.cvut.kbss.textanalysis.service.html2rdfa;
 
 import cz.cvut.kbss.textanalysis.Constants;
+import cz.cvut.kbss.textanalysis.Stopwords;
 import cz.cvut.kbss.textanalysis.model.Phrase;
 import cz.cvut.kbss.textanalysis.model.Word;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import cz.cvut.kbss.textanalysis.Stopwords;
 import org.apache.jena.vocabulary.SKOS;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.parser.Tag;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Stream;
+
 import static java.util.Map.Entry.comparingByValue;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toMap;
 
 public class Annotator {
 
@@ -85,7 +84,7 @@ public class Annotator {
                         if (!(currentNode instanceof TextNode)) {
                             if (!previousWordisStopword) {
                                 if (tn.text().substring(tn.text().length() - 1).equals(stopChars)) {
-                                    ((Element) currentNode).textNodes().get(0).text(tn.text().trim());
+                                    ((Element) currentNode).textNodes().getFirst().text(tn.text().trim());
                                     list.add(currentNode);
                                     currentNode = new TextNode(stopChars);
                                 } else {
@@ -110,7 +109,7 @@ public class Annotator {
                         Arrays.stream(previousPhrases).forEach(phrase -> commonPhraseIRI.add(phrase.getTermIri()));
                         newPhrases = Arrays.stream(currentPhrases)
                                            .filter(phrase -> commonPhraseIRI.contains(phrase.getTermIri()))
-                                           .collect(Collectors.toList()).toArray(new Phrase[]{});
+                                           .toList().toArray(new Phrase[]{});
                     } else {
                         newPhrases = currentPhrases;
                     }
@@ -125,7 +124,7 @@ public class Annotator {
                         currentNode = createEmptyAnnotationNode();
                     } else if (newPhrases.length == 0) {
                         if (!previousWordisStopword) {
-                            ((Element) currentNode).textNodes().get(0).text(tn.text().trim());
+                            ((Element) currentNode).textNodes().getFirst().text(tn.text().trim());
                             list.add(currentNode);
                             TextNode spaceTn = new TextNode(" ");
                             list.add(spaceTn);
@@ -162,7 +161,7 @@ public class Annotator {
                         tn = new TextNode("");
                         ((Element) currentNode).appendChild(tn);
                     } else if (textNodes.size() == 1) {
-                        tn = textNodes.get(0);
+                        tn = textNodes.getFirst();
                     } else {
                         throw new IllegalArgumentException();
                     }
@@ -177,7 +176,7 @@ public class Annotator {
                 if (previousWordisStopword && !(currentNode instanceof TextNode))
                     list.add(currentNode.childNode(0));
                 else if (!(currentNode instanceof TextNode) && (tn.text().endsWith(" "))) {
-                    ((Element) currentNode).textNodes().get(0).text(tn.text().trim());
+                    ((Element) currentNode).textNodes().getFirst().text(tn.text().trim());
                     list.add(currentNode);
                     TextNode spaceTn = new TextNode(" ");
                     list.add(spaceTn);
@@ -211,7 +210,7 @@ public class Annotator {
 
     public Phrase[] sortArrayOfPhrasesLabelLength(Phrase[] phraseList) {
         return Arrays.stream(phraseList).sorted(Comparator.comparingInt(x -> getNumberOfTokens(x.getTermLabel())))
-                     .collect(Collectors.toList()).toArray(new Phrase[]{});
+                     .toList().toArray(new Phrase[]{});
     }
 
     public Phrase choosePhrase(Phrase[] phraseList) {

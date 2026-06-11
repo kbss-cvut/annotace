@@ -73,7 +73,8 @@ public class AnnotatorTest {
                     SKOS.altLabel.toString()),
                 };
         phraseList = a.sortArrayOfPhrasesLabelLength(phraseList);
-        Assertions.assertEquals(a.choosePhrase(phraseList).getTermIri(), "http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing");
+        Assertions.assertEquals("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing",
+                                a.choosePhrase(phraseList).getTermIri());
     }
 
     @Test
@@ -84,7 +85,8 @@ public class AnnotatorTest {
                 new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/typ-struktury", false,false, "typ struktury", SKOS.prefLabel.toString()),
         };
         phraseList = a.sortArrayOfPhrasesLabelLength(phraseList);
-        Assertions.assertEquals(a.choosePhrase(phraseList).getTermIri(), "http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/struktura");
+        Assertions.assertEquals("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/struktura",
+                                a.choosePhrase(phraseList).getTermIri());
     }
 
     @Test
@@ -96,7 +98,8 @@ public class AnnotatorTest {
                 new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing2", false,false, "right hand wing", SKOS.altLabel.toString()),
         };
         phraseList = a.sortArrayOfPhrasesLabelLength(phraseList);
-        Assertions.assertEquals(a.choosePhrase(phraseList).getTermIri(), "http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing");
+        Assertions.assertEquals("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/wing",
+                                a.choosePhrase(phraseList).getTermIri());
     }
 
     @Test
@@ -109,6 +112,7 @@ public class AnnotatorTest {
                 new Phrase("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/right-wing", false,false, "rh wing", SKOS.altLabel.toString())
         };
         phraseList = a.sortArrayOfPhrasesLabelLength(phraseList);
-        Assertions.assertEquals(a.choosePhrase(phraseList).getTermIri(), "http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/right-wing");
+        Assertions.assertEquals("http://onto.fel.cvut.cz/ontologies/slovnik/ls-test/pojem/right-wing",
+                                a.choosePhrase(phraseList).getTermIri());
     }
 }

@@ -135,9 +135,8 @@ public class HtmlAnnotationService {
         }
 
         public void tail(Node node, int depth) {
-            if (node instanceof TextNode) {
+            if (node instanceof TextNode textNode) {
 
-                final TextNode textNode = (TextNode) node;
                 if (!textNode.getWholeText().trim().isEmpty()) {
                     consumer.accept(textNode);
                 }

@@ -45,16 +45,19 @@ public class LemmatizerConfig {
     @Produces
     @ApplicationScoped
     public LemmatizerApi lemmatizer() {
-        switch (lemmatizer) {
-            case "morphodita-jni":
+        return switch (lemmatizer) {
+            case "morphodita-jni" -> {
                 log.info("Instantiating MorphoDiTa JNI lemmatizer.");
-                return new MorphoDitaServiceJNI(morphoditaConf);
-            case "morphodita-online":
+                yield new MorphoDitaServiceJNI(morphoditaConf);
+            }
+            case "morphodita-online" -> {
                 log.info("Instantiating MorhoDiTa online lemmatizer.");
-                return new MorphoDitaServiceOnline(morphoditaConf);
-            default:
+                yield new MorphoDitaServiceOnline(morphoditaConf);
+            }
+            default -> {
                 log.info("Instantiating Apache Spark lemmatizer.");
-                return new SparkLemmatizer(sparkConf);
-        }
+                yield new SparkLemmatizer(sparkConf);
+            }
+        };
     }
 }

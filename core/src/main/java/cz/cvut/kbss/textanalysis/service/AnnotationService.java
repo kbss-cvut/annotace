@@ -35,7 +35,7 @@ public class AnnotationService {
 
     private final LemmatizerApi lemmatizer;
 
-    public Stopwords stopwords = new Stopwords();
+    private final Stopwords stopwords = new Stopwords();
 
     List<String> stopwordsList;
 

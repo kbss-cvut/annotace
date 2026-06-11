@@ -10,20 +10,22 @@ COPY $MORPHODITA_ZIP /morphodita
 WORKDIR /morphodita
 RUN unzip *.zip
 
-FROM gradle:8.0.2-jdk11-alpine AS build
+FROM gradle:9.5.1-jdk21-alpine AS build
 ARG MORPHODITA_ZIP_SO
 RUN mkdir annotace
 WORKDIR /annotace
 COPY . .
-RUN gradle clean bootJar -x test
+RUN gradle :core:quarkusBuild -x test
 
-FROM eclipse-temurin:11-jdk-alpine AS runtime
+FROM eclipse-temurin:25-jdk-alpine AS runtime
 ARG MORPHODITA_ZIP_SO
 # Work around an issue with missing library on Alpine Linux - https://www.svlada.com/fun-times-with-gcc-musl-alpine-linux/
 RUN apk add --update --no-cache libc6-compat
-COPY --from=build /annotace/core/build/libs/annotace-*.jar /
-RUN mv *.jar annotace.jar
+COPY --from=build /annotace/core/build/quarkus-app/lib/      /annotace/lib/
+COPY --from=build /annotace/core/build/quarkus-app/*.jar     /annotace/
+COPY --from=build /annotace/core/build/quarkus-app/app/      /annotace/app/
+COPY --from=build /annotace/core/build/quarkus-app/quarkus/  /annotace/quarkus/
 COPY --from=unzip /morphodita/$MORPHODITA_ZIP_SO /lib
 
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/annotace.jar"]
+ENTRYPOINT ["java","-XX:+UseCompactObjectHeaders","-jar","/annotace/quarkus-run.jar"]

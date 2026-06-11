@@ -19,16 +19,6 @@ package cz.cvut.kbss.textanalysis.service;
 
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpEntity;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.util.FileUtils;
@@ -37,7 +27,12 @@ import jakarta.inject.Inject;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 
 @ApplicationScoped
@@ -50,22 +45,24 @@ public class RemoteOntologyService extends AbstractOntologyService {
     }
 
     public Model readOntology(final URI uri, final String userName, final String password) {
-        final HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+        final HttpClient.Builder httpClientBuilder = HttpClient.newBuilder();
         if (userName != null) {
-            final CredentialsProvider provider = new BasicCredentialsProvider();
-            provider.setCredentials(
-                AuthScope.ANY,
-                new UsernamePasswordCredentials(userName, password)
-            );
-            httpClientBuilder.setDefaultCredentialsProvider(provider);
+            httpClientBuilder.authenticator(new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(userName, password.toCharArray());
+                }
+            });
         }
         final Model model = ModelFactory.createDefaultModel();
-        try (final CloseableHttpClient client = httpClientBuilder.build()) {
-            final CloseableHttpResponse response = client.execute(new HttpGet(uri));
-            final HttpEntity entity = response.getEntity();
-            final String entityString = EntityUtils.toString(entity);
-            model.read(new StringReader(entityString), null, FileUtils.langTurtle);
+        try (final HttpClient client = httpClientBuilder.build()) {
+            final HttpRequest request = HttpRequest.newBuilder(uri).GET().build();
+            final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            model.read(new StringReader(response.body()), null, FileUtils.langTurtle);
         } catch (IOException e) {
+            log.error("Error getting the ontology: ", e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             log.error("Error getting the ontology: ", e);
         }
         return model;

@@ -62,7 +62,7 @@ public class SparkLemmatizerTest {
 
     private void test(final Iterator<String> correctLemmas, final LemmatizerResult result) {
         Assertions.assertAll(
-            result.getResult().get(0).stream().map(r -> () ->
+            result.getResult().getFirst().stream().map(r -> () ->
                 Assertions.assertEquals(correctLemmas.next(), r.getLemma()))
         );
     }

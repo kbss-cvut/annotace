@@ -20,34 +20,31 @@ package cz.cvut.kbss.annotace.keywordextractor;
 import cz.cvut.kbss.annotace.configuration.KerConf;
 import cz.cvut.kbss.textanalysis.keywordextractor.KeywordExtractorAPI;
 import cz.cvut.kbss.textanalysis.keywordextractor.model.KeywordExtractorResult;
-
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.*;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Service
 @Slf4j
 public class KerService implements KeywordExtractorAPI {
 
-    private final RestTemplate restTemplate;
+    private final RestClient restClient;
 
     private final KerConf config;
 
     @Autowired
-    public KerService(RestTemplateBuilder restClientBuilder, KerConf config) {
-        this.restTemplate = restClientBuilder.build();
+    public KerService(KerConf config) {
+        this.restClient = RestClient.builder().build();
         this.config = config;
     }
 
@@ -58,18 +55,18 @@ public class KerService implements KeywordExtractorAPI {
         final File file;
         try {
             file = File.createTempFile("ker-input","");
-            Files.write(Paths.get(file.toURI()), chunks.getBytes(StandardCharsets.UTF_8));
+            Files.writeString(Paths.get(file.toURI()), chunks);
 
             Resource fileResource = new FileSystemResource(file);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             body.add("file", fileResource);
 
-            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-            KeywordExtractorResult response = this.restTemplate.postForObject(kerUrl, requestEntity, KeywordExtractorResult.class);
+            KeywordExtractorResult response = this.restClient.post()
+                    .uri(kerUrl)
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    .body(body)
+                    .retrieve()
+                    .body(KeywordExtractorResult.class);
             log.debug("Keywords: " + response.getKeywords());
             return response;
         } catch (Exception e) {

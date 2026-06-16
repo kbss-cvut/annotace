@@ -20,10 +20,15 @@ RUN gradle clean bootJar -x test
 FROM eclipse-temurin:25-jdk-alpine AS runtime
 ARG MORPHODITA_ZIP_SO
 # Work around an issue with missing library on Alpine Linux - https://www.svlada.com/fun-times-with-gcc-musl-alpine-linux/
-RUN apk add --update --no-cache libc6-compat
-COPY --from=build /annotace/core/build/libs/annotace-*.jar /
-RUN mv *.jar annotace.jar
-COPY --from=unzip /morphodita/$MORPHODITA_ZIP_SO /lib
+RUN apk add --update --no-cache libc6-compat \
+    && addgroup -S annotace \
+    && adduser -S -G annotace annotace
+WORKDIR /app
+COPY --from=build --chown=annotace:annotace /annotace/core/build/libs/annotace-*.jar /app/annotace.jar
+COPY --from=unzip /morphodita/$MORPHODITA_ZIP_SO /lib/
+# Ensure the MorphoDita native library is readable/executable by the non-root user
+RUN chmod -R a+rX "/lib/$(basename "$MORPHODITA_ZIP_SO")"
 
 EXPOSE 8080
-ENTRYPOINT ["java","-XX:+UseCompactObjectHeaders","-jar","/annotace.jar"]
+USER annotace
+ENTRYPOINT ["java","-XX:+UseCompactObjectHeaders","-jar","/app/annotace.jar"]

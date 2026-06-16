@@ -25,10 +25,10 @@ import cz.cvut.kbss.annotace.lemmatizer.SparkLemmatizer;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestClient;
 
 @Configuration
 @Slf4j
@@ -39,17 +39,20 @@ public class LemmatizerConfig {
 
     @Bean
     public LemmatizerApi lemmatizer(ApplicationContext context) {
-        switch (lemmatizer) {
-            case "morphodita-jni":
+        return switch (lemmatizer) {
+            case "morphodita-jni" -> {
                 log.info("Instantiating MorphoDiTa JNI lemmatizer.");
-                return new MorphoDitaServiceJNI(context.getBean(MorphoditaConf.class));
-            case "morphodita-online":
+                yield new MorphoDitaServiceJNI(context.getBean(MorphoditaConf.class));
+            }
+            case "morphodita-online" -> {
                 log.info("Instantiating MorhoDiTa online lemmatizer.");
-                return new MorphoDitaServiceOnline(context.getBean(RestTemplateBuilder.class), context.getBean(
+                yield new MorphoDitaServiceOnline(RestClient.builder(), context.getBean(
                         MorphoditaConf.class));
-            default:
+            }
+            default -> {
                 log.info("Instantiating Apache Spark lemmatizer.");
-                return new SparkLemmatizer(context.getBean(SparkConf.class));
-        }
+                yield new SparkLemmatizer(context.getBean(SparkConf.class));
+            }
+        };
     }
 }

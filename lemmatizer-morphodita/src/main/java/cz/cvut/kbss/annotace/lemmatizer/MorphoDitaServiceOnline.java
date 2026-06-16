@@ -20,26 +20,26 @@ package cz.cvut.kbss.annotace.lemmatizer;
 import cz.cvut.kbss.annotace.configuration.MorphoditaConf;
 import cz.cvut.kbss.textanalysis.lemmatizer.LemmatizerApi;
 import cz.cvut.kbss.textanalysis.lemmatizer.model.LemmatizerResult;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
 public class MorphoDitaServiceOnline implements LemmatizerApi {
 
-    private final RestTemplateBuilder restTemplateBuilder;
+    private final RestClient restClient;
 
     private final MorphoditaConf conf;
 
-    public MorphoDitaServiceOnline(RestTemplateBuilder restTemplateBuilder, MorphoditaConf conf) {
-        this.restTemplateBuilder = restTemplateBuilder;
+    public MorphoDitaServiceOnline(RestClient.Builder restClientBuilder, MorphoditaConf conf) {
+        this.restClient = restClientBuilder.build();
         this.conf = conf;
     }
 
     public LemmatizerResult process(String s, String lang) {
-        final LemmatizerResult morphoDitaResult = restTemplateBuilder.build().getForObject(
-            conf.getService() +
-                "/tag?data=" + s + "&output=json",
-            LemmatizerResult.class);
+        final LemmatizerResult morphoDitaResult = restClient.get()
+            .uri(conf.getService() + "/tag?data=" + s + "&output=json")
+            .retrieve()
+            .body(LemmatizerResult.class);
 
         morphoDitaResult.setLemmatizer(this.getClass().getName());
         return morphoDitaResult;

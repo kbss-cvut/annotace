@@ -1,45 +1,40 @@
 plugins {
-    id "org.springframework.boot" version "2.7.10" apply false
-    id "io.spring.dependency-management" version "1.0.11.RELEASE" apply false
-    id "com.github.hierynomus.license" version "0.16.1"
+    id "org.springframework.boot" version "4.1.0" apply false
+    id "io.spring.dependency-management" version "1.1.7" apply false
+    id "com.diffplug.spotless" version "7.0.4" apply false
 }
 
-group "cz.cvut.kbss"
-description "Text analysis for Czech language and annotation recommendation service"
-version "0.0.1"
+group = "cz.cvut.kbss"
+description = "Text analysis for Czech language and annotation recommendation service"
+version = "0.0.1"
 
 def revision = "git rev-list --count HEAD".execute().text.trim()
 def hash = "git rev-parse --short HEAD".execute().text.trim()
 version = "0.0.1.r${revision}.${hash}"
 
-ext {
-    junitVersion = "5.9.2"
-}
-
 subprojects {
     apply plugin: "java"
     apply plugin: "java-library"
-    apply plugin: "com.github.hierynomus.license"
+    apply plugin: "com.diffplug.spotless"
 
     compileJava {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "21"
+        targetCompatibility = "21"
     }
 
     test {
         useJUnitPlatform()
     }
 
-    license {
-        header = rootProject.file("header.txt")
-        excludes(["**/*.txt", "**/*.yml", "**/*.html", "**/*.xml", "**/*.ttl"])
-        mapping {
-            java = "SLASHSTAR_STYLE"
+    spotless {
+        java {
+            target "src/**/*.java"
+            licenseHeaderFile rootProject.file("header.txt"), "package "
         }
     }
 
-    group parent.group
-    version parent.version
+    group = parent.group
+    version = parent.version
 
     repositories {
         mavenCentral()
@@ -50,13 +45,14 @@ subprojects {
     }
 
     dependencies {
-        implementation "org.slf4j:slf4j-api:1.7.36"
-        implementation "ch.qos.logback:logback-classic:1.2.11"
-        compileOnly "org.projectlombok:lombok:1.18.20"
+        implementation "org.slf4j:slf4j-api:2.0.17"
+        implementation "ch.qos.logback:logback-classic:1.5.34"
+        compileOnly "org.projectlombok:lombok:1.18.32"
 
-        annotationProcessor "org.projectlombok:lombok:1.18.20"
+        annotationProcessor "org.projectlombok:lombok:1.18.32"
 
         testImplementation(libs.junit.api)
         testRuntimeOnly(libs.junit.engine)
+        testRuntimeOnly(libs.junit.platform.launcher)
     }
 }

@@ -38,6 +38,8 @@ import org.apache.spark.ml.PipelineModel;
 import org.apache.spark.ml.PipelineStage;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
+import scala.Predef;
+import scala.collection.JavaConverters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,7 +56,10 @@ public class SparkLemmatizer implements LemmatizerApi {
     private final Map<String, LightPipeline> pipelines = new HashMap<>();
 
     public SparkLemmatizer(SparkConf conf) {
-        spark = SparkNLP.start(false, false, false, "2G", "", "", "", scala.collection.immutable.Map$.MODULE$.empty());
+        final Map<String, String> sparkConf = Map.of("spark.ui.enabled", "false");
+        final scala.collection.immutable.Map<String, String> scalaSparkConf =
+                JavaConverters.mapAsScalaMapConverter(sparkConf).asScala().toMap(Predef.$conforms());
+        spark = SparkNLP.start(false, false, false, "2G", "", "", "", scalaSparkConf);
         conf.getLemmatizers().forEach((language, sparkObject) -> {
             try {
                 log.info("Creating pipeline for lang {}", language);
@@ -133,7 +138,7 @@ public class SparkLemmatizer implements LemmatizerApi {
                 }
 
                 final JavaAnnotation aLemma = (JavaAnnotation) map.get("lemmas").get(i);
-                r.setLemma(aLemma.result().replace("\u2018", "").replace("\u2019", ""));
+                r.setLemma(aLemma.result().replace("‘", "").replace("’", ""));
 
                 // TODO implement negated properly.
                 r.setNegated(false);

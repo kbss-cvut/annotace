@@ -1,4 +1,4 @@
-FROM gradle:9.5.1-jdk25-alpine AS build
+FROM gradle:9.5.1-jdk21-alpine AS build
 RUN mkdir annotace
 WORKDIR /annotace
 COPY . .

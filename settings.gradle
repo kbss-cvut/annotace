@@ -14,8 +14,6 @@ include 'keywordextractor-ker'
 
 include 'lemmatizer-tests'
 
-include 'dist'
-
 dependencyResolutionManagement {
     versionCatalogs {
         libs {

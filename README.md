@@ -39,7 +39,7 @@ A complete command line example would be:
 
 1. Download the MorphoDiTa [ZIP archive](https://github.com/ufal/morphodita/releases/download/v1.9.2/morphodita-1.9.2-bin.zip).
 2. Set `MORPHODITA_ZIP` in `docker-compose-morphodita.yml` to path to the downloaded MorphoDiTa ZIP file.
-3. Download and extract taggers (language models). Put them into a 11single directory.
+3. Download and extract taggers (language models). Put them into a single directory.
 4. Set `MORPHODITA_TAGGERS` in `docker-compose-morphodita.yml` to path to the taggers' directory.
 5. Run `docker compose -f docker-compose-morphodita.yml up -d --build` to build and start Annotace wih MorphoDiTa.
 

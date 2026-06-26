@@ -4,7 +4,7 @@ WORKDIR /annotace
 COPY . .
 RUN gradle bootJar -x test
 
-FROM eclipse-temurin:25-jdk-alpine AS runtime
+FROM eclipse-temurin:21-jdk-alpine AS runtime
 # Run as a non-root user. Spark NLP downloads pretrained models on startup into
 # its cache folder (defaults to ~/cache_pretrained), and Spark writes runtime
 # artifacts (metastore_db, spark-warehouse) into the working directory, so the
@@ -18,6 +18,6 @@ COPY --from=build --chown=annotace:annotace /annotace/core/build/libs/annotace-*
 
 EXPOSE 8080
 ENV HOME=/home/annotace
-ENV JDK_JAVA_OPTIONS="--add-opens java.base/sun.nio.ch=ALL-UNNAMED java.base/java.nio=ALL-UNNAMED java.base/java.util=ALL-UNNAMED java.base/java.lang=ALL-UNNAMED java.base/java.lang.invoke=ALL-UNNAMED"
+ENV JDK_JAVA_OPTIONS="--add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.invoke=ALL-UNNAMED"
 USER annotace
-ENTRYPOINT ["java","-XX:+UseCompactObjectHeaders","-jar","/app/annotace.jar"]
+ENTRYPOINT ["java","-jar","/app/annotace.jar"]
